@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>AI-Dream RAG Issues Cards</title>
+  <title>AI-Dream RAG イシューカード一覧</title>
   <style>
     :root {
       --paper: #f6efe3;
@@ -256,7 +256,7 @@
 <body>
   <main class="wrap">
     <section class="hero">
-      <span class="kicker">AI-DREAM RAG ISSUES</span>
+      <span class="kicker">AI-DREAM RAG イシュー一覧</span>
       <h1>Issueカード一覧</h1>
       <p class="lead">最新取得した GitHub Issues を、スマホで読みやすいカード型に整理しました。検索、カテゴリ絞り込み、GitHubリンク付きです。</p>
       <div class="controls">
@@ -814,7 +814,16 @@
   <script>
     const search = document.querySelector('#search');
     const category = document.querySelector('#category');
+    const grid = document.querySelector('#grid');
     const cards = [...document.querySelectorAll('.issue-card')];
+
+    // #1から昇順に並び替え
+    cards.sort((a, b) => {
+      const numA = parseInt(a.dataset.search.match(/^\d+/)[0]);
+      const numB = parseInt(b.dataset.search.match(/^\d+/)[0]);
+      return numA - numB;
+    });
+    cards.forEach(card => grid.appendChild(card));
     const count = document.querySelector('#count');
     const empty = document.querySelector('#empty');
 
