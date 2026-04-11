@@ -1,0 +1,843 @@
+<!doctype html>
+<html lang="ja">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>AI-Dream RAG Issues Cards</title>
+  <style>
+    :root {
+      --paper: #f6efe3;
+      --paper-deep: #ead8bd;
+      --ink: #172321;
+      --muted: #68726b;
+      --card: rgba(255, 252, 244, 0.92);
+      --line: rgba(30, 44, 38, 0.14);
+      --accent: #0f6b6e;
+      --accent-2: #c96b2c;
+      --good: #1f7a4d;
+      --deleted: #775448;
+      --shadow: 0 18px 44px rgba(45, 32, 18, 0.14);
+      --radius: 24px;
+    }
+
+    * { box-sizing: border-box; }
+
+    body {
+      margin: 0;
+      font-family: "Hiragino Mincho ProN", "Yu Mincho", "Noto Serif JP", serif;
+      color: var(--ink);
+      background:
+        radial-gradient(circle at 12% 6%, rgba(15, 107, 110, 0.24), transparent 24rem),
+        radial-gradient(circle at 92% 4%, rgba(201, 107, 44, 0.20), transparent 22rem),
+        linear-gradient(180deg, var(--paper), var(--paper-deep));
+      min-height: 100vh;
+    }
+
+    .wrap {
+      width: min(100%, 1100px);
+      margin: 0 auto;
+      padding: 18px 14px 44px;
+    }
+
+    .hero {
+      position: sticky;
+      top: 0;
+      z-index: 10;
+      padding: 18px;
+      border: 1px solid var(--line);
+      border-radius: 0 0 30px 30px;
+      background: rgba(246, 239, 227, 0.86);
+      backdrop-filter: blur(16px);
+      box-shadow: 0 14px 36px rgba(45, 32, 18, 0.10);
+    }
+
+    .kicker {
+      display: inline-flex;
+      padding: 7px 11px;
+      border-radius: 999px;
+      color: #fff;
+      background: var(--accent);
+      font-size: 12px;
+      font-weight: 700;
+      letter-spacing: 0.08em;
+    }
+
+    h1 {
+      margin: 12px 0 8px;
+      font-size: clamp(28px, 8vw, 54px);
+      line-height: 1.02;
+      letter-spacing: -0.05em;
+    }
+
+    .lead {
+      margin: 0;
+      color: var(--muted);
+      font-family: "Hiragino Sans", "Yu Gothic", "Noto Sans JP", sans-serif;
+      font-size: 14px;
+      line-height: 1.75;
+    }
+
+    .controls {
+      display: grid;
+      gap: 10px;
+      margin-top: 16px;
+    }
+
+    input, select {
+      width: 100%;
+      border: 1px solid var(--line);
+      border-radius: 16px;
+      padding: 14px 15px;
+      color: var(--ink);
+      background: rgba(255, 252, 244, 0.94);
+      font-family: "Hiragino Sans", "Yu Gothic", "Noto Sans JP", sans-serif;
+      font-size: 16px;
+      outline: none;
+    }
+
+    input:focus, select:focus {
+      border-color: var(--accent);
+      box-shadow: 0 0 0 4px rgba(15, 107, 110, 0.14);
+    }
+
+    .stats {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      margin-top: 12px;
+    }
+
+    .chip {
+      padding: 9px 11px;
+      border: 1px solid var(--line);
+      border-radius: 999px;
+      background: rgba(255, 252, 244, 0.78);
+      color: var(--muted);
+      font-family: "Hiragino Sans", "Yu Gothic", "Noto Sans JP", sans-serif;
+      font-size: 12px;
+      font-weight: 700;
+    }
+
+    .grid {
+      display: grid;
+      gap: 14px;
+      margin-top: 18px;
+    }
+
+    .issue-card {
+      position: relative;
+      padding: 17px;
+      border: 1px solid var(--line);
+      border-radius: var(--radius);
+      background: var(--card);
+      box-shadow: var(--shadow);
+      overflow: hidden;
+    }
+
+    .issue-card::before {
+      content: "";
+      position: absolute;
+      inset: 0 auto 0 0;
+      width: 6px;
+      background: linear-gradient(180deg, var(--accent), var(--accent-2));
+    }
+
+    .card-topline {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 10px;
+      margin-left: 4px;
+    }
+
+    .issue-number, .state {
+      display: inline-flex;
+      align-items: center;
+      border-radius: 999px;
+      font-family: "Hiragino Sans", "Yu Gothic", "Noto Sans JP", sans-serif;
+      font-size: 12px;
+      font-weight: 800;
+      line-height: 1;
+    }
+
+    .issue-number {
+      padding: 9px 11px;
+      background: #1d2f2c;
+      color: #fff;
+    }
+
+    .state {
+      padding: 8px 10px;
+      background: rgba(31, 122, 77, 0.13);
+      color: var(--good);
+    }
+
+    .state-deleted {
+      color: #fff;
+      background: var(--deleted);
+    }
+
+    h2 {
+      margin: 14px 0 9px;
+      font-size: 18px;
+      line-height: 1.45;
+      letter-spacing: -0.02em;
+    }
+
+    p {
+      margin: 0;
+      color: var(--muted);
+      font-family: "Hiragino Sans", "Yu Gothic", "Noto Sans JP", sans-serif;
+      font-size: 14px;
+      line-height: 1.75;
+    }
+
+    .tags {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 7px;
+      margin-top: 13px;
+    }
+
+    .tag {
+      padding: 7px 9px;
+      border-radius: 999px;
+      background: rgba(15, 107, 110, 0.10);
+      color: var(--accent);
+      font-family: "Hiragino Sans", "Yu Gothic", "Noto Sans JP", sans-serif;
+      font-size: 11px;
+      font-weight: 700;
+    }
+
+    .tag-muted {
+      background: rgba(104, 114, 107, 0.10);
+      color: var(--muted);
+    }
+
+    .card-link {
+      display: inline-flex;
+      margin-top: 14px;
+      padding: 11px 13px;
+      border-radius: 14px;
+      color: #fff;
+      background: var(--accent);
+      font-family: "Hiragino Sans", "Yu Gothic", "Noto Sans JP", sans-serif;
+      font-size: 13px;
+      font-weight: 800;
+      text-decoration: none;
+    }
+
+    .deleted { opacity: 0.82; }
+    .deleted::before { background: var(--deleted); }
+
+    .empty {
+      display: none;
+      margin-top: 18px;
+      padding: 24px 16px;
+      border: 1px dashed var(--line);
+      border-radius: var(--radius);
+      color: var(--muted);
+      text-align: center;
+      background: rgba(255, 252, 244, 0.72);
+    }
+
+    @media (min-width: 760px) {
+      .wrap { padding: 24px 20px 64px; }
+      .hero { border-radius: 34px; }
+      .controls { grid-template-columns: 1.5fr 1fr; }
+      .grid { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 18px; }
+    }
+
+    @media (min-width: 1040px) {
+      .grid { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+    }
+  </style>
+</head>
+<body>
+  <main class="wrap">
+    <section class="hero">
+      <span class="kicker">AI-DREAM RAG ISSUES</span>
+      <h1>Issueカード一覧</h1>
+      <p class="lead">最新取得した GitHub Issues を、スマホで読みやすいカード型に整理しました。検索、カテゴリ絞り込み、GitHubリンク付きです。</p>
+      <div class="controls">
+        <input id="search" type="search" placeholder="番号・タイトル・概要・ラベルで検索">
+        <select id="category" aria-label="カテゴリで絞り込み">
+          <option value="all">すべて</option>
+<option value="automation">automation</option>
+<option value="docs">docs</option>
+<option value="paper-intake">paper-intake</option>
+        </select>
+      </div>
+      <div class="stats">
+        <span class="chip" id="count">全53件</span>
+        <span class="chip">Open 53件</span>
+        <span class="chip">Issue #1 - #53</span>
+        <span class="chip">欠番 0件</span>
+      </div>
+    </section>
+
+    <section id="grid" class="grid">
+      <article class="issue-card" data-search="53 [automation] finalize summary, status, comment, artifact naming, and completion acceptance for issue-based orchestration issue based 半自動 orchestration について、issue comment、project status、actions summary、artifact naming、completion outcome、acceptance criteria を横断的に統一し、最後の「完成条件」と「人間に見える状態」を 1 つの contract として閉じる。 これにより、各 issue 実行結果が co... " data-state="OPEN" data-category="automation">
+  <div class="card-topline">
+    <span class="issue-number">#53</span>
+    <span class="state state-open">OPEN</span>
+  </div>
+  <h2>[automation] Finalize summary, status, comment, artifact naming, and completion acceptance for issue-based orchestration</h2>
+  <p>issue based 半自動 orchestration について、issue comment、Project status、Actions summary、artifact naming、completion outcome、acceptance criteria を横断的に統一し、最後の「完成条件」と「人間に見える状態」を 1 つの contract として閉じる。 これにより、各 issue 実行結果が co...</p>
+  <div class="tags"><span class="tag tag-muted">no label</span></div>
+  <a class="card-link" href="https://github.com/bravokeysan/ai-dream-rag/issues/53" target="_blank" rel="noreferrer">GitHubで開く</a>
+</article>
+<article class="issue-card" data-search="52 [automation] create runbook, operations guide, and troubleshooting docs for issue-based orchestration flows issue based automation の主要フローについて、reviewer / operator / maintainer が共通の見方で扱える runbook / operations guide / troubleshooting docs を整備する。 これにより、issue 受付から routing、handoff、dispatch、manual triage、rerun、status 再同期、su... " data-state="OPEN" data-category="automation">
+  <div class="card-topline">
+    <span class="issue-number">#52</span>
+    <span class="state state-open">OPEN</span>
+  </div>
+  <h2>[automation] Create runbook, operations guide, and troubleshooting docs for issue-based orchestration flows</h2>
+  <p>issue based automation の主要フローについて、reviewer / operator / maintainer が共通の見方で扱える runbook / operations guide / troubleshooting docs を整備する。 これにより、issue 受付から routing、handoff、dispatch、manual triage、rerun、status 再同期、su...</p>
+  <div class="tags"><span class="tag tag-muted">no label</span></div>
+  <a class="card-link" href="https://github.com/bravokeysan/ai-dream-rag/issues/52" target="_blank" rel="noreferrer">GitHubで開く</a>
+</article>
+<article class="issue-card" data-search="51 [automation] implement rerun, duplicate-dispatch, and idempotency hardening across orchestration flows 同一 issue / 同一 route / 同一 orchestration 系実行に対して、rerun・再 dispatch・再 comment・再 pr・再 status sync を安全に制御する idempotency hardening を導入する。 これにより、github actions 上で rerun しても、必要なステップだけを再開し、不要な重複出力は抑止しつつ、再実行理由と再利用された成果物が ... " data-state="OPEN" data-category="automation">
+  <div class="card-topline">
+    <span class="issue-number">#51</span>
+    <span class="state state-open">OPEN</span>
+  </div>
+  <h2>[automation] Implement rerun, duplicate-dispatch, and idempotency hardening across orchestration flows</h2>
+  <p>同一 issue / 同一 route / 同一 orchestration 系実行に対して、rerun・再 dispatch・再 comment・再 PR・再 status sync を安全に制御する idempotency hardening を導入する。 これにより、GitHub Actions 上で rerun しても、必要なステップだけを再開し、不要な重複出力は抑止しつつ、再実行理由と再利用された成果物が ...</p>
+  <div class="tags"><span class="tag tag-muted">no label</span></div>
+  <a class="card-link" href="https://github.com/bravokeysan/ai-dream-rag/issues/51" target="_blank" rel="noreferrer">GitHubで開く</a>
+</article>
+<article class="issue-card" data-search="50 [automation] implement unknown-route manual triage workflow and reviewer handoff contract route=unknown の issue に対して、manual triage 用の共通停止フローと reviewer handoff 契約を定義・実装する。 これにより、unknown issue は orchestration の中で安全停止しつつ、必要な context・確認項目・次アクション候補を comment / project status / actions summary / artifact に... " data-state="OPEN" data-category="automation">
+  <div class="card-topline">
+    <span class="issue-number">#50</span>
+    <span class="state state-open">OPEN</span>
+  </div>
+  <h2>[automation] Implement unknown-route manual triage workflow and reviewer handoff contract</h2>
+  <p>route=unknown の issue に対して、manual triage 用の共通停止フローと reviewer handoff 契約を定義・実装する。 これにより、unknown issue は orchestration の中で安全停止しつつ、必要な context・確認項目・次アクション候補を comment / Project status / Actions summary / artifact に...</p>
+  <div class="tags"><span class="tag tag-muted">no label</span></div>
+  <a class="card-link" href="https://github.com/bravokeysan/ai-dream-rag/issues/50" target="_blank" rel="noreferrer">GitHubで開く</a>
+</article>
+<article class="issue-card" data-search="49 [automation] implement codex dispatch workflow and execution bridge from handoff payload codex handoff.json を入力として受け取り、codex 実行側へ渡すための共通 dispatch workflow / bridge と、実行結果を orchestration 側へ返すための最小 result contract を定義・実装する。 これにより、orchestration は「実行依頼を出したか」「実行不可で止めたか」「結果を受け取れたか」を一定の形式で扱え、codex 実行方式の差分... " data-state="OPEN" data-category="automation">
+  <div class="card-topline">
+    <span class="issue-number">#49</span>
+    <span class="state state-open">OPEN</span>
+  </div>
+  <h2>[automation] Implement Codex dispatch workflow and execution bridge from handoff payload</h2>
+  <p>codex handoff.json を入力として受け取り、Codex 実行側へ渡すための共通 dispatch workflow / bridge と、実行結果を orchestration 側へ返すための最小 result contract を定義・実装する。 これにより、orchestration は「実行依頼を出したか」「実行不可で止めたか」「結果を受け取れたか」を一定の形式で扱え、Codex 実行方式の差分...</p>
+  <div class="tags"><span class="tag tag-muted">no label</span></div>
+  <a class="card-link" href="https://github.com/bravokeysan/ai-dream-rag/issues/49" target="_blank" rel="noreferrer">GitHubで開く</a>
+</article>
+<article class="issue-card" data-search="48 [automation] implement final orchestration workflow for codex handoff, comment, pr, and project status sync 1 つの github actions workflow もしくは reusable workflow 群として、以下を一貫して扱える最終 orchestration を用意する。 issue の route 判定 rerun 判定 codex handoff 可否判定 issue comment の共通投稿 pr 系処理の共通呼び出し project status 再同期 github actions summar... " data-state="OPEN" data-category="automation">
+  <div class="card-topline">
+    <span class="issue-number">#48</span>
+    <span class="state state-open">OPEN</span>
+  </div>
+  <h2>[automation] Implement final orchestration workflow for Codex handoff, comment, PR, and Project status sync</h2>
+  <p>1 つの GitHub Actions workflow もしくは reusable workflow 群として、以下を一貫して扱える最終 orchestration を用意する。 issue の route 判定 rerun 判定 Codex handoff 可否判定 issue comment の共通投稿 PR 系処理の共通呼び出し Project status 再同期 GitHub Actions summar...</p>
+  <div class="tags"><span class="tag tag-muted">no label</span></div>
+  <a class="card-link" href="https://github.com/bravokeysan/ai-dream-rag/issues/48" target="_blank" rel="noreferrer">GitHubで開く</a>
+</article>
+<article class="issue-card" data-search="47 [automation] implement codex handoff contract and workflow from routed issue results github actions 上で route 判定済み issue から、codex handoff 用の共通 json payload と summary を生成できるようにする。 これにより、後続の orchestration は「route 判定」ではなく「handoff payload をどう処理するか」に集中できる状態にする。 " data-state="OPEN" data-category="automation">
+  <div class="card-topline">
+    <span class="issue-number">#47</span>
+    <span class="state state-open">OPEN</span>
+  </div>
+  <h2>[automation] Implement Codex handoff contract and workflow from routed issue results</h2>
+  <p>GitHub Actions 上で route 判定済み issue から、Codex handoff 用の共通 JSON payload と summary を生成できるようにする。 これにより、後続の orchestration は「route 判定」ではなく「handoff payload をどう処理するか」に集中できる状態にする。</p>
+  <div class="tags"><span class="tag tag-muted">no label</span></div>
+  <a class="card-link" href="https://github.com/bravokeysan/ai-dream-rag/issues/47" target="_blank" rel="noreferrer">GitHubで開く</a>
+</article>
+<article class="issue-card" data-search="46 [automation] post project status resync workflow results back to the github issue as a comment resync project status workflow の実行結果を、起点となった github issue にコメントとして返せるようにする。 " data-state="OPEN" data-category="automation">
+  <div class="card-topline">
+    <span class="issue-number">#46</span>
+    <span class="state state-open">OPEN</span>
+  </div>
+  <h2>[automation] Post Project status resync workflow results back to the GitHub issue as a comment</h2>
+  <p>resync project status workflow の実行結果を、起点となった GitHub Issue にコメントとして返せるようにする。</p>
+  <div class="tags"><span class="tag tag-muted">no label</span></div>
+  <a class="card-link" href="https://github.com/bravokeysan/ai-dream-rag/issues/46" target="_blank" rel="noreferrer">GitHubで開く</a>
+</article>
+<article class="issue-card" data-search="45 [automation] reflect rerun decision results in github project status update rules should rerun.py の判定結果を github project の status 更新ルールに反映し、 issue が rerun 実行対象なのか、skip されたのか、clarification 待ちなのか を project 上でも一貫して表現できるようにする。 " data-state="OPEN" data-category="automation">
+  <div class="card-topline">
+    <span class="issue-number">#45</span>
+    <span class="state state-open">OPEN</span>
+  </div>
+  <h2>[automation] Reflect rerun decision results in GitHub Project status update rules</h2>
+  <p>should rerun.py の判定結果を GitHub Project の Status 更新ルールに反映し、 Issue が rerun 実行対象なのか、skip されたのか、clarification 待ちなのか を Project 上でも一貫して表現できるようにする。</p>
+  <div class="tags"><span class="tag tag-muted">no label</span></div>
+  <a class="card-link" href="https://github.com/bravokeysan/ai-dream-rag/issues/45" target="_blank" rel="noreferrer">GitHubで開く</a>
+</article>
+<article class="issue-card" data-search="44 [automation] implement a shared pull request creation layer for all ai-dream rag workflows paper intake、kb rewrite、retrieval test、prompt update で共通利用できる pull request 作成レイヤー を本実装する。 " data-state="OPEN" data-category="automation">
+  <div class="card-topline">
+    <span class="issue-number">#44</span>
+    <span class="state state-open">OPEN</span>
+  </div>
+  <h2>[automation] Implement a shared pull request creation layer for all AI-Dream RAG workflows</h2>
+  <p>paper intake、kb rewrite、retrieval test、prompt update で共通利用できる Pull Request 作成レイヤー を本実装する。</p>
+  <div class="tags"><span class="tag tag-muted">no label</span></div>
+  <a class="card-link" href="https://github.com/bravokeysan/ai-dream-rag/issues/44" target="_blank" rel="noreferrer">GitHubで開く</a>
+</article>
+<article class="issue-card" data-search="43 [automation] attach generated codex handoff prompts to issue comments and workflow artifacts scripts/build codex handoff.py で生成した codex handoff 結果を、 github issue コメントや workflow artifact と連携し、 人間と codex の両方が参照しやすい状態にする。 " data-state="OPEN" data-category="automation">
+  <div class="card-topline">
+    <span class="issue-number">#43</span>
+    <span class="state state-open">OPEN</span>
+  </div>
+  <h2>[automation] Attach generated Codex handoff prompts to issue comments and workflow artifacts</h2>
+  <p>scripts/build codex handoff.py で生成した Codex handoff 結果を、 GitHub Issue コメントや workflow artifact と連携し、 人間と Codex の両方が参照しやすい状態にする。</p>
+  <div class="tags"><span class="tag tag-muted">no label</span></div>
+  <a class="card-link" href="https://github.com/bravokeysan/ai-dream-rag/issues/43" target="_blank" rel="noreferrer">GitHubで開く</a>
+</article>
+<article class="issue-card" data-search="42 [automation] add fallback comments that guide users to the project status resync workflow github project の status 更新に失敗した場合に、 issue コメントから 再同期専用 workflow へ進む手順 を案内できるようにする。 " data-state="OPEN" data-category="automation">
+  <div class="card-topline">
+    <span class="issue-number">#42</span>
+    <span class="state state-open">OPEN</span>
+  </div>
+  <h2>[automation] Add fallback comments that guide users to the Project status resync workflow</h2>
+  <p>GitHub Project の Status 更新に失敗した場合に、 Issue コメントから 再同期専用 workflow へ進む手順 を案内できるようにする。</p>
+  <div class="tags"><span class="tag tag-muted">no label</span></div>
+  <a class="card-link" href="https://github.com/bravokeysan/ai-dream-rag/issues/42" target="_blank" rel="noreferrer">GitHubで開く</a>
+</article>
+<article class="issue-card" data-search="41 [automation] integrate rerun decision results into github actions to control automatic skip / rerun behavior scripts/should rerun.py の判定結果を github actions に組み込み、 issue の更新内容に応じて、処理を 自動で rerun するか、 skip するかを制御できるようにする。 " data-state="OPEN" data-category="automation">
+  <div class="card-topline">
+    <span class="issue-number">#41</span>
+    <span class="state state-open">OPEN</span>
+  </div>
+  <h2>[automation] Integrate rerun decision results into GitHub Actions to control automatic skip / rerun behavior</h2>
+  <p>scripts/should rerun.py の判定結果を GitHub Actions に組み込み、 Issue の更新内容に応じて、処理を 自動で rerun するか、 skip するかを制御できるようにする。</p>
+  <div class="tags"><span class="tag tag-muted">no label</span></div>
+  <a class="card-link" href="https://github.com/bravokeysan/ai-dream-rag/issues/41" target="_blank" rel="noreferrer">GitHubで開く</a>
+</article>
+<article class="issue-card" data-search="40 [automation] implement a shared issue comment layer for all ai-dream rag workflows paper intake、kb rewrite、retrieval test、prompt update、issue routing で共通利用できる issue comment 返却レイヤー を本実装する。 " data-state="OPEN" data-category="automation">
+  <div class="card-topline">
+    <span class="issue-number">#40</span>
+    <span class="state state-open">OPEN</span>
+  </div>
+  <h2>[automation] Implement a shared issue comment layer for all AI-Dream RAG workflows</h2>
+  <p>paper intake、kb rewrite、retrieval test、prompt update、issue routing で共通利用できる Issue comment 返却レイヤー を本実装する。</p>
+  <div class="tags"><span class="tag tag-muted">no label</span></div>
+  <a class="card-link" href="https://github.com/bravokeysan/ai-dream-rag/issues/40" target="_blank" rel="noreferrer">GitHubで開く</a>
+</article>
+<article class="issue-card" data-search="39 [automation] implement a script to generate codex handoff prompts from routed issue data routing 済みの issue 情報をもとに、 codex に渡す handoff prompt を自動生成するスクリプトを実装する。 " data-state="OPEN" data-category="automation">
+  <div class="card-topline">
+    <span class="issue-number">#39</span>
+    <span class="state state-open">OPEN</span>
+  </div>
+  <h2>[automation] Implement a script to generate Codex handoff prompts from routed issue data</h2>
+  <p>routing 済みの Issue 情報をもとに、 Codex に渡す handoff prompt を自動生成するスクリプトを実装する。</p>
+  <div class="tags"><span class="tag tag-muted">no label</span></div>
+  <a class="card-link" href="https://github.com/bravokeysan/ai-dream-rag/issues/39" target="_blank" rel="noreferrer">GitHubで開く</a>
+</article>
+<article class="issue-card" data-search="38 [automation] implement a dedicated workflow to resync github project status from the latest issue state github project の status が実際の issue / workflow 状態とずれた場合に、 後から安全に再同期できる専用 workflow を用意する。 " data-state="OPEN" data-category="automation">
+  <div class="card-topline">
+    <span class="issue-number">#38</span>
+    <span class="state state-open">OPEN</span>
+  </div>
+  <h2>[automation] Implement a dedicated workflow to resync GitHub Project status from the latest issue state</h2>
+  <p>GitHub Project の Status が実際の Issue / workflow 状態とずれた場合に、 後から安全に再同期できる専用 workflow を用意する。</p>
+  <div class="tags"><span class="tag tag-muted">no label</span></div>
+  <a class="card-link" href="https://github.com/bravokeysan/ai-dream-rag/issues/38" target="_blank" rel="noreferrer">GitHubで開く</a>
+</article>
+<article class="issue-card" data-search="37 [automation] implement a rerun decision script by comparing the latest saved state 保存済みの run state をもとに、 今回の issue 入力に 意味のある変更があるか を判定し、 rerun を許可するか / skip するかを決められるようにする。 " data-state="OPEN" data-category="automation">
+  <div class="card-topline">
+    <span class="issue-number">#37</span>
+    <span class="state state-open">OPEN</span>
+  </div>
+  <h2>[automation] Implement a rerun decision script by comparing the latest saved state</h2>
+  <p>保存済みの run state をもとに、 今回の Issue 入力に 意味のある変更があるか を判定し、 rerun を許可するか / skip するかを決められるようにする。</p>
+  <div class="tags"><span class="tag tag-muted">no label</span></div>
+  <a class="card-link" href="https://github.com/bravokeysan/ai-dream-rag/issues/37" target="_blank" rel="noreferrer">GitHubで開く</a>
+</article>
+<article class="issue-card" data-search="36 [automation] implement a state snapshot script for rerun decision control issue ごとの前回実行状態と入力スナップショットを保存し、 次回 run 時に「意味のある変更があるか」を判定できるようにする。 " data-state="OPEN" data-category="automation">
+  <div class="card-topline">
+    <span class="issue-number">#36</span>
+    <span class="state state-open">OPEN</span>
+  </div>
+  <h2>[automation] Implement a state snapshot script for rerun decision control</h2>
+  <p>Issue ごとの前回実行状態と入力スナップショットを保存し、 次回 run 時に「意味のある変更があるか」を判定できるようにする。</p>
+  <div class="tags"><span class="tag tag-muted">no label</span></div>
+  <a class="card-link" href="https://github.com/bravokeysan/ai-dream-rag/issues/36" target="_blank" rel="noreferrer">GitHubで開く</a>
+</article>
+<article class="issue-card" data-search="35 [automation] extract shared comment / pr / status update steps into reusable workflow components paper intake、kb rewrite、retrieval test、prompt update で共通して使う issue comment 返却 pull request 作成 github project status 更新 の処理を、再利用しやすい共通レイヤーとして切り出す。 " data-state="OPEN" data-category="automation">
+  <div class="card-topline">
+    <span class="issue-number">#35</span>
+    <span class="state state-open">OPEN</span>
+  </div>
+  <h2>[automation] Extract shared comment / PR / status update steps into reusable workflow components</h2>
+  <p>paper intake、kb rewrite、retrieval test、prompt update で共通して使う Issue comment 返却 Pull Request 作成 GitHub Project status 更新 の処理を、再利用しやすい共通レイヤーとして切り出す。</p>
+  <div class="tags"><span class="tag tag-muted">no label</span></div>
+  <a class="card-link" href="https://github.com/bravokeysan/ai-dream-rag/issues/35" target="_blank" rel="noreferrer">GitHubで開く</a>
+</article>
+<article class="issue-card" data-search="34 [automation] explore semi-automatic generation of codex handoff prompts from routed issue data issue の routing 結果や本文情報をもとに、 codex に渡すハンドオフ用テンプレートを半自動で生成できるようにする。 " data-state="OPEN" data-category="automation">
+  <div class="card-topline">
+    <span class="issue-number">#34</span>
+    <span class="state state-open">OPEN</span>
+  </div>
+  <h2>[automation] Explore semi-automatic generation of Codex handoff prompts from routed issue data</h2>
+  <p>Issue の routing 結果や本文情報をもとに、 Codex に渡すハンドオフ用テンプレートを半自動で生成できるようにする。</p>
+  <div class="tags"><span class="tag tag-muted">no label</span></div>
+  <a class="card-link" href="https://github.com/bravokeysan/ai-dream-rag/issues/34" target="_blank" rel="noreferrer">GitHubで開く</a>
+</article>
+<article class="issue-card" data-search="33 [automation] define a fallback strategy when github project status updates fail github project の status 更新に失敗した場合でも、 ai dream rag の運用が止まらないように、 安全な fallback 方針を整備する。 " data-state="OPEN" data-category="automation">
+  <div class="card-topline">
+    <span class="issue-number">#33</span>
+    <span class="state state-open">OPEN</span>
+  </div>
+  <h2>[automation] Define a fallback strategy when GitHub Project status updates fail</h2>
+  <p>GitHub Project の Status 更新に失敗した場合でも、 AI Dream RAG の運用が止まらないように、 安全な fallback 方針を整備する。</p>
+  <div class="tags"><span class="tag tag-muted">no label</span></div>
+  <a class="card-link" href="https://github.com/bravokeysan/ai-dream-rag/issues/33" target="_blank" rel="noreferrer">GitHubで開く</a>
+</article>
+<article class="issue-card" data-search="32 [automation] implement controlled re-run behavior based on issue routing and workflow outcomes routing 結果や workflow 実行結果に応じて、 ai dream rag の処理を安全に再実行できる仕組みを整備する。 " data-state="OPEN" data-category="automation">
+  <div class="card-topline">
+    <span class="issue-number">#32</span>
+    <span class="state state-open">OPEN</span>
+  </div>
+  <h2>[automation] Implement controlled re-run behavior based on issue routing and workflow outcomes</h2>
+  <p>routing 結果や workflow 実行結果に応じて、 AI Dream RAG の処理を安全に再実行できる仕組みを整備する。</p>
+  <div class="tags"><span class="tag tag-muted">no label</span></div>
+  <a class="card-link" href="https://github.com/bravokeysan/ai-dream-rag/issues/32" target="_blank" rel="noreferrer">GitHubで開く</a>
+</article>
+<article class="issue-card" data-search="31 [automation] refactor issue-based workflows into reusable workflows for ai-dream rag paper intake、kb rewrite、retrieval test、prompt update の処理を、 再利用しやすい reusable workflow に整理し、 routing 結果に応じて共通的に呼び出せるようにする。 " data-state="OPEN" data-category="automation">
+  <div class="card-topline">
+    <span class="issue-number">#31</span>
+    <span class="state state-open">OPEN</span>
+  </div>
+  <h2>[automation] Refactor issue-based workflows into reusable workflows for AI-Dream RAG</h2>
+  <p>paper intake、kb rewrite、retrieval test、prompt update の処理を、 再利用しやすい reusable workflow に整理し、 routing 結果に応じて共通的に呼び出せるようにする。</p>
+  <div class="tags"><span class="tag tag-muted">no label</span></div>
+  <a class="card-link" href="https://github.com/bravokeysan/ai-dream-rag/issues/31" target="_blank" rel="noreferrer">GitHubで開く</a>
+</article>
+<article class="issue-card" data-search="30 [docs] define standard codex handoff prompts for issue-based ai-dream rag operations issue の routing 結果や workflow の状態をもとに、 codex に対して一貫した形で依頼を渡せるように、 定型プロンプトを整備する。 " data-state="OPEN" data-category="docs">
+  <div class="card-topline">
+    <span class="issue-number">#30</span>
+    <span class="state state-open">OPEN</span>
+  </div>
+  <h2>[docs] Define standard Codex handoff prompts for issue-based AI-Dream RAG operations</h2>
+  <p>Issue の routing 結果や workflow の状態をもとに、 Codex に対して一貫した形で依頼を渡せるように、 定型プロンプトを整備する。</p>
+  <div class="tags"><span class="tag tag-muted">no label</span></div>
+  <a class="card-link" href="https://github.com/bravokeysan/ai-dream-rag/issues/30" target="_blank" rel="noreferrer">GitHubで開く</a>
+</article>
+<article class="issue-card" data-search="29 [automation] post issue routing result back to the github issue as a commen issue の routing 結果や workflow 実行結果に応じて、 github project 上の status を自動更新できるようにする。 " data-state="OPEN" data-category="automation">
+  <div class="card-topline">
+    <span class="issue-number">#29</span>
+    <span class="state state-open">OPEN</span>
+  </div>
+  <h2>[automation] Post issue routing result back to the GitHub issue as a commen</h2>
+  <p>Issue の routing 結果や workflow 実行結果に応じて、 GitHub Project 上の status を自動更新できるようにする。</p>
+  <div class="tags"><span class="tag tag-muted">no label</span></div>
+  <a class="card-link" href="https://github.com/bravokeysan/ai-dream-rag/issues/29" target="_blank" rel="noreferrer">GitHubで開く</a>
+</article>
+<article class="issue-card" data-search="28 [automation] sync issue routing and workflow results with github project status issue の routing 結果や workflow 実行結果に応じて、 github project 上の status を自動更新できるようにする。 " data-state="OPEN" data-category="automation">
+  <div class="card-topline">
+    <span class="issue-number">#28</span>
+    <span class="state state-open">OPEN</span>
+  </div>
+  <h2>[automation] Sync issue routing and workflow results with GitHub Project status</h2>
+  <p>Issue の routing 結果や workflow 実行結果に応じて、 GitHub Project 上の status を自動更新できるようにする。</p>
+  <div class="tags"><span class="tag tag-muted">no label</span></div>
+  <a class="card-link" href="https://github.com/bravokeysan/ai-dream-rag/issues/28" target="_blank" rel="noreferrer">GitHubで開く</a>
+</article>
+<article class="issue-card" data-search="27 [automation] route issue processing to the correct workflow based on issue_type route issue.py の判定結果 issue type に応じて、 ai dream rag の実処理を正しく分岐できるようにする。 " data-state="OPEN" data-category="automation">
+  <div class="card-topline">
+    <span class="issue-number">#27</span>
+    <span class="state state-open">OPEN</span>
+  </div>
+  <h2>[automation] Route issue processing to the correct workflow based on issue_type</h2>
+  <p>route issue.py の判定結果 issue type に応じて、 AI Dream RAG の実処理を正しく分岐できるようにする。</p>
+  <div class="tags"><span class="tag tag-muted">no label</span></div>
+  <a class="card-link" href="https://github.com/bravokeysan/ai-dream-rag/issues/27" target="_blank" rel="noreferrer">GitHubで開く</a>
+</article>
+<article class="issue-card" data-search="26 [automation] define a confirmation flow for unknown issues in ai-dream rag routing routing 判定の結果が unknown になった issue について、 自動処理せずに、安全に人間確認へ回すための確認フローを整備する。 " data-state="OPEN" data-category="automation">
+  <div class="card-topline">
+    <span class="issue-number">#26</span>
+    <span class="state state-open">OPEN</span>
+  </div>
+  <h2>[automation] Define a confirmation flow for unknown issues in AI-Dream RAG routing</h2>
+  <p>routing 判定の結果が unknown になった Issue について、 自動処理せずに、安全に人間確認へ回すための確認フローを整備する。</p>
+  <div class="tags"><span class="tag tag-muted">no label</span></div>
+  <a class="card-link" href="https://github.com/bravokeysan/ai-dream-rag/issues/26" target="_blank" rel="noreferrer">GitHubで開く</a>
+</article>
+<article class="issue-card" data-search="25 [automation] pass issue routing results to codex for issue-based task execution github actions または補助処理で判定した routing 結果を、codex が参照できる形で渡し、 issue の種別に応じた次の作業へ進みやすくする。 " data-state="OPEN" data-category="automation">
+  <div class="card-topline">
+    <span class="issue-number">#25</span>
+    <span class="state state-open">OPEN</span>
+  </div>
+  <h2>[automation] Pass issue routing results to Codex for issue-based task execution</h2>
+  <p>GitHub Actions または補助処理で判定した routing 結果を、Codex が参照できる形で渡し、 Issue の種別に応じた次の作業へ進みやすくする。</p>
+  <div class="tags"><span class="tag tag-muted">no label</span></div>
+  <a class="card-link" href="https://github.com/bravokeysan/ai-dream-rag/issues/25" target="_blank" rel="noreferrer">GitHubで開く</a>
+</article>
+<article class="issue-card" data-search="24 [automation] post issue routing result back to the github issue as a comment github actions から scripts/route issue.py の判定結果を取得し、 その結果を起点となった github issue にコメントとして返せるようにする。 " data-state="OPEN" data-category="automation">
+  <div class="card-topline">
+    <span class="issue-number">#24</span>
+    <span class="state state-open">OPEN</span>
+  </div>
+  <h2>[automation] Post issue routing result back to the GitHub issue as a comment</h2>
+  <p>GitHub Actions から scripts/route issue.py の判定結果を取得し、 その結果を起点となった GitHub Issue にコメントとして返せるようにする。</p>
+  <div class="tags"><span class="tag tag-muted">no label</span></div>
+  <a class="card-link" href="https://github.com/bravokeysan/ai-dream-rag/issues/24" target="_blank" rel="noreferrer">GitHubで開く</a>
+</article>
+<article class="issue-card" data-search="23 [automation] call scripts/route_issue.py from github actions and expose the routing result github actions から scripts/route issue.py を実行し、 issue の title / labels / body をもとに、 paper intake / kb rewrite / retrieval test / prompt update / unknown のいずれかへ判定できるようにする。 " data-state="OPEN" data-category="automation">
+  <div class="card-topline">
+    <span class="issue-number">#23</span>
+    <span class="state state-open">OPEN</span>
+  </div>
+  <h2>[automation] Call scripts/route_issue.py from GitHub Actions and expose the routing result</h2>
+  <p>GitHub Actions から scripts/route issue.py を実行し、 Issue の title / labels / body をもとに、 paper intake / kb rewrite / retrieval test / prompt update / unknown のいずれかへ判定できるようにする。</p>
+  <div class="tags"><span class="tag tag-muted">no label</span></div>
+  <a class="card-link" href="https://github.com/bravokeysan/ai-dream-rag/issues/23" target="_blank" rel="noreferrer">GitHubで開く</a>
+</article>
+<article class="issue-card" data-search="22 [automation] implement an issue routing helper script for ai-dream rag workflows github issue の title / labels / body を入力として受け取り、 paper intake / kb rewrite / retrieval test / prompt update / unknown のいずれかへ判定する補助スクリプトを実装する。 " data-state="OPEN" data-category="automation">
+  <div class="card-topline">
+    <span class="issue-number">#22</span>
+    <span class="state state-open">OPEN</span>
+  </div>
+  <h2>[automation] Implement an issue routing helper script for AI-Dream RAG workflows</h2>
+  <p>GitHub Issue の title / labels / body を入力として受け取り、 paper intake / kb rewrite / retrieval test / prompt update / unknown のいずれかへ判定する補助スクリプトを実装する。</p>
+  <div class="tags"><span class="tag tag-muted">no label</span></div>
+  <a class="card-link" href="https://github.com/bravokeysan/ai-dream-rag/issues/22" target="_blank" rel="noreferrer">GitHubで開く</a>
+</article>
+<article class="issue-card" data-search="21 [automation] integrate codex with issue-based routing for ai-dream rag workflows github issue を起点に、codex が issue 内容を確認し、内容に応じて適切な処理へ分岐できるようにする。 " data-state="OPEN" data-category="automation">
+  <div class="card-topline">
+    <span class="issue-number">#21</span>
+    <span class="state state-open">OPEN</span>
+  </div>
+  <h2>[automation] Integrate Codex with issue-based routing for AI-Dream RAG workflows</h2>
+  <p>GitHub Issue を起点に、Codex が issue 内容を確認し、内容に応じて適切な処理へ分岐できるようにする。</p>
+  <div class="tags"><span class="tag tag-muted">no label</span></div>
+  <a class="card-link" href="https://github.com/bravokeysan/ai-dream-rag/issues/21" target="_blank" rel="noreferrer">GitHubで開く</a>
+</article>
+<article class="issue-card" data-search="20 [automation] connect retrieval-test workflow to the actual dify retrieval backend retrieval test 用 github actions workflow から、実際の dify / retrieval backend に接続して、スタブではなく本物の検索結果を使った評価を実行できるようにする。 " data-state="OPEN" data-category="automation">
+  <div class="card-topline">
+    <span class="issue-number">#20</span>
+    <span class="state state-open">OPEN</span>
+  </div>
+  <h2>[automation] Connect retrieval-test workflow to the actual Dify retrieval backend</h2>
+  <p>retrieval test 用 GitHub Actions workflow から、実際の Dify / retrieval backend に接続して、スタブではなく本物の検索結果を使った評価を実行できるようにする。</p>
+  <div class="tags"><span class="tag tag-muted">no label</span></div>
+  <a class="card-link" href="https://github.com/bravokeysan/ai-dream-rag/issues/20" target="_blank" rel="noreferrer">GitHubで開く</a>
+</article>
+<article class="issue-card" data-search="19 [automation] create a pull request automatically after retrieval-test workflow completes retrieval test 用 github actions workflow が完了したら、生成された評価結果を新規ブランチへ commit し、pull request を自動作成できるようにする。 " data-state="OPEN" data-category="automation">
+  <div class="card-topline">
+    <span class="issue-number">#19</span>
+    <span class="state state-open">OPEN</span>
+  </div>
+  <h2>[automation] Create a pull request automatically after retrieval-test workflow completes</h2>
+  <p>retrieval test 用 GitHub Actions workflow が完了したら、生成された評価結果を新規ブランチへ commit し、Pull Request を自動作成できるようにする。</p>
+  <div class="tags"><span class="tag tag-muted">no label</span></div>
+  <a class="card-link" href="https://github.com/bravokeysan/ai-dream-rag/issues/19" target="_blank" rel="noreferrer">GitHubで開く</a>
+</article>
+<article class="issue-card" data-search="18 [automation] post retrieval-test workflow result back to the github issue as a comment retrieval test 用 github actions workflow の実行結果を、起点となった github issue にコメントとして返せるようにする。 " data-state="OPEN" data-category="automation">
+  <div class="card-topline">
+    <span class="issue-number">#18</span>
+    <span class="state state-open">OPEN</span>
+  </div>
+  <h2>[automation] Post retrieval-test workflow result back to the GitHub issue as a comment</h2>
+  <p>retrieval test 用 GitHub Actions workflow の実行結果を、起点となった GitHub Issue にコメントとして返せるようにする。</p>
+  <div class="tags"><span class="tag tag-muted">no label</span></div>
+  <a class="card-link" href="https://github.com/bravokeysan/ai-dream-rag/issues/18" target="_blank" rel="noreferrer">GitHubで開く</a>
+</article>
+<article class="issue-card" data-search="17 [automation] run retrieval evaluation script from retrieval-test github actions workflow retrieval test 用 github actions workflow から、検索評価スクリプトを実行できるようにする。 " data-state="OPEN" data-category="automation">
+  <div class="card-topline">
+    <span class="issue-number">#17</span>
+    <span class="state state-open">OPEN</span>
+  </div>
+  <h2>[automation] Run retrieval evaluation script from retrieval-test GitHub Actions workflow</h2>
+  <p>retrieval test 用 GitHub Actions workflow から、検索評価スクリプトを実行できるようにする。</p>
+  <div class="tags"><span class="tag tag-muted">no label</span></div>
+  <a class="card-link" href="https://github.com/bravokeysan/ai-dream-rag/issues/17" target="_blank" rel="noreferrer">GitHubで開く</a>
+</article>
+<article class="issue-card" data-search="16 [automation] implement github actions workflow for retrieval-test issue routing retrieval test ラベル付き issue を起点に、 検索テスト用の github actions workflow を作成する。 " data-state="OPEN" data-category="automation">
+  <div class="card-topline">
+    <span class="issue-number">#16</span>
+    <span class="state state-open">OPEN</span>
+  </div>
+  <h2>[automation] Implement GitHub Actions workflow for retrieval-test issue routing</h2>
+  <p>retrieval test ラベル付き Issue を起点に、 検索テスト用の GitHub Actions workflow を作成する。</p>
+  <div class="tags"><span class="tag tag-muted">no label</span></div>
+  <a class="card-link" href="https://github.com/bravokeysan/ai-dream-rag/issues/16" target="_blank" rel="noreferrer">GitHubで開く</a>
+</article>
+<article class="issue-card" data-search="15 [automation] create a pull request automatically after kb-rewrite workflow completes kb rewrite 用 github actions workflow が完了したら、 修正された markdown カードの変更を新規ブランチへ commit し、 pull request を自動作成できるようにする。 " data-state="OPEN" data-category="automation">
+  <div class="card-topline">
+    <span class="issue-number">#15</span>
+    <span class="state state-open">OPEN</span>
+  </div>
+  <h2>[automation] Create a pull request automatically after kb-rewrite workflow completes</h2>
+  <p>kb rewrite 用 GitHub Actions workflow が完了したら、 修正された Markdown カードの変更を新規ブランチへ commit し、 Pull Request を自動作成できるようにする。</p>
+  <div class="tags"><span class="tag tag-muted">no label</span></div>
+  <a class="card-link" href="https://github.com/bravokeysan/ai-dream-rag/issues/15" target="_blank" rel="noreferrer">GitHubで開く</a>
+</article>
+<article class="issue-card" data-search="14 [automation] post kb-rewrite workflow result back to the github issue as a comment kb rewrite 用 github actions workflow の実行結果を、 起点となった github issue にコメントとして返せるようにする。 " data-state="OPEN" data-category="automation">
+  <div class="card-topline">
+    <span class="issue-number">#14</span>
+    <span class="state state-open">OPEN</span>
+  </div>
+  <h2>[automation] Post kb-rewrite workflow result back to the GitHub issue as a comment</h2>
+  <p>kb rewrite 用 GitHub Actions workflow の実行結果を、 起点となった GitHub Issue にコメントとして返せるようにする。</p>
+  <div class="tags"><span class="tag tag-muted">no label</span></div>
+  <a class="card-link" href="https://github.com/bravokeysan/ai-dream-rag/issues/14" target="_blank" rel="noreferrer">GitHubで開く</a>
+</article>
+<article class="issue-card" data-search="13 [automation] run kb rewrite processing from kb-rewrite github actions workflow kb rewrite 用 github actions workflow から、 既存の ai dream markdown カードの再構成・微修正処理を実行できるようにする。 " data-state="OPEN" data-category="automation">
+  <div class="card-topline">
+    <span class="issue-number">#13</span>
+    <span class="state state-open">OPEN</span>
+  </div>
+  <h2>[automation] Run KB rewrite processing from kb-rewrite GitHub Actions workflow</h2>
+  <p>kb rewrite 用 GitHub Actions workflow から、 既存の AI Dream Markdown カードの再構成・微修正処理を実行できるようにする。</p>
+  <div class="tags"><span class="tag tag-muted">no label</span></div>
+  <a class="card-link" href="https://github.com/bravokeysan/ai-dream-rag/issues/13" target="_blank" rel="noreferrer">GitHubで開く</a>
+</article>
+<article class="issue-card" data-search="12 [automation] implement github actions workflow for kb-rewrite issue routing kb rewrite ラベル付き issue を起点に、 既存の ai dream markdown カードを再構成・微修正するための github actions workflow を作成する。 " data-state="OPEN" data-category="automation">
+  <div class="card-topline">
+    <span class="issue-number">#12</span>
+    <span class="state state-open">OPEN</span>
+  </div>
+  <h2>[automation] Implement GitHub Actions workflow for kb-rewrite issue routing</h2>
+  <p>kb rewrite ラベル付き Issue を起点に、 既存の AI Dream Markdown カードを再構成・微修正するための GitHub Actions workflow を作成する。</p>
+  <div class="tags"><span class="tag tag-muted">no label</span></div>
+  <a class="card-link" href="https://github.com/bravokeysan/ai-dream-rag/issues/12" target="_blank" rel="noreferrer">GitHubで開く</a>
+</article>
+<article class="issue-card" data-search="11 [automation] create a pull request automatically after paper-intake workflow completes paper intake 用 github actions workflow が完了したら、 生成されたファイル変更を新規ブランチへ commit し、 pull request を自動作成できるようにする。 " data-state="OPEN" data-category="automation">
+  <div class="card-topline">
+    <span class="issue-number">#11</span>
+    <span class="state state-open">OPEN</span>
+  </div>
+  <h2>[automation] Create a pull request automatically after paper-intake workflow completes</h2>
+  <p>paper intake 用 GitHub Actions workflow が完了したら、 生成されたファイル変更を新規ブランチへ commit し、 Pull Request を自動作成できるようにする。</p>
+  <div class="tags"><span class="tag tag-muted">no label</span></div>
+  <a class="card-link" href="https://github.com/bravokeysan/ai-dream-rag/issues/11" target="_blank" rel="noreferrer">GitHubで開く</a>
+</article>
+<article class="issue-card" data-search="10 [automation] post paper-intake workflow result back to the github issue as a comment paper intake 用 github actions workflow の実行結果を、起点となった github issue にコメントとして返せるようにする。 " data-state="OPEN" data-category="automation">
+  <div class="card-topline">
+    <span class="issue-number">#10</span>
+    <span class="state state-open">OPEN</span>
+  </div>
+  <h2>[automation] Post paper-intake workflow result back to the GitHub issue as a comment</h2>
+  <p>paper intake 用 GitHub Actions workflow の実行結果を、起点となった GitHub Issue にコメントとして返せるようにする。</p>
+  <div class="tags"><span class="tag tag-muted">no label</span></div>
+  <a class="card-link" href="https://github.com/bravokeysan/ai-dream-rag/issues/10" target="_blank" rel="noreferrer">GitHubで開く</a>
+</article>
+<article class="issue-card" data-search="9 [automation] run scripts/update_registry.py from paper-intake github actions workflow paper intake 用 github actions workflow から scripts/update registry.py を実行し、生成済み markdown カードを knowledgebase の管理台帳へ自動反映できるようにする。 " data-state="OPEN" data-category="automation">
+  <div class="card-topline">
+    <span class="issue-number">#9</span>
+    <span class="state state-open">OPEN</span>
+  </div>
+  <h2>[automation] Run scripts/update_registry.py from paper-intake GitHub Actions workflow</h2>
+  <p>paper intake 用 GitHub Actions workflow から scripts/update registry.py を実行し、生成済み Markdown カードを KnowledgeBase の管理台帳へ自動反映できるようにする。</p>
+  <div class="tags"><span class="tag tag-muted">no label</span></div>
+  <a class="card-link" href="https://github.com/bravokeysan/ai-dream-rag/issues/9" target="_blank" rel="noreferrer">GitHubで開く</a>
+</article>
+<article class="issue-card" data-search="8 [automation] run scripts/generate_card.py from paper-intake github actions workflow paper intake 用 github actions workflow から scripts/generate card.py を実行し、normalize paper.py が生成した normalized json から ai dream 用 markdown カードを自動生成できるようにする。 " data-state="OPEN" data-category="automation">
+  <div class="card-topline">
+    <span class="issue-number">#8</span>
+    <span class="state state-open">OPEN</span>
+  </div>
+  <h2>[automation] Run scripts/generate_card.py from paper-intake GitHub Actions workflow</h2>
+  <p>paper intake 用 GitHub Actions workflow から scripts/generate card.py を実行し、normalize paper.py が生成した normalized JSON から AI Dream 用 Markdown カードを自動生成できるようにする。</p>
+  <div class="tags"><span class="tag tag-muted">no label</span></div>
+  <a class="card-link" href="https://github.com/bravokeysan/ai-dream-rag/issues/8" target="_blank" rel="noreferrer">GitHubで開く</a>
+</article>
+<article class="issue-card" data-search="7 [automation] run scripts/normalize_paper.py from paper-intake github actions workflow paper intake 用 github actions workflow から scripts/normalize paper.py を実行し、fetch paper.py が取得した文献 json を ai dream 用の共通スキーマへ正規化できるようにする。 " data-state="OPEN" data-category="automation">
+  <div class="card-topline">
+    <span class="issue-number">#7</span>
+    <span class="state state-open">OPEN</span>
+  </div>
+  <h2>[automation] Run scripts/normalize_paper.py from paper-intake GitHub Actions workflow</h2>
+  <p>paper intake 用 GitHub Actions workflow から scripts/normalize paper.py を実行し、fetch paper.py が取得した文献 JSON を AI Dream 用の共通スキーマへ正規化できるようにする。</p>
+  <div class="tags"><span class="tag tag-muted">no label</span></div>
+  <a class="card-link" href="https://github.com/bravokeysan/ai-dream-rag/issues/7" target="_blank" rel="noreferrer">GitHubで開く</a>
+</article>
+<article class="issue-card" data-search="6 [automation] run scripts/fetch_paper.py from paper-intake github actions workflow paper intake 用 github actions workflow から scripts/fetch paper.py を実行し、issue に書かれた pubmed url または pmid を使って文献メタデータ取得まで自動で進められるようにする。 " data-state="OPEN" data-category="automation">
+  <div class="card-topline">
+    <span class="issue-number">#6</span>
+    <span class="state state-open">OPEN</span>
+  </div>
+  <h2>[automation] Run scripts/fetch_paper.py from paper-intake GitHub Actions workflow</h2>
+  <p>paper intake 用 GitHub Actions workflow から scripts/fetch paper.py を実行し、Issue に書かれた PubMed URL または PMID を使って文献メタデータ取得まで自動で進められるようにする。</p>
+  <div class="tags"><span class="tag tag-muted">no label</span></div>
+  <a class="card-link" href="https://github.com/bravokeysan/ai-dream-rag/issues/6" target="_blank" rel="noreferrer">GitHubで開く</a>
+</article>
+<article class="issue-card" data-search="5 [automation] implement github actions workflow for paper-intake issue routing github issue を起点に、paper intake 系の処理を自動実行できる github actions workflow を作成する。 " data-state="OPEN" data-category="automation">
+  <div class="card-topline">
+    <span class="issue-number">#5</span>
+    <span class="state state-open">OPEN</span>
+  </div>
+  <h2>[automation] Implement GitHub Actions workflow for paper-intake issue routing</h2>
+  <p>GitHub Issue を起点に、paper intake 系の処理を自動実行できる GitHub Actions workflow を作成する。</p>
+  <div class="tags"><span class="tag tag-muted">no label</span></div>
+  <a class="card-link" href="https://github.com/bravokeysan/ai-dream-rag/issues/5" target="_blank" rel="noreferrer">GitHubで開く</a>
+</article>
+<article class="issue-card" data-search="4 [paper-intake] implement scripts/update_registry.py for knowledgebase registry updates scripts/update registry.py を実装し、生成済みの ai dream 用 markdown カードまたは normalized json をもとに、knowledgebase の管理台帳（csv を主、必要なら xlsx も補助）を更新できるようにする。 " data-state="OPEN" data-category="paper-intake">
+  <div class="card-topline">
+    <span class="issue-number">#4</span>
+    <span class="state state-open">OPEN</span>
+  </div>
+  <h2>[paper-intake] Implement scripts/update_registry.py for KnowledgeBase registry updates</h2>
+  <p>scripts/update registry.py を実装し、生成済みの AI Dream 用 Markdown カードまたは normalized JSON をもとに、KnowledgeBase の管理台帳（CSV を主、必要なら XLSX も補助）を更新できるようにする。</p>
+  <div class="tags"><span class="tag tag-muted">no label</span></div>
+  <a class="card-link" href="https://github.com/bravokeysan/ai-dream-rag/issues/4" target="_blank" rel="noreferrer">GitHubで開く</a>
+</article>
+<article class="issue-card" data-search="3 [paper-intake] implement scripts/generate_card.py for ai-dream markdown card generation scripts/generate card.py を実装し、scripts/normalize paper.py が出力した normalized json から、ai dream 用 markdown カードを生成できるようにする。 " data-state="OPEN" data-category="paper-intake">
+  <div class="card-topline">
+    <span class="issue-number">#3</span>
+    <span class="state state-open">OPEN</span>
+  </div>
+  <h2>[paper-intake] Implement scripts/generate_card.py for AI-Dream markdown card generation</h2>
+  <p>scripts/generate card.py を実装し、scripts/normalize paper.py が出力した normalized JSON から、AI Dream 用 Markdown カードを生成できるようにする。</p>
+  <div class="tags"><span class="tag tag-muted">no label</span></div>
+  <a class="card-link" href="https://github.com/bravokeysan/ai-dream-rag/issues/3" target="_blank" rel="noreferrer">GitHubで開く</a>
+</article>
+<article class="issue-card" data-search="2 [paper-intake] implement scripts/normalize_paper.py for ai-dream paper schema scripts/normalize paper.py を実装し、scripts/fetch paper.py が保存した文献 json を、ai dream で後続処理しやすい共通スキーマへ正規化できるようにする。 " data-state="OPEN" data-category="paper-intake">
+  <div class="card-topline">
+    <span class="issue-number">#2</span>
+    <span class="state state-open">OPEN</span>
+  </div>
+  <h2>[paper-intake] Implement scripts/normalize_paper.py for AI-Dream paper schema</h2>
+  <p>scripts/normalize paper.py を実装し、scripts/fetch paper.py が保存した文献 JSON を、AI Dream で後続処理しやすい共通スキーマへ正規化できるようにする。</p>
+  <div class="tags"><span class="tag tag-muted">no label</span></div>
+  <a class="card-link" href="https://github.com/bravokeysan/ai-dream-rag/issues/2" target="_blank" rel="noreferrer">GitHubで開く</a>
+</article>
+<article class="issue-card" data-search="1 [paper-intake] implement scripts/fetch_paper.py for pubmed metadata retrieval scripts/fetch paper.py を実装し、pubmed url または pmid を入力として受け取り、文献の基本メタデータを取得して json として保存できるようにする。 " data-state="OPEN" data-category="paper-intake">
+  <div class="card-topline">
+    <span class="issue-number">#1</span>
+    <span class="state state-open">OPEN</span>
+  </div>
+  <h2>[paper-intake] Implement scripts/fetch_paper.py for PubMed metadata retrieval</h2>
+  <p>scripts/fetch paper.py を実装し、PubMed URL または PMID を入力として受け取り、文献の基本メタデータを取得して JSON として保存できるようにする。</p>
+  <div class="tags"><span class="tag tag-muted">no label</span></div>
+  <a class="card-link" href="https://github.com/bravokeysan/ai-dream-rag/issues/1" target="_blank" rel="noreferrer">GitHubで開く</a>
+</article>
+    </section>
+    <p id="empty" class="empty">条件に合う Issue がありません。</p>
+  </main>
+
+  <script>
+    const search = document.querySelector('#search');
+    const category = document.querySelector('#category');
+    const cards = [...document.querySelectorAll('.issue-card')];
+    const count = document.querySelector('#count');
+    const empty = document.querySelector('#empty');
+
+    function applyFilters() {
+      const query = search.value.trim().toLowerCase();
+      const selected = category.value;
+      let visible = 0;
+
+      cards.forEach((card) => {
+        const matchesQuery = card.dataset.search.includes(query);
+        const matchesCategory = selected === 'all' || card.dataset.category === selected;
+        const show = matchesQuery && matchesCategory;
+        card.style.display = show ? '' : 'none';
+        if (show) visible += 1;
+      });
+
+      count.textContent = `${visible}件表示 / 全53件`;
+      empty.style.display = visible ? 'none' : 'block';
+    }
+
+    search.addEventListener('input', applyFilters);
+    category.addEventListener('change', applyFilters);
+    applyFilters();
+  </script>
+</body>
+</html>
