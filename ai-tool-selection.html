@@ -3,82 +3,96 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>生成AIを活用した業務システム開発支援ツール比較</title>
+  <title>生成AIツールの業務システム開発支援での役割比較 - 2026-05-02</title>
   <style>
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
+    html { -webkit-text-size-adjust: 100%; }
+
     body {
-      font-family: "Helvetica Neue", Arial, "Hiragino Kaku Gothic ProN", "Hiragino Sans", Meiryo, sans-serif;
-      font-size: 15px;
-      line-height: 1.7;
+      font-family: -apple-system, BlinkMacSystemFont, "Helvetica Neue",
+                   "Hiragino Kaku Gothic ProN", "Hiragino Sans", "Noto Sans JP",
+                   Meiryo, sans-serif;
+      font-size: 16px;
+      line-height: 1.85;
       color: #1a1a2e;
       background: #f5f7fa;
+      word-wrap: break-word;
+      overflow-wrap: break-word;
     }
 
-    a { color: #4a6cf7; text-decoration: none; }
-    a:hover { text-decoration: underline; }
+    a { color: #4a6cf7; text-decoration: underline; }
+    a:hover { text-decoration: none; }
 
     /* ── Layout ── */
-    .container { max-width: 960px; margin: 0 auto; padding: 0 16px; }
+    .container { max-width: 820px; margin: 0 auto; padding: 0 16px; }
 
     header {
       background: linear-gradient(135deg, #1a1a2e 0%, #16213e 60%, #0f3460 100%);
       color: #fff;
-      padding: 48px 0 40px;
+      padding: 32px 0 28px;
+      margin-bottom: 24px;
     }
-    header .container { display: flex; flex-direction: column; gap: 8px; }
-    header h1 { font-size: 1.6rem; font-weight: 700; }
-    header .subtitle { font-size: 0.95rem; opacity: 0.75; }
-    header .meta { font-size: 0.85rem; opacity: 0.6; margin-top: 4px; }
+    header h1 {
+      font-size: 1.35rem;
+      font-weight: 700;
+      line-height: 1.5;
+      margin-bottom: 6px;
+    }
+    header .meta {
+      font-size: 0.85rem;
+      opacity: 0.7;
+    }
 
-    main { padding: 40px 0 64px; }
+    main { padding-bottom: 56px; }
 
-    section { margin-bottom: 48px; }
-    section h2 {
+    /* ── Headings ── */
+    h2 {
       font-size: 1.2rem;
       font-weight: 700;
       color: #0f3460;
       border-left: 4px solid #4a6cf7;
       padding-left: 12px;
-      margin-bottom: 20px;
+      margin: 36px 0 18px;
+      line-height: 1.4;
     }
-
-    /* ── Card ── */
-    .card {
-      background: #fff;
-      border-radius: 10px;
-      box-shadow: 0 2px 8px rgba(0,0,0,.07);
-      padding: 24px;
-      margin-bottom: 16px;
-    }
-
-    /* ── Summary ── */
-    .summary-oneline {
-      font-size: 1rem;
-      font-weight: 600;
+    h3 {
+      font-size: 1.05rem;
+      font-weight: 700;
       color: #0f3460;
-      margin-bottom: 12px;
-    }
-    .summary-points { list-style: none; padding: 0; }
-    .summary-points li {
-      padding: 6px 0 6px 20px;
-      position: relative;
-      border-bottom: 1px solid #f0f0f5;
-    }
-    .summary-points li:last-child { border-bottom: none; }
-    .summary-points li::before {
-      content: "▸";
-      position: absolute;
-      left: 0;
-      color: #4a6cf7;
+      margin: 24px 0 12px;
+      line-height: 1.5;
     }
 
-    /* ── Comparison Table ── */
-    .table-wrap { overflow-x: auto; }
+    /* ── Body Text ── */
+    p {
+      margin-bottom: 16px;
+      font-size: 1rem;
+    }
+    strong { color: #0f3460; font-weight: 700; }
+
+    /* ── Lists ── */
+    ul, ol { margin: 12px 0 16px 24px; }
+    li { margin-bottom: 8px; line-height: 1.7; }
+
+    /* ── Tables ── */
+    .table-wrap {
+      overflow-x: auto;
+      margin: 16px 0;
+      -webkit-overflow-scrolling: touch;
+      border: 1px solid #e0e3ea;
+      border-radius: 8px;
+      background: #fff;
+    }
+    .table-wrap::after {
+      content: "";
+      display: block;
+      pointer-events: none;
+    }
     table {
       width: 100%;
       border-collapse: collapse;
-      font-size: 0.88rem;
+      font-size: 0.85rem;
       min-width: 560px;
     }
     th {
@@ -87,130 +101,114 @@
       padding: 10px 12px;
       text-align: left;
       font-weight: 600;
+      white-space: nowrap;
     }
     td {
-      padding: 9px 12px;
+      padding: 10px 12px;
       border-bottom: 1px solid #eef0f5;
       vertical-align: top;
+      line-height: 1.6;
     }
     tr:nth-child(even) td { background: #f8f9fd; }
     tr:last-child td { border-bottom: none; }
+    td.center { text-align: center; }
 
-    .rating-chip {
+    .grade {
       display: inline-block;
-      padding: 2px 8px;
-      border-radius: 999px;
-      font-size: 0.78rem;
-      font-weight: 600;
-      white-space: nowrap;
-    }
-    .r-very-high { background: #e8f5e9; color: #2e7d32; }
-    .r-high      { background: #e3f2fd; color: #1565c0; }
-    .r-mid-high  { background: #fff8e1; color: #f57f17; }
-    .r-mid       { background: #fce4ec; color: #c62828; }
-    .r-low       { background: #f3e5f5; color: #6a1b9a; }
-
-    /* ── Tool Detail ── */
-    .tool-header {
-      display: flex;
-      align-items: baseline;
-      gap: 12px;
-      margin-bottom: 4px;
-      flex-wrap: wrap;
-    }
-    .tool-header h3 { font-size: 1.1rem; color: #0f3460; }
-    .tool-position {
-      font-size: 0.8rem;
-      background: #e8eaf6;
-      color: #3949ab;
-      padding: 2px 10px;
-      border-radius: 999px;
-      font-weight: 600;
-    }
-    .tool-oneline { color: #555; font-size: 0.9rem; margin-bottom: 16px; }
-
-    .two-col { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; margin-bottom: 16px; }
-    @media (max-width: 600px) { .two-col { grid-template-columns: 1fr; } }
-
-    .sub-section h4 {
-      font-size: 0.82rem;
+      padding: 1px 8px;
+      border-radius: 4px;
       font-weight: 700;
-      text-transform: uppercase;
-      letter-spacing: .04em;
-      color: #888;
-      margin-bottom: 8px;
+      font-size: 0.85em;
+      min-width: 28px;
+      text-align: center;
     }
-    .tag-list { display: flex; flex-wrap: wrap; gap: 6px; }
-    .tag {
-      font-size: 0.8rem;
-      padding: 3px 10px;
-      border-radius: 999px;
-      background: #f0f2ff;
-      color: #3949ab;
-      border: 1px solid #c5cae9;
-    }
-    .tag.weak { background: #fff3e0; color: #e65100; border-color: #ffcc80; }
+    .g-A-plus { background: #1b5e20; color: #fff; }
+    .g-A      { background: #2e7d32; color: #fff; }
+    .g-A-minus{ background: #43a047; color: #fff; }
+    .g-B-plus { background: #1565c0; color: #fff; }
+    .g-B      { background: #1976d2; color: #fff; }
+    .g-B-minus{ background: #42a5f5; color: #fff; }
+    .g-C      { background: #ef6c00; color: #fff; }
 
-    /* ── Stack Fit ── */
-    .stack-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(140px, 1fr)); gap: 10px; }
-    .stack-item {
-      background: #f8f9fd;
-      border: 1px solid #e8eaf6;
-      border-radius: 8px;
-      padding: 10px 12px;
-    }
-    .stack-item .stack-name { font-weight: 700; font-size: 0.82rem; color: #0f3460; margin-bottom: 4px; }
-    .stack-item .stack-reason { font-size: 0.78rem; color: #666; line-height: 1.5; }
-
-    /* ── Pricing ── */
-    .pricing-summary { font-size: 0.9rem; color: #444; margin-bottom: 12px; }
-    .plan-list { display: flex; flex-wrap: wrap; gap: 8px; margin-bottom: 12px; }
-    .plan-chip {
-      background: #e8f5e9;
-      border: 1px solid #a5d6a7;
-      border-radius: 6px;
-      padding: 4px 12px;
-      font-size: 0.82rem;
-    }
-    .plan-chip strong { color: #2e7d32; }
-    .cost-notes { font-size: 0.82rem; color: #666; }
-    .cost-notes li { padding: 2px 0 2px 16px; position: relative; }
-    .cost-notes li::before { content: "※"; position: absolute; left: 0; }
-    .url-list { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 12px; }
-    .url-btn {
-      font-size: 0.82rem;
-      padding: 4px 12px;
-      border: 1px solid #4a6cf7;
-      border-radius: 6px;
-      color: #4a6cf7;
-    }
-    .url-btn:hover { background: #4a6cf7; color: #fff; text-decoration: none; }
-
-    /* ── Recommended Config ── */
-    .config-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; }
-    @media (max-width: 600px) { .config-grid { grid-template-columns: 1fr; } }
-
-    .config-card { background: #fff; border-radius: 10px; box-shadow: 0 2px 8px rgba(0,0,0,.07); padding: 20px; }
-    .config-card h3 { font-size: 1rem; color: #0f3460; margin-bottom: 8px; }
-    .config-card .config-summary { font-size: 0.88rem; color: #555; margin-bottom: 14px; }
-    .config-row { margin-bottom: 10px; }
-    .config-row .role {
+    /* ── Scroll Hint ── */
+    .scroll-hint {
       font-size: 0.75rem;
-      font-weight: 700;
-      text-transform: uppercase;
-      letter-spacing: .05em;
       color: #888;
-      margin-bottom: 2px;
+      text-align: right;
+      margin-top: 4px;
+      margin-bottom: 12px;
     }
-    .config-row .tool-name { font-weight: 700; color: #1a1a2e; font-size: 0.9rem; }
-    .config-row .reason { font-size: 0.82rem; color: #666; }
 
+    /* ── Code Block ── */
+    pre {
+      background: #1a1a2e;
+      color: #e8eaf6;
+      padding: 16px;
+      border-radius: 8px;
+      overflow-x: auto;
+      font-size: 0.85rem;
+      line-height: 1.6;
+      font-family: "SF Mono", Menlo, Monaco, Consolas, monospace;
+      margin: 16px 0;
+      -webkit-overflow-scrolling: touch;
+    }
+
+    /* ── Sub Section Header (tool_id) ── */
+    .tool-section-header {
+      background: #e8eaf6;
+      color: #283593;
+      padding: 10px 14px;
+      border-radius: 6px;
+      font-weight: 700;
+      font-size: 1rem;
+      margin: 20px 0 8px;
+      font-family: "SF Mono", Menlo, Monaco, Consolas, monospace;
+    }
+
+    /* ── Quick Nav ── */
+    .toc {
+      background: #fff;
+      border-radius: 8px;
+      padding: 14px 16px 14px 32px;
+      margin-bottom: 24px;
+      border: 1px solid #e0e3ea;
+    }
+    .toc-label {
+      font-size: 0.8rem;
+      font-weight: 700;
+      color: #888;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      margin-bottom: 6px;
+      margin-left: -16px;
+    }
+    .toc ul { margin: 0; padding-left: 4px; }
+    .toc li { margin-bottom: 2px; font-size: 0.9rem; }
+
+    /* ── Footer ── */
     footer {
       background: #1a1a2e;
-      color: rgba(255,255,255,.5);
+      color: rgba(255,255,255,.55);
       text-align: center;
-      padding: 20px 0;
-      font-size: 0.8rem;
+      padding: 18px 16px;
+      font-size: 0.78rem;
+      line-height: 1.6;
+    }
+    footer a { color: #aab8ff; }
+
+    /* ── Mobile Tweaks ── */
+    @media (max-width: 600px) {
+      body { font-size: 15px; line-height: 1.8; }
+      .container { padding: 0 14px; }
+      header { padding: 24px 0 20px; }
+      header h1 { font-size: 1.15rem; }
+      h2 { font-size: 1.1rem; margin: 28px 0 14px; }
+      h3 { font-size: 1rem; }
+      p { font-size: 0.95rem; }
+      table { font-size: 0.8rem; }
+      th, td { padding: 8px 10px; }
+      pre { font-size: 0.78rem; padding: 12px; }
+      ul, ol { margin-left: 20px; }
     }
   </style>
 </head>
@@ -218,789 +216,439 @@
 
 <header>
   <div class="container">
-    <h1>生成AIを活用した業務システム開発支援ツール比較</h1>
-    <div class="subtitle">GitHub Issues × Coding Agent 比較</div>
-    <div class="meta">最終更新: 2026-04-26　／　情報確認日: 2026-04-26</div>
+    <h1>生成AIツールの業務システム開発支援での役割比較</h1>
+    <div class="meta">調査日: 2026-05-02　／　Deep Research レポート</div>
   </div>
 </header>
 
 <main>
   <div class="container">
 
-    
-    <section>
-      <h2>エグゼクティブサマリ</h2>
-      <div class="card">
-        <div class="summary-oneline">GitHub Issues起点の自走実装はCopilot、仕様整理と既存リポジトリ理解はClaude Code、深いローカル実装とCI品質ゲートはCodex。</div>
-        <ul class="summary-points">
-          
-          <li>Issue→PRの自走を主目的にするならGitHub Copilot / cloud agentが最も自然。</li>
-          
-          <li>曖昧なIssueの仕様整理、影響範囲調査、設計レビューはClaude Codeが強い。</li>
-          
-          <li>ローカルでの深い実装、横断リファクタ、テスト増強、CI品質ゲートはOpenAI Codexが向く。</li>
-          
-          <li>料金・提供条件は変わりやすいため、資料更新時には必ず公式URLとchecked_atを更新する。</li>
-          
-        </ul>
-      </div>
-    </section>
+    <nav class="toc">
+      <div class="toc-label">目次</div>
+      <ul>
+        <li><a href="#summary">エグゼクティブサマリ</a></li>
+        <li><a href="#premises">調査前提</a></li>
+        <li><a href="#compare">総合比較</a></li>
+        <li><a href="#pricing">料金と導入しやすさ</a></li>
+        <li><a href="#roles">役割別推奨</a></li>
+        <li><a href="#flow">推奨フロー図</a></li>
+        <li><a href="#yaml">YAML変換しやすいレコード一覧</a></li>
+        <li><a href="#constraints">制約と確認ポイント</a></li>
+      </ul>
+    </nav>
 
-    
-    <section>
-      <h2>全体比較表</h2>
-      <div class="card">
-        <div class="table-wrap">
-          <table>
-            <thead>
-              <tr>
-                <th>評価軸</th>
-                
-                <th>OpenAI Codex</th>
-                
-                <th>Claude Code</th>
-                
-                <th>GitHub Copilot / cloud agent</th>
-                
-              </tr>
-            </thead>
-            <tbody>
-              
-              <tr>
-                <td><strong>GitHub Issues起点の自走性</strong><br><span style="font-size:.8rem;color:#888">Issueを元に、計画・実装・テスト・PR作成まで進めやすいか。</span></td>
-                
-                
-                <td>
-                  <span class="rating-chip r-mid">中</span>
-                  
-                </td>
-                
-                
-                <td>
-                  <span class="rating-chip r-high">高</span>
-                  
-                </td>
-                
-                
-                <td>
-                  <span class="rating-chip r-very-high">非常に高い</span>
-                  
-                </td>
-                
-              </tr>
-              
-              <tr>
-                <td><strong>仕様整理</strong><br><span style="font-size:.8rem;color:#888">曖昧な要求を整理し、設計・実装方針に落とし込めるか。</span></td>
-                
-                
-                <td>
-                  <span class="rating-chip r-high">高</span>
-                  
-                </td>
-                
-                
-                <td>
-                  <span class="rating-chip r-very-high">非常に高い</span>
-                  
-                </td>
-                
-                
-                <td>
-                  <span class="rating-chip r-mid-high">中〜高</span>
-                  
-                </td>
-                
-              </tr>
-              
-              <tr>
-                <td><strong>既存リポジトリ理解</strong><br><span style="font-size:.8rem;color:#888">既存コード、ディレクトリ構成、規約、依存関係を把握できるか。</span></td>
-                
-                
-                <td>
-                  <span class="rating-chip r-high">高</span>
-                  
-                </td>
-                
-                
-                <td>
-                  <span class="rating-chip r-very-high">非常に高い</span>
-                  
-                </td>
-                
-                
-                <td>
-                  <span class="rating-chip r-high">高</span>
-                  
-                </td>
-                
-              </tr>
-              
-              <tr>
-                <td><strong>Flutter適性</strong><br><span style="font-size:.8rem;color:#888">Flutter / Dart の実装、修正、テスト、画面変更に向いているか。</span></td>
-                
-                
-                <td>
-                  <span class="rating-chip r-mid-high">中〜高</span>
-                  
-                </td>
-                
-                
-                <td>
-                  <span class="rating-chip r-high">高</span>
-                  
-                </td>
-                
-                
-                <td>
-                  <span class="rating-chip r-mid">中</span>
-                  
-                </td>
-                
-              </tr>
-              
-              <tr>
-                <td><strong>FastAPI / PostgreSQL / nginx適性</strong><br><span style="font-size:.8rem;color:#888">API、DB、migration、nginx設定を含むバックエンド開発に向いているか。</span></td>
-                
-                
-                <td>
-                  <span class="rating-chip r-high">高</span>
-                  
-                </td>
-                
-                
-                <td>
-                  <span class="rating-chip r-high">高</span>
-                  
-                </td>
-                
-                
-                <td>
-                  <span class="rating-chip r-high">高</span>
-                  
-                </td>
-                
-              </tr>
-              
-              <tr>
-                <td><strong>PRレビュー適性</strong><br><span style="font-size:.8rem;color:#888">Pull Requestの差分確認、レビューコメント、品質チェックに向いているか。</span></td>
-                
-                
-                <td>
-                  <span class="rating-chip r-mid-high">中〜高</span>
-                  
-                </td>
-                
-                
-                <td>
-                  <span class="rating-chip r-very-high">非常に高い</span>
-                  
-                </td>
-                
-                
-                <td>
-                  <span class="rating-chip r-high">高</span>
-                  
-                </td>
-                
-              </tr>
-              
-              <tr>
-                <td><strong>テスト作成適性</strong><br><span style="font-size:.8rem;color:#888">pytest、flutter test、CI検証などのテスト作成・実行に向いているか。</span></td>
-                
-                
-                <td>
-                  <span class="rating-chip r-high">高</span>
-                  
-                </td>
-                
-                
-                <td>
-                  <span class="rating-chip r-high">高</span>
-                  
-                </td>
-                
-                
-                <td>
-                  <span class="rating-chip r-mid-high">中〜高</span>
-                  
-                </td>
-                
-              </tr>
-              
-              <tr>
-                <td><strong>費用予測のしやすさ</strong><br><span style="font-size:.8rem;color:#888">個人・小規模事業者が月額費用や追加課金を予測しやすいか。</span></td>
-                
-                
-                <td>
-                  <span class="rating-chip r-mid">中</span>
-                  
-                </td>
-                
-                
-                <td>
-                  <span class="rating-chip r-mid-high">中〜高</span>
-                  
-                </td>
-                
-                
-                <td>
-                  <span class="rating-chip r-high">高</span>
-                  
-                </td>
-                
-              </tr>
-              
-            </tbody>
-          </table>
-        </div>
-      </div>
-    </section>
+    <h2 id="summary">エグゼクティブサマリ</h2>
+    <p>
+      本調査の前提は、<strong>Flutter + nginx + FastAPI + PostgreSQL + GitHub Issues</strong> を使う業務システム開発で、
+      <strong>Issue に仕様を書き、その Issue を起点に AI が開発支援する運用</strong>を設計することです。
+      この条件に最も素直に合う中核は、<strong>GitHub Copilot cloud agent</strong> です。
+      理由は、GitHub Copilot が <strong>Issue の作成・更新</strong>を支援し、
+      <strong>Issue を Copilot に割り当てることでリポジトリ調査、実装計画、ブランチ上のコード変更、PR 作成</strong>まで GitHub 内で進められるためです。
+      さらに <strong>Copilot cloud agent は旧称が Copilot coding agent</strong> であり、今回の比較対象にある「Copilot coding agent」は現在の cloud agent とみなして差し支えありません。
+      加えて、GitHub Copilot 自体は単一モデルではなく、公式に <strong>複数モデル対応</strong>で、利用可能モデルはプランやクライアントで変わるため、
+      今回はモデル単体の性能比較ではなく、<strong>GitHub-native な運用性能比較</strong>として扱うのが適切です。
+    </p>
+    <p>
+      次点の「重い実装エンジン」として強いのは <strong>Claude Code</strong> です。
+      Claude Code は公式に、<strong>コードベース全体の理解、複数ファイル編集、コマンド実行、PR 作成、テスト作成</strong>を日常ワークフローとして掲げており、
+      GitHub Actions では <strong>Issue/PR で <code>@claude</code> とメンションすると、機能実装やバグ修正、PR 作成</strong>まで進められます。
+      しかも JetBrains 系では <strong>Android Studio</strong> が公式サポート対象に含まれるため、Flutter チームにとって相性が良いのが大きな強みです。
+      ただし、<strong>GitHub Actions minutes</strong> と <strong>API コスト</strong>が別途問題になりうること、
+      また <code>CLAUDE.md</code> は<strong>厳密な強制設定ではなく「文脈」</strong>として扱われることは弱みです。
+    </p>
+    <p>
+      <strong>OpenAI Codex</strong> は、<strong>GitHub の Issue/PR コメントから <code>@codex</code> で cloud task を起動できること、
+      <code>AGENTS.md</code> によるプロジェクト指示、GitHub 上のコードレビュー、自動レビュー、並列 cloud task</strong> が強みです。
+      既存 repo 理解や「Issue/PR コメントから直接作業を投げる」体験はかなり強く、PR レビューも <strong>P0/P1 に集中した高シグナル型</strong>として設計されています。
+      一方で、<strong>IDE 拡張は公式には VS Code extension</strong> が中心で、Flutter を Android Studio で主に実装するチームとは相性差が出ます。
+      また、<strong>API key 利用では GitHub code review などの cloud-based features が使えない</strong>ため、Codex の真価を出すには cloud integration 前提で考えるべきです。
+    </p>
+    <p>
+      <strong>Google Antigravity</strong> は、2026年時点で公式に存在する <strong>agent-first development platform</strong> で、
+      Agent Manager、Editor、Browser、Terminal、Source Control、Rules/Workflows、MCP を備えています。
+      ローカルインストール型で、個人の Gmail アカウント向け preview として始められ、無料枠もあります。
+      つまり「エージェント主導の IDE」としては魅力的です。
+      ただし、今回の論点である <strong>GitHub Issues を assignee にして PR を自走させる GitHub-native 運用</strong>については、
+      今回確認できた公式情報では <strong>Copilot / Claude Code / Codex ほど明示的ではありません</strong>。
+      そのため、Antigravity は「比較対象には入るが、今回の運用要件では主役ではなく実験枠」と見るのが妥当です。
+    </p>
+    <p>
+      結論として、この案件では <strong>GitHub Copilot cloud agent を運用の背骨</strong>にし、
+      <strong>Claude Code か Codex を「重い実装・深い repo 理解」の補助エンジン</strong>として使い分ける構成が最も堅実です。
+      <strong>Flutter 実装を Android Studio で回す比率が高いなら Claude Code 優先</strong>、
+      <strong>GitHub 上の comment-driven delegation と PR review を強く使いたいなら Codex 優先</strong>が妥当です。
+      Antigravity は、将来の agent-first IDE を見据えた PoC 候補にはなりますが、現時点の GitHub Issues 主導運用の中核には置きにくい、というのが今回の調査結論です。
+    </p>
 
-    
-    <section>
-      <h2>ツール詳細</h2>
-      
-      <div class="card">
-        <div class="tool-header">
-          <h3>OpenAI Codex</h3>
-          <span class="tool-position">第2実装者・品質ゲート担当</span>
-        </div>
-        <div class="tool-oneline">ローカル実装、横断リファクタ、テスト増強、CIレビューに強い第2実装者。</div>
+    <h2 id="premises">調査前提</h2>
+    <p>
+      対象は、OpenAI の Codex、Anthropic の Claude Code、GitHub の GitHub Copilot / Copilot cloud agent / Copilot workflow、および Google の Antigravity です。
+      なお、<strong>「Copilot workflow」</strong>は GitHub 公式の独立 SKU 名ではなく、今回の文脈では
+      <strong>Copilot CLI を programmatic mode で使い、GitHub Actions に組み込む自動化パターン</strong>として扱っています。
+      これは GitHub 公式が <strong>"Automate with GitHub Copilot CLI"</strong> および <strong>"Automating tasks with Copilot CLI and GitHub Actions"</strong> として明示している運用に対応します。
+    </p>
+    <p>
+      評価は、<strong>公式ドキュメント・公式料金ページを最優先</strong>し、そこから導ける調査者判断を <strong>inference</strong> として分離しました。
+      とくに、<strong>Issue からの自走開発適性、仕様整理適性、既存リポジトリ理解適性、Flutter 適性、FastAPI/PostgreSQL/nginx 適性、PRレビュー適性、テスト作成適性</strong>を重視しています。
+      なお、FastAPI/PostgreSQL/nginx への適性は、ベンダーがその exact stack を公式ベンチマークしているわけではないため、
+      <strong>repo 理解、CLI/terminal 実行、テスト/レビュー、カスタム指示、GitHub 連携</strong>などの公式機能から推定した <strong>inference</strong> です。
+    </p>
 
-        <div class="two-col">
-          <div class="sub-section">
-            <h4>得意なこと</h4>
-            <div class="tag-list">
-              
-              <span class="tag">既存プロジェクト構造に合わせたコード生成</span>
-              
-              <span class="tag">未知コードベースの理解</span>
-              
-              <span class="tag">コードレビュー</span>
-              
-              <span class="tag">デバッグ</span>
-              
-              <span class="tag">テスト作成</span>
-              
-              <span class="tag">migration / setup tasks の自動化</span>
-              
-              <span class="tag">Plan modeによる実装前整理</span>
-              
-              <span class="tag">AGENTS.mdによるプロジェクト規約の共有</span>
-              
-              <span class="tag">GitHub ActionによるCI品質ゲート化</span>
-              
-            </div>
-          </div>
-          <div class="sub-section">
-            <h4>苦手なこと</h4>
-            <div class="tag-list">
-              
-              <span class="tag weak">GitHub Issueを直接担当にして自走させる導線はCopilotほど自然ではない</span>
-              
-              <span class="tag weak">曖昧なタスクでは先に計画を作らせる必要がある</span>
-              
-              <span class="tag weak">ローカル環境ではsandboxやnetwork accessの制約がある</span>
-              
-              <span class="tag weak">外部文脈は明示的に渡す運用が必要</span>
-              
-              <span class="tag weak">Business / Enterprise向けの追加クレジット型料金は費用管理がやや複雑</span>
-              
-            </div>
-          </div>
-        </div>
+    <h2 id="compare">総合比較</h2>
+    <p>以下の表の <strong>A / B / C</strong> は <strong>inference</strong> です。</p>
+    <ul>
+      <li><strong>A</strong>: この案件で強く推奨</li>
+      <li><strong>B</strong>: 有力だが主役ではない</li>
+      <li><strong>C</strong>: 補助的・限定的</li>
+    </ul>
 
-        <div class="sub-section" style="margin-bottom:16px">
-          <h4>スタック適性（Flutter / FastAPI / PostgreSQL / nginx）</h4>
-          <div class="stack-grid">
-            
-            <div class="stack-item">
-              <div class="stack-name">flutter</div>
-              <div style="margin-bottom:4px">
-                
-                <span class="rating-chip r-mid-high">中〜高</span>
-                
-              </div>
-              <div class="stack-reason">Flutter特化の公式訴求は強くないが、repo-awareな複数ファイル編集とコマンド実行により、flutter test等と組み合わせやすい。</div>
-            </div>
-            
-            <div class="stack-item">
-              <div class="stack-name">fastapi</div>
-              <div style="margin-bottom:4px">
-                
-                <span class="rating-chip r-high">高</span>
-                
-              </div>
-              <div class="stack-reason">Python API実装、テスト、デバッグ、既存構造理解と相性がよい。</div>
-            </div>
-            
-            <div class="stack-item">
-              <div class="stack-name">postgresql</div>
-              <div style="margin-bottom:4px">
-                
-                <span class="rating-chip r-high">高</span>
-                
-              </div>
-              <div class="stack-reason">migrationやテストデータ、SQL修正などの作業自動化に向く。</div>
-            </div>
-            
-            <div class="stack-item">
-              <div class="stack-name">nginx</div>
-              <div style="margin-bottom:4px">
-                
-                <span class="rating-chip r-high">高</span>
-                
-              </div>
-              <div class="stack-reason">設定ファイルの差分確認やnginx -tを含む検証フローに組み込みやすい。</div>
-            </div>
-            
-            <div class="stack-item">
-              <div class="stack-name">github_issues</div>
-              <div style="margin-bottom:4px">
-                
-                <span class="rating-chip r-mid">中</span>
-                
-              </div>
-              <div class="stack-reason">Issue内容をCLIやActionに渡して使う運用が基本。Issue直アサインの自然さではCopilotに劣る。</div>
-            </div>
-            
-            <div class="stack-item">
-              <div class="stack-name">github_actions</div>
-              <div style="margin-bottom:4px">
-                
-                <span class="rating-chip r-high">高</span>
-                
-              </div>
-              <div class="stack-reason">Codex GitHub Actionによりレビューや品質ゲートをCIに組み込める。</div>
-            </div>
-            
-          </div>
-        </div>
+    <div class="scroll-hint">← 横スクロールできます →</div>
+    <div class="table-wrap">
+      <table>
+        <thead>
+          <tr>
+            <th>ツール</th>
+            <th>最も向く役割</th>
+            <th>得意なこと</th>
+            <th>苦手なこと</th>
+            <th>Issues自走</th>
+            <th>仕様整理</th>
+            <th>repo理解</th>
+            <th>Flutter</th>
+            <th>FastAPI / PG / nginx</th>
+            <th>PRレビュー</th>
+            <th>テスト作成</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><strong>OpenAI Codex</strong></td>
+            <td>GitHub comment-driven 実装委任、PRレビュー、重い修正</td>
+            <td><code>@codex</code> で Issue/PR から cloud task、<code>AGENTS.md</code>、GitHub code review、自動レビュー、並列 cloud task。</td>
+            <td>IDE は公式に VS Code extension が中心。API key 利用では GitHub code review など cloud features が使えない。</td>
+            <td class="center"><span class="grade g-A">A</span></td>
+            <td class="center"><span class="grade g-B-plus">B+</span></td>
+            <td class="center"><span class="grade g-A">A</span></td>
+            <td class="center"><span class="grade g-B">B</span></td>
+            <td class="center"><span class="grade g-A">A</span></td>
+            <td class="center"><span class="grade g-A">A</span></td>
+            <td class="center"><span class="grade g-A-minus">A-</span></td>
+          </tr>
+          <tr>
+            <td><strong>Claude Code</strong></td>
+            <td>深い repo 理解、複雑実装、テスト作成、Android Studio 向け実装</td>
+            <td>codebase 理解、複数ファイル編集、コマンド実行、PR 作成、<code>@claude</code> による Issue/PR 対応、Android Studio 対応。</td>
+            <td>GitHub Actions minutes と API コストが別途発生しうる。<code>CLAUDE.md</code> は hard enforcement ではない。</td>
+            <td class="center"><span class="grade g-A">A</span></td>
+            <td class="center"><span class="grade g-A">A</span></td>
+            <td class="center"><span class="grade g-A-plus">A+</span></td>
+            <td class="center"><span class="grade g-A">A</span></td>
+            <td class="center"><span class="grade g-A">A</span></td>
+            <td class="center"><span class="grade g-A-minus">A-</span></td>
+            <td class="center"><span class="grade g-A-plus">A+</span></td>
+          </tr>
+          <tr>
+            <td><strong>GitHub Copilot / cloud agent / workflow</strong></td>
+            <td>GitHub-native な Issue→PR 運用の基盤</td>
+            <td>Issue 作成/更新、sub-issue、Issue 割当での自走、repo 調査、実装計画、ブランチ作成、PR 作成、code review、CLI/Actions 自動化。</td>
+            <td>Issue を割り当てた後の<strong>新しい issue コメントは反映されない</strong>。code review の custom instructions は最初の 4,000 文字しか読まない。6月1日から課金体系移行予定。</td>
+            <td class="center"><span class="grade g-A-plus">A+</span></td>
+            <td class="center"><span class="grade g-A">A</span></td>
+            <td class="center"><span class="grade g-A-minus">A-</span></td>
+            <td class="center"><span class="grade g-A">A</span></td>
+            <td class="center"><span class="grade g-A">A</span></td>
+            <td class="center"><span class="grade g-A">A</span></td>
+            <td class="center"><span class="grade g-A-minus">A-</span></td>
+          </tr>
+          <tr>
+            <td><strong>Google Antigravity</strong></td>
+            <td>agent-first IDE の PoC、実験的な自律開発ワークスペース</td>
+            <td>Agent Manager、Browser、Terminal、Source Control、Rules/Workflows、MCP、ローカルインストール、無料枠。</td>
+            <td>個人 Gmail 向け preview。今回確認した公式資料では GitHub Issues から PR を自走する GitHub-native フローが明示的でない。</td>
+            <td class="center"><span class="grade g-C">C</span></td>
+            <td class="center"><span class="grade g-B">B</span></td>
+            <td class="center"><span class="grade g-B-plus">B+</span></td>
+            <td class="center"><span class="grade g-B">B</span></td>
+            <td class="center"><span class="grade g-B">B</span></td>
+            <td class="center"><span class="grade g-B-minus">B-</span></td>
+            <td class="center"><span class="grade g-B">B</span></td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
 
-        <div class="sub-section">
-          <h4>料金メモ <small style="font-weight:normal;color:#aaa">（確認日: 2026-04-26）</small></h4>
-          <div class="pricing-summary">Plus $20/月、Pro $100または$200/月、Business $20/人/月。Business / 新Enterprise向けに追加クレジット型Codex料金あり。APIでgpt-5.3-codexを使う場合は別途トークン課金。</div>
-          <div class="plan-list">
-            
-            <div class="plan-chip"><strong>ChatGPT Plus</strong>　$20/月</div>
-            
-            <div class="plan-chip"><strong>ChatGPT Pro</strong>　$100または$200/月</div>
-            
-            <div class="plan-chip"><strong>ChatGPT Business</strong>　$20/ユーザー/月</div>
-            
-            <div class="plan-chip"><strong>Codex API / gpt-5.3-codex</strong>　入力 $1.75 / 1M tokens、出力 $14.00 / 1M tokens</div>
-            
-          </div>
-          
-          <ul class="cost-notes">
-            
-            <li>ChatGPTプラン内利用とAPI利用は分けて考える。</li>
-            
-            <li>Business / Enterpriseでは追加クレジット型料金の確認が必要。</li>
-            
-            <li>CIで頻繁に使う場合は利用回数とトークン量を監視する。</li>
-            
-          </ul>
-          
-          <div class="url-list">
-            
-            <a class="url-btn" href="https://developers.openai.com/codex" target="_blank" rel="noopener">product</a>
-            
-            <a class="url-btn" href="https://chatgpt.com/pricing/" target="_blank" rel="noopener">pricing</a>
-            
-            <a class="url-btn" href="https://developers.openai.com/codex/pricing" target="_blank" rel="noopener">codex_pricing</a>
-            
-            <a class="url-btn" href="https://developers.openai.com/codex/github-action" target="_blank" rel="noopener">github_action</a>
-            
-          </div>
-        </div>
-      </div>
-      
-      <div class="card">
-        <div class="tool-header">
-          <h3>Claude Code</h3>
-          <span class="tool-position">仕様整理・設計・レビュー担当</span>
-        </div>
-        <div class="tool-oneline">仕様整理、既存リポジトリ理解、Issue/PR上の実装支援、高品質レビューに強い設計・レビュー担当。</div>
+    <h2 id="pricing">料金と導入しやすさ</h2>
+    <div class="scroll-hint">← 横スクロールできます →</div>
+    <div class="table-wrap">
+      <table>
+        <thead>
+          <tr>
+            <th>ツール</th>
+            <th>料金の見方</th>
+            <th>公式料金URL</th>
+            <th>個人</th>
+            <th>小規模事業者</th>
+            <th>確認日</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><strong>OpenAI Codex</strong></td>
+            <td>Free / Go / Plus / Pro / Business / Enterprise &amp; Edu。API key は別課金。</td>
+            <td><a href="https://developers.openai.com/codex/pricing">codex/pricing</a></td>
+            <td>中〜高</td>
+            <td>高</td>
+            <td>2026-05-02</td>
+          </tr>
+          <tr>
+            <td><strong>Claude Code</strong></td>
+            <td>個人は Free / Pro / Max、組織は Team / Enterprise。API は token 課金。</td>
+            <td><a href="https://claude.com/pricing">claude.com/pricing</a></td>
+            <td>高</td>
+            <td>中〜高</td>
+            <td>2026-05-02</td>
+          </tr>
+          <tr>
+            <td><strong>GitHub Copilot</strong></td>
+            <td>Free / Pro / Pro+ / Business / Enterprise。cloud agent と code review は premium usage と結びつく。</td>
+            <td><a href="https://github.com/features/copilot/plans">copilot/plans</a></td>
+            <td>非常に高い</td>
+            <td>非常に高い</td>
+            <td>2026-05-02</td>
+          </tr>
+          <tr>
+            <td><strong>Google Antigravity</strong></td>
+            <td>Individual は $0/月の表示あり。上位は Google AI Pro / Ultra と連動。</td>
+            <td><a href="https://antigravity.google/pricing">antigravity/pricing</a></td>
+            <td>中</td>
+            <td>低〜中</td>
+            <td>2026-05-02</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
 
-        <div class="two-col">
-          <div class="sub-section">
-            <h4>得意なこと</h4>
-            <div class="tag-list">
-              
-              <span class="tag">コードベース全体の読解</span>
-              
-              <span class="tag">Plan Modeによる仕様整理</span>
-              
-              <span class="tag">ファイル編集</span>
-              
-              <span class="tag">コマンド実行</span>
-              
-              <span class="tag">git / PR 操作</span>
-              
-              <span class="tag">GitHub Issue / PR上での @claude 実行</span>
-              
-              <span class="tag">CLAUDE.mdによるプロジェクト規約共有</span>
-              
-              <span class="tag">auto memory</span>
-              
-              <span class="tag">高品質なレビュー支援</span>
-              
-            </div>
-          </div>
-          <div class="sub-section">
-            <h4>苦手なこと</h4>
-            <div class="tag-list">
-              
-              <span class="tag weak">Code Reviewは追加課金や利用条件がある</span>
-              
-              <span class="tag weak">Code Reviewはresearch previewなど提供条件の変化に注意が必要</span>
-              
-              <span class="tag weak">CLAUDE.mdが長すぎると重要ルールが埋もれやすい</span>
-              
-              <span class="tag weak">強力な分、利用ルールを決めないとコストや作業範囲が広がりやすい</span>
-              
-            </div>
-          </div>
-        </div>
+    <h2 id="roles">役割別推奨</h2>
+    <p>
+      この案件での推奨は、<strong>GitHub Copilot を運用の標準面</strong>、
+      <strong>Claude Code または Codex を実装の深掘り面</strong>とする二層構造です。
+      Antigravity は比較対象として価値はありますが、公式資料上は <strong>GitHub Issues 駆動の標準運用</strong>よりも
+      <strong>agent-first IDE</strong> としての性格が強く、現時点では主役に置きにくいです。
+    </p>
 
-        <div class="sub-section" style="margin-bottom:16px">
-          <h4>スタック適性（Flutter / FastAPI / PostgreSQL / nginx）</h4>
-          <div class="stack-grid">
-            
-            <div class="stack-item">
-              <div class="stack-name">flutter</div>
-              <div style="margin-bottom:4px">
-                
-                <span class="rating-chip r-high">高</span>
-                
-              </div>
-              <div class="stack-reason">repo全体の読解、画面変更、テスト方針整理、複数ファイル編集に向く。</div>
-            </div>
-            
-            <div class="stack-item">
-              <div class="stack-name">fastapi</div>
-              <div style="margin-bottom:4px">
-                
-                <span class="rating-chip r-high">高</span>
-                
-              </div>
-              <div class="stack-reason">API実装、依存関係把握、pytest実行、設計レビューに向く。</div>
-            </div>
-            
-            <div class="stack-item">
-              <div class="stack-name">postgresql</div>
-              <div style="margin-bottom:4px">
-                
-                <span class="rating-chip r-high">高</span>
-                
-              </div>
-              <div class="stack-reason">DB migration要否の判断や影響範囲整理と相性がよい。</div>
-            </div>
-            
-            <div class="stack-item">
-              <div class="stack-name">nginx</div>
-              <div style="margin-bottom:4px">
-                
-                <span class="rating-chip r-high">高</span>
-                
-              </div>
-              <div class="stack-reason">設定変更の影響範囲確認や運用観点のレビューに使いやすい。</div>
-            </div>
-            
-            <div class="stack-item">
-              <div class="stack-name">github_issues</div>
-              <div style="margin-bottom:4px">
-                
-                <span class="rating-chip r-high">高</span>
-                
-              </div>
-              <div class="stack-reason">@claude によるIssue / PR上の支援、Plan Modeを組み合わせると強い。</div>
-            </div>
-            
-            <div class="stack-item">
-              <div class="stack-name">github_actions</div>
-              <div style="margin-bottom:4px">
-                
-                <span class="rating-chip r-high">高</span>
-                
-              </div>
-              <div class="stack-reason">GitHub Actions上でIssue / PRに反応する運用が可能。</div>
-            </div>
-            
-          </div>
-        </div>
+    <div class="scroll-hint">← 横スクロールできます →</div>
+    <div class="table-wrap">
+      <table>
+        <thead>
+          <tr>
+            <th>役割</th>
+            <th>第一候補</th>
+            <th>第二候補</th>
+            <th>理由</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>Issue の草案化・整理・sub-issue 化</td>
+            <td>GitHub Copilot</td>
+            <td>Claude Code</td>
+            <td>Copilot は Issue 作成/更新と sub-issue 生成を GitHub の中で行えます。Claude Code も planning は強いですが、Issue 自体の運用面は Copilot が自然です。</td>
+          </tr>
+          <tr>
+            <td>GitHub Issues からの標準自走開発</td>
+            <td>Copilot cloud agent</td>
+            <td>Codex</td>
+            <td>Copilot は Issue 割当で repo 調査・計画・コード変更・PR 作成まで進めます。Codex も <code>@codex</code> で Issue/PR から cloud task を起動できますが、Issue 作成/更新まで含めた標準線は Copilot が優位です。</td>
+          </tr>
+          <tr>
+            <td>仕様整理・変更方針の明文化</td>
+            <td>GitHub Copilot</td>
+            <td>Claude Code</td>
+            <td>Copilot は repository custom instructions や Issue テンプレートと合わせやすく、Claude Code は <code>CLAUDE.md</code> / rules / plan mode が強いです。</td>
+          </tr>
+          <tr>
+            <td>既存リポジトリの理解</td>
+            <td>Claude Code</td>
+            <td>OpenAI Codex</td>
+            <td>Claude Code は公式に unfamiliar code exploration をワークフロー化し、Codex も codebase onboarding を use case として持ちます。</td>
+          </tr>
+          <tr>
+            <td>Flutter 実装</td>
+            <td>Claude Code</td>
+            <td>GitHub Copilot</td>
+            <td>Claude Code は Android Studio を公式サポート。Copilot も Android Studio を公式サポート。Codex は VS Code 中心なので、Android Studio 比率が高いと一歩下がります。</td>
+          </tr>
+          <tr>
+            <td>FastAPI / PostgreSQL / nginx 実装</td>
+            <td>Claude Code</td>
+            <td>OpenAI Codex</td>
+            <td>どちらも repo を読んでコマンド実行と複数ファイル編集ができるため、API・DB・設定変更・テスト実行を跨ぐ変更に強いです。Copilot でも可能ですが、深い修正は Claude / Codex が得意です。</td>
+          </tr>
+          <tr>
+            <td>PRレビュー</td>
+            <td>GitHub Copilot code review</td>
+            <td>OpenAI Codex</td>
+            <td>Copilot は any language の PR review と suggested changes を提供。Codex は GitHub 上で P0/P1 中心の高シグナル review を行う。日常運用を広く回すなら Copilot、重大指摘に寄せるなら Codex。</td>
+          </tr>
+          <tr>
+            <td>テスト作成・不足テスト検出</td>
+            <td>Claude Code</td>
+            <td>Copilot / Codex</td>
+            <td>Claude Code は writing tests を日常 workflow に含めます。Copilot は unit test 生成を公式に強く推し、Codex も missing tests を PR review の強いユースケースにしています。</td>
+          </tr>
+          <tr>
+            <td>定期処理・CI 内自動化</td>
+            <td>Copilot workflow</td>
+            <td>Claude Code</td>
+            <td>Copilot CLI + Actions は report 生成や scaffold などの非同期自動化に向きます。Claude Code も GitHub Actions や hooks で強いですが、定型 workflow は Copilot workflow の方が GitHub-native です。</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
 
-        <div class="sub-section">
-          <h4>料金メモ <small style="font-weight:normal;color:#aaa">（確認日: 2026-04-26）</small></h4>
-          <div class="pricing-summary">Pro $20/月、Max $100/月から、Teamは$20/席/月（年額）または$25/月額、Enterpriseは$20/席 + API rates。Code Reviewは別料金。</div>
-          <div class="plan-list">
-            
-            <div class="plan-chip"><strong>Claude Pro</strong>　$20/月</div>
-            
-            <div class="plan-chip"><strong>Claude Max</strong>　$100/月から</div>
-            
-            <div class="plan-chip"><strong>Claude Team Standard</strong>　$20/席/月（年額）または$25/月額</div>
-            
-            <div class="plan-chip"><strong>Claude Team Premium</strong>　$100/席/月（年額）または$125/月額</div>
-            
-            <div class="plan-chip"><strong>Claude Enterprise</strong>　$20/席 + API rates</div>
-            
-            <div class="plan-chip"><strong>Claude Code Review</strong>　平均 $15〜25 / review の追加課金</div>
-            
-          </div>
-          
-          <ul class="cost-notes">
-            
-            <li>個人開発ではProから始めやすい。</li>
-            
-            <li>5席未満ではTeamよりPro / Maxを必要人数だけ使う方が現実的。</li>
-            
-            <li>Code Reviewは高リスクPRに限定すると費用を抑えやすい。</li>
-            
-          </ul>
-          
-          <div class="url-list">
-            
-            <a class="url-btn" href="https://code.claude.com/docs/ja/overview" target="_blank" rel="noopener">product</a>
-            
-            <a class="url-btn" href="https://code.claude.com/docs/ja/github-actions" target="_blank" rel="noopener">github_actions</a>
-            
-            <a class="url-btn" href="https://code.claude.com/docs/ja/code-review" target="_blank" rel="noopener">code_review</a>
-            
-            <a class="url-btn" href="https://claude.com/pricing" target="_blank" rel="noopener">pricing</a>
-            
-          </div>
-        </div>
-      </div>
-      
-      <div class="card">
-        <div class="tool-header">
-          <h3>GitHub Copilot / cloud agent</h3>
-          <span class="tool-position">Issue→PR自走の主役</span>
-        </div>
-        <div class="tool-oneline">GitHub Issues起点で、計画・実装・ブランチ作成・PR作成まで進める自走実装の主役。</div>
+    <h2 id="flow">推奨フロー図</h2>
+    <pre>flowchart LR
+    A[GitHub Issue] --&gt; B[CopilotでIssue整形]
+    B --&gt; C[Copilot cloud agentで標準タスク自走]
+    B --&gt; D[Claude Codeで重い実装]
+    B --&gt; E[Codexでcomment-driven委任]
+    C --&gt; F[Draft PR]
+    D --&gt; F
+    E --&gt; F
+    F --&gt; G[Copilot / CodexでPRレビュー]
+    G --&gt; H[Claude Codeで不足テスト補完]
+    H --&gt; I[Merge]</pre>
+    <p>
+      このフローの意図は、<strong>GitHub で完結する標準線</strong>と、<strong>難しい実装だけを深掘りツールに逃がす線</strong>を分離することです。
+      個人開発者であっても小規模事業者であっても、運用コストを下げやすいのはこの構成です。
+    </p>
 
-        <div class="two-col">
-          <div class="sub-section">
-            <h4>得意なこと</h4>
-            <div class="tag-list">
-              
-              <span class="tag">GitHub Issueからのタスク委譲</span>
-              
-              <span class="tag">リポジトリ調査</span>
-              
-              <span class="tag">実装計画作成</span>
-              
-              <span class="tag">ブランチ作成</span>
-              
-              <span class="tag">PR作成</span>
-              
-              <span class="tag">GitHub Actionsベースの環境で実行</span>
-              
-              <span class="tag">GitHub内で完結する操作性</span>
-              
-              <span class="tag">Copilot code review</span>
-              
-              <span class="tag">custom instructions</span>
-              
-              <span class="tag">semantic code search</span>
-              
-            </div>
-          </div>
-          <div class="sub-section">
-            <h4>苦手なこと</h4>
-            <div class="tag-list">
-              
-              <span class="tag weak">1タスクで複数リポジトリを横断しにくい</span>
-              
-              <span class="tag weak">1 branch・1 PR前提</span>
-              
-              <span class="tag weak">Flutter / Dartは公式上の最上位得意言語とは言い切れない</span>
-              
-              <span class="tag weak">レビューは人間の代替ではなく補助</span>
-              
-              <span class="tag weak">個人向け新規サインアップ状況など、提供条件の変化に注意が必要</span>
-              
-            </div>
-          </div>
-        </div>
+    <h2 id="yaml">YAML変換しやすいレコード一覧</h2>
+    <p>以下は <strong>tool_id ごとに criterion 配列へ落としやすい表</strong>です。各行に <strong>official_info / inference / source_url / checked_date</strong> を入れています。</p>
 
-        <div class="sub-section" style="margin-bottom:16px">
-          <h4>スタック適性（Flutter / FastAPI / PostgreSQL / nginx）</h4>
-          <div class="stack-grid">
-            
-            <div class="stack-item">
-              <div class="stack-name">flutter</div>
-              <div style="margin-bottom:4px">
-                
-                <span class="rating-chip r-mid">中</span>
-                
-              </div>
-              <div class="stack-reason">Dart / Flutterも扱えるが、公式上の最も強い言語としては打ち出されていない。Issueを小さく分ければ実用的。</div>
-            </div>
-            
-            <div class="stack-item">
-              <div class="stack-name">fastapi</div>
-              <div style="margin-bottom:4px">
-                
-                <span class="rating-chip r-high">高</span>
-                
-              </div>
-              <div class="stack-reason">PythonやAPI実装と相性がよく、GitHub内でPRまで進めやすい。</div>
-            </div>
-            
-            <div class="stack-item">
-              <div class="stack-name">postgresql</div>
-              <div style="margin-bottom:4px">
-                
-                <span class="rating-chip r-high">高</span>
-                
-              </div>
-              <div class="stack-reason">DB関連修正やmigrationをIssue単位に分けると扱いやすい。</div>
-            </div>
-            
-            <div class="stack-item">
-              <div class="stack-name">nginx</div>
-              <div style="margin-bottom:4px">
-                
-                <span class="rating-chip r-high">高</span>
-                
-              </div>
-              <div class="stack-reason">単一repo内の設定修正やCI検証と相性がよい。</div>
-            </div>
-            
-            <div class="stack-item">
-              <div class="stack-name">github_issues</div>
-              <div style="margin-bottom:4px">
-                
-                <span class="rating-chip r-very-high">非常に高い</span>
-                
-              </div>
-              <div class="stack-reason">Issueからの委譲、計画、ブランチ変更、PR作成が公式導線として揃っている。</div>
-            </div>
-            
-            <div class="stack-item">
-              <div class="stack-name">github_actions</div>
-              <div style="margin-bottom:4px">
-                
-                <span class="rating-chip r-high">高</span>
-                
-              </div>
-              <div class="stack-reason">cloud agentはGitHub Actionsベースの環境で動作する。</div>
-            </div>
-            
-          </div>
-        </div>
+    <div class="tool-section-header">tool_id: openai_codex</div>
+    <div class="scroll-hint">← 横スクロールできます →</div>
+    <div class="table-wrap">
+      <table>
+        <thead>
+          <tr><th>criterion</th><th>official_info</th><th>inference</th><th>checked_date</th></tr>
+        </thead>
+        <tbody>
+          <tr><td>strengths</td><td>GitHub の Issue/PR で <code>@codex</code> を使って cloud task を起動でき、<code>AGENTS.md</code> を読んで作業やレビューを進められます。GitHub code review と automatic reviews も公式提供。</td><td>GitHub comment-driven にタスクを投げる運用と、repo ルールを <code>AGENTS.md</code> に集約する運用に強い。</td><td>2026-05-02</td></tr>
+          <tr><td>weaknesses</td><td>API key 利用では GitHub code review などの cloud-based features は使えません。IDE 拡張は VS Code extension。</td><td>Android Studio 中心の Flutter チームでは、CLI / browser 併用前提になりやすい。</td><td>2026-05-02</td></tr>
+          <tr><td>github_issues_autonomy</td><td>GitHub から <code>@codex</code> でタスクを投げて修正提案や push まで進められます。PR review 後に <code>@codex fix ...</code> も可能。</td><td><strong>A</strong>。Issue/PR コメント主体での自走開発に向く。</td><td>2026-05-02</td></tr>
+          <tr><td>specification_organization</td><td><code>AGENTS.md</code> を作業前に読むこと、project guidance を重ねられることが公式に案内。</td><td><strong>B+</strong>。仕様整理 UI は Copilot より弱いが、repo 標準の定着力は高い。</td><td>2026-05-02</td></tr>
+          <tr><td>repository_understanding</td><td>OpenAI 公式の use case に Understand large codebases あり。</td><td><strong>A</strong>。既存 repo のオンボーディングと影響範囲把握に強い。</td><td>2026-05-02</td></tr>
+          <tr><td>flutter_fit</td><td>公式 IDE 拡張は VS Code extension が中心。</td><td><strong>B</strong>。VS Code なら実用的だが、Android Studio 主体では下がる。</td><td>2026-05-02</td></tr>
+          <tr><td>backend_stack_fit</td><td>Codex は repo を read / edit / run でき、cloud tasks でもコード変更と理解を支援。</td><td><strong>A</strong>。FastAPI / PostgreSQL / nginx の複数ファイル横断修正と相性が良い。</td><td>2026-05-02</td></tr>
+          <tr><td>pr_review_fit</td><td>Codex code review は PR diff をレビューし、repo guidance に従い、GitHub 上に標準レビューを投稿。GitHub 上では P0/P1 に集中。</td><td><strong>A</strong>。重大度高めの指摘を重視するレビュー要員として向く。</td><td>2026-05-02</td></tr>
+          <tr><td>test_creation_fit</td><td>Codex の GitHub PR review は regressions、missing tests、documentation issues の検出を前面に出す。</td><td><strong>A-</strong>。テスト直接生成より、不足テスト検出→fix 指示の流れで強い。</td><td>2026-05-02</td></tr>
+          <tr><td>plans_and_cost</td><td>Free / Go / Plus / Pro / Business / Enterprise &amp; Edu / API Key。Pro は $100/月から、Business は pay as you go。</td><td>個人では Plus/Pro が現実的。小規模事業者では Business が取り回しやすい。</td><td>2026-05-02</td></tr>
+          <tr><td>usability_indie_smallbiz</td><td>Codex app / CLI / cloud / IDE があり、cloud features を最大活用するには GitHub 連携設計が必要。</td><td><strong>個人: 中〜高 / 小規模事業者: 高</strong>。GitHub 中心なら使いやすい。</td><td>2026-05-02</td></tr>
+        </tbody>
+      </table>
+    </div>
 
-        <div class="sub-section">
-          <h4>料金メモ <small style="font-weight:normal;color:#aaa">（確認日: 2026-04-26）</small></h4>
-          <div class="pricing-summary">Pro $10/月、Pro+ $39/月、Business $19/人/月、Enterprise $39/人/月。cloud agentはPro / Pro+ / Business / Enterpriseで利用可。</div>
-          <div class="plan-list">
-            
-            <div class="plan-chip"><strong>GitHub Copilot Pro</strong>　$10/月</div>
-            
-            <div class="plan-chip"><strong>GitHub Copilot Pro+</strong>　$39/月</div>
-            
-            <div class="plan-chip"><strong>GitHub Copilot Business</strong>　$19/人/月</div>
-            
-            <div class="plan-chip"><strong>GitHub Copilot Enterprise</strong>　$39/人/月</div>
-            
-          </div>
-          
-          <ul class="cost-notes">
-            
-            <li>GitHub中心の小規模開発では費用予測しやすい。</li>
-            
-            <li>code reviewはpremium requestを消費する点に注意。</li>
-            
-          </ul>
-          
-          <div class="url-list">
-            
-            <a class="url-btn" href="https://docs.github.com/ja/copilot/concepts/agents/cloud-agent/about-cloud-agent" target="_blank" rel="noopener">product</a>
-            
-            <a class="url-btn" href="https://github.com/features/copilot/plans" target="_blank" rel="noopener">pricing</a>
-            
-            <a class="url-btn" href="https://docs.github.com/en/copilot/concepts/agents/code-review" target="_blank" rel="noopener">code_review</a>
-            
-          </div>
-        </div>
-      </div>
-      
-    </section>
+    <div class="tool-section-header">tool_id: claude_code</div>
+    <div class="scroll-hint">← 横スクロールできます →</div>
+    <div class="table-wrap">
+      <table>
+        <thead>
+          <tr><th>criterion</th><th>official_info</th><th>inference</th><th>checked_date</th></tr>
+        </thead>
+        <tbody>
+          <tr><td>strengths</td><td>Claude Code は repo を読み、ファイル編集し、コマンド実行でき、日常 workflow として exploring unfamiliar code, debugging, refactoring, writing tests, creating PRs を掲げます。GitHub Actions では Issue/PR で <code>@claude</code> を使って機能実装や PR 作成が可能。</td><td>深い repo 理解と実装・検証ループが強い。</td><td>2026-05-02</td></tr>
+          <tr><td>weaknesses</td><td>GitHub Actions 利用時は GitHub-hosted runner の minutes を消費し、API costs も発生しえます。<code>CLAUDE.md</code> は context, not enforced configuration と明記。</td><td>運用設計をさぼるとコストが読みにくい。ルール遵守は誘導はできるが hard rule ではない。</td><td>2026-05-02</td></tr>
+          <tr><td>github_issues_autonomy</td><td><code>@claude</code> mention in any PR or issue で、コード分析、PR 作成、機能実装、バグ修正が可能。</td><td><strong>A</strong>。Issue 起点の実装は十分強いが、Issue の作成/構造化まで標準化するなら Copilot に一歩譲る。</td><td>2026-05-02</td></tr>
+          <tr><td>specification_organization</td><td><code>CLAUDE.md</code> と <code>.claude/rules/</code> で build/test commands、coding standards、architecture decisions を共有。</td><td><strong>A</strong>。仕様・実装ルール・検証手順を repo に定着させやすい。</td><td>2026-05-02</td></tr>
+          <tr><td>repository_understanding</td><td>公式 workflow に unfamiliar code exploration、subagents / Explore も codebase exploration 用と説明。</td><td><strong>A+</strong>。既存 repo 理解は今回比較で最上位。</td><td>2026-05-02</td></tr>
+          <tr><td>flutter_fit</td><td>Claude Code plugin は Android Studio を含む JetBrains IDEs を公式サポート。VS Code も対応。</td><td><strong>A</strong>。Android Studio で実装するチームに特に合う。</td><td>2026-05-02</td></tr>
+          <tr><td>backend_stack_fit</td><td>gather context → take action → verify results の agentic loop で、検索、編集、テスト実行を繰り返す。</td><td><strong>A</strong>。「調査→修正→コマンド検証」の反復に向く。</td><td>2026-05-02</td></tr>
+          <tr><td>pr_review_fit</td><td>Claude Code Review は GitHub PR を解析し、specialized agents が logic errors、security vulnerabilities、edge cases を見る。</td><td><strong>A-</strong>。内容は強いが、preview 的な色が残る。</td><td>2026-05-02</td></tr>
+          <tr><td>test_creation_fit</td><td>writing tests が common workflows に明示され、プロジェクトルールに test commands を共有可。</td><td><strong>A+</strong>。不足テストの追加や回帰確認の相棒として強い。</td><td>2026-05-02</td></tr>
+          <tr><td>plans_and_cost</td><td>Pro は $20/月、Max 5x は $100/月、Max 20x は $200/月。Team は標準席 $20、Premium seat $100、Enterprise は $20/seat + usage at API rates。</td><td>個人は Pro から始めやすい。小規模チームは Team か Premium seat を混在。</td><td>2026-05-02</td></tr>
+          <tr><td>usability_indie_smallbiz</td><td>terminal / IDE / desktop / browser と選択肢が多く、JetBrains / Android Studio にも対応。</td><td><strong>個人: 高 / 小規模事業者: 中〜高</strong>。CI 本格運用ならコストガードレールを先に。</td><td>2026-05-02</td></tr>
+        </tbody>
+      </table>
+    </div>
 
-    
-    <section>
-      <h2>おすすめ構成</h2>
-      <div class="config-grid">
+    <div class="tool-section-header">tool_id: github_copilot_family</div>
+    <div class="scroll-hint">← 横スクロールできます →</div>
+    <div class="table-wrap">
+      <table>
+        <thead>
+          <tr><th>criterion</th><th>official_info</th><th>inference</th><th>checked_date</th></tr>
+        </thead>
+        <tbody>
+          <tr><td>strengths</td><td>Copilot は Issue 作成/更新、sub-issue 作成、cloud agent による repo 調査・計画・コード変更・PR 作成、code review、CLI/Actions 自動化を公式提供。</td><td>GitHub Issues 駆動開発の標準基盤として最も自然。</td><td>2026-05-02</td></tr>
+          <tr><td>weaknesses</td><td>Issue を Copilot に割り当てた後は、その後追加された Issue コメントは反映されません。code review は custom instruction files の先頭 4,000 文字だけを読みます。GitHub docs は 2026-06-01 から usage-based billing へ移行と明記。</td><td>仕様が動きやすい案件では PR コメント側で追記を回す運用が必要。費用見積もりも 2026-06-01 前後で見直し必須。</td><td>2026-05-02</td></tr>
+          <tr><td>github_issues_autonomy</td><td>cloud agent は GitHub Issues への割当で task を開始し、repo 調査、計画、branch 変更、PR 作成まで進められます。Copilot は Issue を natural language から生成・更新可。</td><td><strong>A+</strong>。今回の「GitHub Issues に仕様を書く」運用に最も適合。</td><td>2026-05-02</td></tr>
+          <tr><td>specification_organization</td><td>repository custom instructions で、project の理解方法、build / test / validate 方法を Copilot に与えられます。</td><td><strong>A</strong>。仕様整理と repo への定着を GitHub 上で一元化しやすい。</td><td>2026-05-02</td></tr>
+          <tr><td>repository_understanding</td><td>cloud agent は repo research と implementation plan 作成を前提にし、custom instructions で repo 文脈も渡せる。</td><td><strong>A-</strong>。強いが、既存 repo 深掘りそのものは Claude Code に一歩譲る。</td><td>2026-05-02</td></tr>
+          <tr><td>flutter_fit</td><td>JetBrains IDEs / Android Studio / VS Code などと互換。</td><td><strong>A</strong>。Flutter の editor support は強い。</td><td>2026-05-02</td></tr>
+          <tr><td>backend_stack_fit</td><td>cloud agent は GitHub Actions-powered environment で tests と linters も実行可。CLI も terminal / scripts / Actions workflows で動く。</td><td><strong>A</strong>。FastAPI / PostgreSQL / nginx の backend + infra 変更を GitHub 上で回す基盤として強い。</td><td>2026-05-02</td></tr>
+          <tr><td>pr_review_fit</td><td>Copilot code review は any language をレビューし、suggested changes を提示。</td><td><strong>A</strong>。日常の PR レビューを標準化する reviewer として使いやすい。</td><td>2026-05-02</td></tr>
+          <tr><td>test_creation_fit</td><td>GitHub docs は Copilot の unit test 生成と test coverage 向上を明示。cloud agent も improved test coverage をユースケースに。</td><td><strong>A-</strong>。幅広く使えるが、長いテスト駆動ループは Claude Code がより得意。</td><td>2026-05-02</td></tr>
+          <tr><td>plans_and_cost</td><td>Pro は $10/月、Pro+ は $39/月、Business は $19/user/month、Enterprise は $39/user/month。premium requests / AI credits 周りは 2026-06-01 の billing 変更に注意。</td><td>個人・小規模チームとも導入しやすく、価格のわかりやすさも高い。2026-06-01 以降の運用費再見積は前提。</td><td>2026-05-02</td></tr>
+          <tr><td>usability_indie_smallbiz</td><td>GitHub 上で完結する surface が多く、CLI / IDE / Mobile / GitHub.com / Actions まで揃う。</td><td><strong>個人: 非常に高い / 小規模事業者: 非常に高い</strong>。今回の要件に最も扱いやすい。</td><td>2026-05-02</td></tr>
+        </tbody>
+      </table>
+    </div>
 
-        
-        
-        <div class="config-card">
-          <h3>個人開発者向け</h3>
-          <div class="config-summary">1ツールだけ選ぶならGitHub Copilotが本命。ただし利用条件や新規申込状況によってはClaude Code Proが現実的。ChatGPT利用者ならCodexも有力。</div>
-          <div class="config-row">
-            <div class="role">第一候補</div>
-            <div class="tool-name">
-              GitHub Copilot / cloud agent
-            </div>
-            <div class="reason">GitHub Issues起点のIssue→PR自走に最も自然。</div>
-          </div>
-          <div class="config-row">
-            <div class="role">現実的な代替</div>
-            <div class="tool-name">
-              Claude Code
-            </div>
-            <div class="reason">仕様整理と既存Repo理解に強く、個人ではProから始めやすい。</div>
-          </div>
-          <div class="config-row">
-            <div class="role">追加候補</div>
-            <div class="tool-name">
-              OpenAI Codex
-            </div>
-            <div class="reason">ChatGPTをすでに使っていて、ローカル実装やCIレビューを強化したい場合に有力。</div>
-          </div>
-        </div>
+    <div class="tool-section-header">tool_id: google_antigravity</div>
+    <div class="scroll-hint">← 横スクロールできます →</div>
+    <div class="table-wrap">
+      <table>
+        <thead>
+          <tr><th>criterion</th><th>official_info</th><th>inference</th><th>checked_date</th></tr>
+        </thead>
+        <tbody>
+          <tr><td>strengths</td><td>Antigravity は agent-first development platform で、Agent Manager、Editor、Browser、Terminal、Source Control、Rules/Workflows、MCP を持ちます。計画・コーディング・ブラウズまで行う自律エージェントを管理する "Mission Control"。</td><td>agent-first IDE としての表現力は高い。PoC や探索には魅力。</td><td>2026-05-02</td></tr>
+          <tr><td>weaknesses</td><td>Codelab では preview for personal Gmail accounts、ローカルインストールが前提。今回確認した公式資料群では、GitHub Issues を assignee にして PR を起こす GitHub-native flow は前面に出ていません。</td><td>小規模事業者の正式基盤としては、まだ preview 色が強い。</td><td>2026-05-02</td></tr>
+          <tr><td>github_issues_autonomy</td><td>取得できた公式情報は MCP、Source Control、Rules/Workflows、Browser などが中心。GitHub Issues-native delegation については Copilot / Codex / Claude Code と同じ明示度では確認できず。</td><td><strong>C</strong>。GitHub Issues 駆動運用の主役には置きにくい。</td><td>2026-05-02</td></tr>
+          <tr><td>specification_organization</td><td>Rules / Workflows は <code>.agents/rules</code> を使って Agent の振る舞いを制御でき、workflows は反復タスクの手順を定義可。</td><td><strong>B</strong>。仕様整理や作業手順の定着はできるが、GitHub Issue 管理と一体化した強みは薄い。</td><td>2026-05-02</td></tr>
+          <tr><td>repository_understanding</td><td>workspaces、Agent Manager、semantic search 周りを持ち、agent-first な codebase operation を前提。</td><td><strong>B+</strong>。repo 探索は強そうだが、詳細検証が他より限定的。</td><td>2026-05-02</td></tr>
+          <tr><td>flutter_fit</td><td>Google 公式ナビゲーション上で Antigravity と Flutter は同じ developer product 群に並び、agent-first coding platform として紹介。</td><td><strong>B</strong>。Google エコシステム親和性はあるが、Flutter 専用の公式実装導線は明示不足。</td><td>2026-05-02</td></tr>
+          <tr><td>backend_stack_fit</td><td>Browser、Terminal、MCP によりローカルツール、データベース、外部サービスへ安全に接続できると説明。</td><td><strong>B</strong>。理論上対応しやすいが、GitHub Issues 運用要件では優先度が低い。</td><td>2026-05-02</td></tr>
+          <tr><td>pr_review_fit</td><td>Review Changes + Source Control で変更確認、stage/unstage、commit upstream が可能。Agent Skills には code review skill の例も。</td><td><strong>B-</strong>。PR reviewer というより IDE 内レビュー体験寄り。</td><td>2026-05-02</td></tr>
+          <tr><td>test_creation_fit</td><td>agent が plan / execute / validate / iterate する前提で、browser/terminal も使える。</td><td><strong>B</strong>。テスト作成は可能性が高いが、test-specific ワークフロー確認は限定的。</td><td>2026-05-02</td></tr>
+          <tr><td>plans_and_cost</td><td>Antigravity pricing では Individual plan $0/month が見え、daily driver としては Google AI Pro / Ultra を使う案内。Google AI Pro は $19.99/月、Ultra は $249.99/月。</td><td>個人 PoC には始めやすいが、実務の標準基盤としてはコストと preview 状態の両方を要確認。</td><td>2026-05-02</td></tr>
+          <tr><td>usability_indie_smallbiz</td><td>個人 Gmail で始められ、Mac / Windows / 一部 Linux にローカルインストール可。</td><td><strong>個人: 中 / 小規模事業者: 低〜中</strong>。学習・PoC 向き、本番運用の中核には慎重評価。</td><td>2026-05-02</td></tr>
+        </tbody>
+      </table>
+    </div>
 
-        
-        
-        <div class="config-card">
-          <h3>小規模事業者向け</h3>
-          <div class="config-summary">GitHub Copilot Businessをベースにし、仕様責任者やTech LeadがClaude Codeを使う構成が実務的。CodexはCI品質ゲートやローカル深作業の追加候補。</div>
-          <div class="config-row">
-            <div class="role">ベースツール</div>
-            <div class="tool-name">
-              GitHub Copilot / cloud agent
-            </div>
-            <div class="reason">Issue→PRの自走実装をGitHub内で回しやすい。</div>
-          </div>
-          <div class="config-row">
-            <div class="role">設計・レビュー</div>
-            <div class="tool-name">
-              Claude Code
-            </div>
-            <div class="reason">仕様整理、影響範囲調査、高品質レビューに強い。</div>
-          </div>
-          <div class="config-row">
-            <div class="role">品質ゲート</div>
-            <div class="tool-name">
-              OpenAI Codex
-            </div>
-            <div class="reason">CI上のレビュー、テスト増強、横断リファクタに向く。</div>
-          </div>
-        </div>
-
-      </div>
-    </section>
+    <h2 id="constraints">制約と確認ポイント</h2>
+    <p>
+      この調査で最も重要な注意点は、<strong>GitHub Copilot が単一モデル製品ではない</strong>ことです。
+      Copilot は公式に複数モデル対応で、plan/client ごとに使えるモデルが異なるため、
+      Copilot の比較は「どのモデルが最強か」ではなく、<strong>GitHub-native な運用面がどれだけ強いか</strong>として読む必要があります。
+    </p>
+    <p>
+      また、<strong>変化が早いのは料金と課金方式</strong>です。今回とくに影響が大きいのは GitHub Copilot で、
+      公式 docs が <strong>2026-06-01 から usage-based billing に移行</strong>すると明記しているため、
+      組織導入の費用感はローンチ前後で見直すべきです。
+      Claude Code も subscription + API + GitHub Actions minutes の三層で効いてくる可能性があり、
+      Codex も plan と API key/cloud feature の違いを理解して導入する必要があります。
+    </p>
+    <p>
+      最後に、<strong>Google Antigravity は今回の比較対象に入れる価値はあるが、GitHub Issues 駆動開発の中核としては証拠が薄い</strong>、という点は強調しておきます。
+      Antigravity 自体は公式に存在し、強い agent-first IDE です。しかし、今回の主題は <strong>GitHub Issues → 自走実装 → PR レビュー</strong> なので、
+      公式資料の明示度と運用成熟度では <strong>Copilot cloud agent &gt; Claude Code / Codex &gt; Antigravity</strong> という順序になります。
+    </p>
+    <p>
+      <strong>個人開発者向けの簡潔な推奨構成</strong>は、<strong>第一候補が GitHub Copilot Pro</strong>、
+      その上で <strong>Android Studio 中心なら Claude Pro、GitHub comment-driven delegation と PR review を重視するなら Codex Plus / Pro</strong> を足す構成です。
+      Antigravity は、主運用ではなく <strong>探索・PoC 用の実験枠</strong>として扱うのが安全です。
+    </p>
 
   </div>
 </main>
 
 <footer>
-  <div class="container">
-    生成日: 2026-04-26 ／ GitHub Issuesに仕様を書き、そのIssueを起点に生成AIが設計・実装・テスト・PR作成・レビューを支援する業務システム開発運用のための比較データ。
-  </div>
+  生成元: <a href="2026-05-02-ai-dev-tools-deep-research.md">2026-05-02-ai-dev-tools-deep-research.md</a><br>
+  Craft ERP Project / AI Tool Selection Research
 </footer>
 
 </body>
