@@ -58,10 +58,11 @@
       font-weight: 600;
       color: #0f3460;
       margin-bottom: 12px;
+      line-height: 1.65;
     }
     .summary-points { list-style: none; padding: 0; }
     .summary-points li {
-      padding: 6px 0 6px 20px;
+      padding: 8px 0 8px 22px;
       position: relative;
       border-bottom: 1px solid #f0f0f5;
     }
@@ -72,6 +73,7 @@
       left: 0;
       color: #4a6cf7;
     }
+    .summary-points li strong { color: #0f3460; }
 
     /* ── Comparison Table ── */
     .table-wrap { overflow-x: auto; }
@@ -79,7 +81,7 @@
       width: 100%;
       border-collapse: collapse;
       font-size: 0.88rem;
-      min-width: 560px;
+      min-width: 640px;
     }
     th {
       background: #0f3460;
@@ -127,7 +129,7 @@
       border-radius: 999px;
       font-weight: 600;
     }
-    .tool-oneline { color: #555; font-size: 0.9rem; margin-bottom: 16px; }
+    .tool-oneline { color: #555; font-size: 0.9rem; margin-bottom: 16px; line-height: 1.65; }
 
     .two-col { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; margin-bottom: 16px; }
     @media (max-width: 600px) { .two-col { grid-template-columns: 1fr; } }
@@ -152,7 +154,7 @@
     .tag.weak { background: #fff3e0; color: #e65100; border-color: #ffcc80; }
 
     /* ── Stack Fit ── */
-    .stack-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(140px, 1fr)); gap: 10px; }
+    .stack-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(160px, 1fr)); gap: 10px; }
     .stack-item {
       background: #f8f9fd;
       border: 1px solid #e8eaf6;
@@ -160,10 +162,10 @@
       padding: 10px 12px;
     }
     .stack-item .stack-name { font-weight: 700; font-size: 0.82rem; color: #0f3460; margin-bottom: 4px; }
-    .stack-item .stack-reason { font-size: 0.78rem; color: #666; line-height: 1.5; }
+    .stack-item .stack-reason { font-size: 0.78rem; color: #666; line-height: 1.55; }
 
     /* ── Pricing ── */
-    .pricing-summary { font-size: 0.9rem; color: #444; margin-bottom: 12px; }
+    .pricing-summary { font-size: 0.9rem; color: #444; margin-bottom: 12px; line-height: 1.65; }
     .plan-list { display: flex; flex-wrap: wrap; gap: 8px; margin-bottom: 12px; }
     .plan-chip {
       background: #e8f5e9;
@@ -173,7 +175,7 @@
       font-size: 0.82rem;
     }
     .plan-chip strong { color: #2e7d32; }
-    .cost-notes { font-size: 0.82rem; color: #666; }
+    .cost-notes { font-size: 0.82rem; color: #666; list-style: none; padding: 0; }
     .cost-notes li { padding: 2px 0 2px 16px; position: relative; }
     .cost-notes li::before { content: "※"; position: absolute; left: 0; }
     .url-list { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 12px; }
@@ -186,14 +188,20 @@
     }
     .url-btn:hover { background: #4a6cf7; color: #fff; text-decoration: none; }
 
+    /* ── Phase Table ── */
+    .phase-table th, .phase-table td { font-size: 0.85rem; }
+    .phase-table .first { font-weight: 700; color: #0f3460; }
+    .phase-table .second { color: #555; }
+
     /* ── Recommended Config ── */
     .config-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; }
-    @media (max-width: 600px) { .config-grid { grid-template-columns: 1fr; } }
+    @media (max-width: 720px) { .config-grid { grid-template-columns: 1fr; } }
 
     .config-card { background: #fff; border-radius: 10px; box-shadow: 0 2px 8px rgba(0,0,0,.07); padding: 20px; }
     .config-card h3 { font-size: 1rem; color: #0f3460; margin-bottom: 8px; }
-    .config-card .config-summary { font-size: 0.88rem; color: #555; margin-bottom: 14px; }
-    .config-row { margin-bottom: 10px; }
+    .config-card .config-summary { font-size: 0.88rem; color: #555; margin-bottom: 14px; line-height: 1.65; }
+    .config-row { margin-bottom: 12px; padding-bottom: 12px; border-bottom: 1px dashed #eef0f5; }
+    .config-row:last-child { border-bottom: none; margin-bottom: 0; padding-bottom: 0; }
     .config-row .role {
       font-size: 0.75rem;
       font-weight: 700;
@@ -202,8 +210,20 @@
       color: #888;
       margin-bottom: 2px;
     }
-    .config-row .tool-name { font-weight: 700; color: #1a1a2e; font-size: 0.9rem; }
-    .config-row .reason { font-size: 0.82rem; color: #666; }
+    .config-row .tool-name { font-weight: 700; color: #1a1a2e; font-size: 0.92rem; margin-bottom: 4px; }
+    .config-row .reason { font-size: 0.83rem; color: #666; line-height: 1.6; }
+
+    /* ── Note Block ── */
+    .note {
+      background: #fff8e1;
+      border-left: 4px solid #f57f17;
+      padding: 12px 16px;
+      border-radius: 6px;
+      font-size: 0.88rem;
+      color: #5d4037;
+      line-height: 1.65;
+    }
+    .note strong { color: #bf360c; }
 
     footer {
       background: #1a1a2e;
@@ -211,6 +231,7 @@
       text-align: center;
       padding: 20px 0;
       font-size: 0.8rem;
+      line-height: 1.65;
     }
   </style>
 </head>
@@ -219,36 +240,31 @@
 <header>
   <div class="container">
     <h1>生成AIを活用した業務システム開発支援ツール比較</h1>
-    <div class="subtitle">GitHub Issues × Coding Agent 比較</div>
-    <div class="meta">最終更新: 2026-05-02　／　情報確認日: 2026-05-02</div>
+    <div class="subtitle">GitHub Issues 駆動で実装・レビュー・テストを回すためのツール選定ガイド</div>
+    <div class="meta">最終更新: 2026-05-07　／　情報確認日: 2026-05-07　／　対象スタック: Flutter + FastAPI + PostgreSQL + nginx + GitHub Issues</div>
   </div>
 </header>
 
 <main>
   <div class="container">
 
-    
     <section>
       <h2>エグゼクティブサマリ</h2>
       <div class="card">
-        <div class="summary-oneline">GitHub Issues 駆動運用の背骨は GitHub Copilot cloud agent。重い実装と repo 理解は Claude Code、comment-driven 委任と PR レビューは Codex、Antigravity は agent-first IDE の PoC 枠。</div>
+        <div class="summary-oneline">
+          「Issue に仕様を書き、AI が自走して実装・PR・レビュー・テストを進める」運用には、GitHub Copilot family を運用の背骨に、Claude Code を実装エンジン、OpenAI Codex を comment-driven 委任とレビュー、Cursor を IDE 主導の代替候補として組み合わせる。
+        </div>
         <ul class="summary-points">
-          
-          <li>Issue → PR の標準自走運用は GitHub Copilot cloud agent が最も自然で、Issue 作成・更新・sub-issue・PR 作成まで GitHub 内で完結する。</li>
-          
-          <li>Android Studio で Flutter を回す比率が高いなら Claude Code 優先、GitHub 上の comment-driven delegation と PR review を重視するなら Codex 優先。</li>
-          
-          <li>GitHub Copilot は 2026-06-01 から usage-based billing へ移行予定のため、組織導入の費用感は前後で要見直し。</li>
-          
-          <li>Google Antigravity は agent-first IDE として有望だが、GitHub Issues 駆動の中核には現時点では置きにくく、PoC・実験枠として扱う。</li>
-          
-          <li>料金・提供条件は変わりやすいため、資料更新時には必ず公式URLと checked_at を更新する。</li>
-          
+          <li><strong>運用の背骨は GitHub Copilot family</strong>。Issue 作成・更新・assign から cloud agent が repository research / plan / branch 変更 / PR 作成までを GitHub-native フローで進める。</li>
+          <li><strong>重い実装は Claude Code</strong>。codebase の深い読解、複数ファイル編集、Android Studio 公式サポートで Flutter 実装との相性が最も良い。</li>
+          <li><strong>GitHub コメント駆動の委任と高シグナルレビューは OpenAI Codex</strong>。`@codex` で Issues/PRs から cloud task 起動、AGENTS.md による規約定着、P0/P1 集中レビュー。</li>
+          <li><strong>Cursor は IDE 主戦場のチームに強い</strong>。clarifying questions → plan → background execution、subagents、Bugbot による PR レビュー。GitHub Issue assign → PR の標準線は Copilot ほど明示されていない。</li>
+          <li><strong>個人開発者は Copilot Pro が最短経路</strong>。Flutter 実装・既存 repo 理解・テスト補完を強めるなら Claude Pro を追加、GitHub delegation / review 重視なら Codex、IDE 主体なら Cursor Pro。</li>
+          <li><strong>GitHub Copilot は 2026-06-01 から usage-based billing へ移行</strong>。組織導入の費用感は前後で要見直し。料金表だけでなく billing docs も併読のこと。</li>
         </ul>
       </div>
     </section>
 
-    
     <section>
       <h2>全体比較表</h2>
       <div class="card">
@@ -257,950 +273,574 @@
             <thead>
               <tr>
                 <th>評価軸</th>
-                
-                <th>OpenAI Codex</th>
-                
+                <th>GitHub Copilot family</th>
                 <th>Claude Code</th>
-                
-                <th>GitHub Copilot / cloud agent</th>
-                
-                <th>Google Antigravity</th>
-                
+                <th>OpenAI Codex</th>
+                <th>Cursor</th>
               </tr>
             </thead>
             <tbody>
-              
               <tr>
-                <td><strong>GitHub Issues起点の自走性</strong><br><span style="font-size:.8rem;color:#888">Issueを元に、計画・実装・テスト・PR作成まで進めやすいか。</span></td>
-                
-                
-                <td>
-                  <span class="rating-chip r-high">高</span>
-                  
-                </td>
-                
-                
-                <td>
-                  <span class="rating-chip r-high">高</span>
-                  
-                </td>
-                
-                
-                <td>
-                  <span class="rating-chip r-very-high">非常に高い</span>
-                  
-                </td>
-                
-                
-                <td>
-                  <span class="rating-chip r-low">低</span>
-                  
-                </td>
-                
+                <td><strong>GitHub Issues 起点の自走性</strong><br><span style="font-size:.8rem;color:#888">Issue を起点に計画・実装・テスト・PR 作成まで自動で進めやすいか</span></td>
+                <td><span class="rating-chip r-very-high">非常に高い</span></td>
+                <td><span class="rating-chip r-high">高</span></td>
+                <td><span class="rating-chip r-high">高</span></td>
+                <td><span class="rating-chip r-mid-high">中〜高</span></td>
               </tr>
-              
               <tr>
-                <td><strong>仕様整理</strong><br><span style="font-size:.8rem;color:#888">曖昧な要求を整理し、設計・実装方針に落とし込めるか。</span></td>
-                
-                
-                <td>
-                  <span class="rating-chip r-mid-high">中〜高</span>
-                  
-                </td>
-                
-                
-                <td>
-                  <span class="rating-chip r-high">高</span>
-                  
-                </td>
-                
-                
-                <td>
-                  <span class="rating-chip r-high">高</span>
-                  
-                </td>
-                
-                
-                <td>
-                  <span class="rating-chip r-mid">中</span>
-                  
-                </td>
-                
+                <td><strong>仕様整理</strong><br><span style="font-size:.8rem;color:#888">曖昧な要求を整理し、設計・実装方針に落とし込めるか</span></td>
+                <td><span class="rating-chip r-very-high">非常に高い</span></td>
+                <td><span class="rating-chip r-high">高</span></td>
+                <td><span class="rating-chip r-mid-high">中〜高</span></td>
+                <td><span class="rating-chip r-high">高</span></td>
               </tr>
-              
               <tr>
-                <td><strong>既存リポジトリ理解</strong><br><span style="font-size:.8rem;color:#888">既存コード、ディレクトリ構成、規約、依存関係を把握できるか。</span></td>
-                
-                
-                <td>
-                  <span class="rating-chip r-high">高</span>
-                  
-                </td>
-                
-                
-                <td>
-                  <span class="rating-chip r-very-high">非常に高い</span>
-                  
-                </td>
-                
-                
-                <td>
-                  <span class="rating-chip r-high">高</span>
-                  
-                </td>
-                
-                
-                <td>
-                  <span class="rating-chip r-mid-high">中〜高</span>
-                  
-                </td>
-                
+                <td><strong>既存リポジトリ理解</strong><br><span style="font-size:.8rem;color:#888">既存コード、ディレクトリ構成、規約、依存関係を把握できるか</span></td>
+                <td><span class="rating-chip r-high">高</span></td>
+                <td><span class="rating-chip r-very-high">非常に高い</span></td>
+                <td><span class="rating-chip r-high">高</span></td>
+                <td><span class="rating-chip r-high">高</span></td>
               </tr>
-              
               <tr>
-                <td><strong>Flutter適性</strong><br><span style="font-size:.8rem;color:#888">Flutter / Dart の実装、修正、テスト、画面変更に向いているか。</span></td>
-                
-                
-                <td>
-                  <span class="rating-chip r-mid">中</span>
-                  
-                </td>
-                
-                
-                <td>
-                  <span class="rating-chip r-high">高</span>
-                  
-                </td>
-                
-                
-                <td>
-                  <span class="rating-chip r-high">高</span>
-                  
-                </td>
-                
-                
-                <td>
-                  <span class="rating-chip r-mid">中</span>
-                  
-                </td>
-                
+                <td><strong>Flutter 適性</strong><br><span style="font-size:.8rem;color:#888">Flutter / Dart の実装、修正、テスト、画面変更に向いているか</span></td>
+                <td><span class="rating-chip r-high">高</span></td>
+                <td><span class="rating-chip r-high">高</span></td>
+                <td><span class="rating-chip r-mid">中</span></td>
+                <td><span class="rating-chip r-high">高</span></td>
               </tr>
-              
               <tr>
-                <td><strong>FastAPI / PostgreSQL / nginx適性</strong><br><span style="font-size:.8rem;color:#888">API、DB、migration、nginx設定を含むバックエンド開発に向いているか。</span></td>
-                
-                
-                <td>
-                  <span class="rating-chip r-high">高</span>
-                  
-                </td>
-                
-                
-                <td>
-                  <span class="rating-chip r-high">高</span>
-                  
-                </td>
-                
-                
-                <td>
-                  <span class="rating-chip r-high">高</span>
-                  
-                </td>
-                
-                
-                <td>
-                  <span class="rating-chip r-mid">中</span>
-                  
-                </td>
-                
+                <td><strong>FastAPI / PostgreSQL / nginx 適性</strong><br><span style="font-size:.8rem;color:#888">API、DB、migration、nginx 設定を含むバックエンド開発に向いているか</span></td>
+                <td><span class="rating-chip r-high">高</span></td>
+                <td><span class="rating-chip r-high">高</span></td>
+                <td><span class="rating-chip r-high">高</span></td>
+                <td><span class="rating-chip r-high">高</span></td>
               </tr>
-              
               <tr>
-                <td><strong>PRレビュー適性</strong><br><span style="font-size:.8rem;color:#888">Pull Requestの差分確認、レビューコメント、品質チェックに向いているか。</span></td>
-                
-                
-                <td>
-                  <span class="rating-chip r-high">高</span>
-                  
-                </td>
-                
-                
-                <td>
-                  <span class="rating-chip r-high">高</span>
-                  
-                </td>
-                
-                
-                <td>
-                  <span class="rating-chip r-high">高</span>
-                  
-                </td>
-                
-                
-                <td>
-                  <span class="rating-chip r-mid">中</span>
-                  
-                </td>
-                
+                <td><strong>PR レビュー</strong><br><span style="font-size:.8rem;color:#888">PR への自動レビュー、suggested changes、規約に基づく指摘の質</span></td>
+                <td><span class="rating-chip r-high">高</span></td>
+                <td><span class="rating-chip r-high">高</span></td>
+                <td><span class="rating-chip r-high">高</span></td>
+                <td><span class="rating-chip r-high">高</span></td>
               </tr>
-              
               <tr>
-                <td><strong>テスト作成適性</strong><br><span style="font-size:.8rem;color:#888">pytest、flutter test、CI検証などのテスト作成・実行に向いているか。</span></td>
-                
-                
-                <td>
-                  <span class="rating-chip r-high">高</span>
-                  
-                </td>
-                
-                
-                <td>
-                  <span class="rating-chip r-very-high">非常に高い</span>
-                  
-                </td>
-                
-                
-                <td>
-                  <span class="rating-chip r-high">高</span>
-                  
-                </td>
-                
-                
-                <td>
-                  <span class="rating-chip r-mid">中</span>
-                  
-                </td>
-                
+                <td><strong>テスト作成</strong><br><span style="font-size:.8rem;color:#888">不足テストの補完、回帰テスト、テスト駆動の自走</span></td>
+                <td><span class="rating-chip r-high">高</span></td>
+                <td><span class="rating-chip r-very-high">非常に高い</span></td>
+                <td><span class="rating-chip r-high">高</span></td>
+                <td><span class="rating-chip r-high">高</span></td>
               </tr>
-              
               <tr>
-                <td><strong>費用予測のしやすさ</strong><br><span style="font-size:.8rem;color:#888">個人・小規模事業者が月額費用や追加課金を予測しやすいか。</span></td>
-                
-                
-                <td>
-                  <span class="rating-chip r-mid">中</span>
-                  
-                </td>
-                
-                
-                <td>
-                  <span class="rating-chip r-mid-high">中〜高</span>
-                  
-                </td>
-                
-                
-                <td>
-                  <span class="rating-chip r-high">高</span>
-                  
-                </td>
-                
-                
-                <td>
-                  <span class="rating-chip r-mid">中</span>
-                  
-                </td>
-                
+                <td><strong>費用予測のしやすさ</strong><br><span style="font-size:.8rem;color:#888">個人・小規模事業者が月額費用や追加課金を予測しやすいか</span></td>
+                <td><span class="rating-chip r-mid-high">中〜高</span></td>
+                <td><span class="rating-chip r-mid-high">中〜高</span></td>
+                <td><span class="rating-chip r-mid">中</span></td>
+                <td><span class="rating-chip r-mid-high">中〜高</span></td>
               </tr>
-              
+            </tbody>
+          </table>
+        </div>
+        <div style="margin-top: 12px;" class="note">
+          <strong>注:</strong> 各ベンダーがこの exact stack を公式スコア化しているわけではないため、評価は read/edit/run、IDE 互換、repo research、PR review、tests、GitHub 連携といった公式機能からの推定です。
+        </div>
+      </div>
+    </section>
+
+    <section>
+      <h2>開発フェーズ別の第一候補</h2>
+      <div class="card">
+        <div class="table-wrap">
+          <table class="phase-table">
+            <thead>
+              <tr>
+                <th>開発フェーズ</th>
+                <th>第一候補</th>
+                <th>第二候補</th>
+                <th>理由</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>Issue の草案化・更新・分割</td>
+                <td class="first">GitHub Copilot</td>
+                <td class="second">Cursor</td>
+                <td>Copilot は公式に Issue の作成・更新・sub-issue 化・assign をサポート。Issue artifact を GitHub 内で整える点で最も自然。</td>
+              </tr>
+              <tr>
+                <td>GitHub Issues からの標準自走開発</td>
+                <td class="first">Copilot cloud agent</td>
+                <td class="second">OpenAI Codex</td>
+                <td>Copilot は Issue assign から repo research・plan・branch 変更・PR 作成まで標準化。Codex も `@codex` で起動可だが、Issue 中心の公式導線は Copilot が明快。</td>
+              </tr>
+              <tr>
+                <td>仕様整理・実装方針の明文化</td>
+                <td class="first">GitHub Copilot</td>
+                <td class="second">Claude Code</td>
+                <td>Copilot は Issue / plan / acceptance criteria と相性◎。Claude Code は CLAUDE.md / REVIEW.md による repo ルール化が強い。</td>
+              </tr>
+              <tr>
+                <td>既存 repo の調査・理解</td>
+                <td class="first">Claude Code</td>
+                <td class="second">Cursor</td>
+                <td>Claude Code は unfamiliar code exploration を公式 workflow に持つ。Cursor も subagents が並列探索。</td>
+              </tr>
+              <tr>
+                <td>Flutter 実装</td>
+                <td class="first">Claude Code</td>
+                <td class="second">GitHub Copilot</td>
+                <td>両者とも Android Studio を公式サポート。Cursor も JetBrains 寄せなら有力、Codex は Android Studio 明示が確認できず。</td>
+              </tr>
+              <tr>
+                <td>FastAPI / PostgreSQL / nginx の横断修正</td>
+                <td class="first">Claude Code</td>
+                <td class="second">OpenAI Codex</td>
+                <td>repo 全体の理解、コマンド実行、複数ファイル編集、テスト実行の流れが強い。</td>
+              </tr>
+              <tr>
+                <td>PR レビュー</td>
+                <td class="first">Copilot / Codex</td>
+                <td class="second">Cursor Bugbot</td>
+                <td>Copilot は標準レビューと suggested changes、Codex は P0/P1 集中、Cursor は Bugbot が専用 PR review。個人利用しやすさでは Copilot。</td>
+              </tr>
+              <tr>
+                <td>テスト追加・不足テスト補完</td>
+                <td class="first">Claude Code</td>
+                <td class="second">GitHub Copilot</td>
+                <td>Claude Code は writing tests を common workflow に明示。Copilot も test generation を公式チュートリアル化。</td>
+              </tr>
+              <tr>
+                <td>定期処理・CI 自動化</td>
+                <td class="first">Copilot workflow</td>
+                <td class="second">Codex GitHub Action</td>
+                <td>Copilot CLI は programmatic mode / Actions / autopilot mode、Codex も GitHub Action を提供。</td>
+              </tr>
             </tbody>
           </table>
         </div>
       </div>
     </section>
 
-    
     <section>
       <h2>ツール詳細</h2>
-      
+
       <div class="card">
         <div class="tool-header">
-          <h3>OpenAI Codex</h3>
-          <span class="tool-position">comment-driven 実装委任・PR レビュー担当</span>
+          <h3>GitHub Copilot family</h3>
+          <span class="tool-position">運用の背骨</span>
         </div>
-        <div class="tool-oneline">GitHub Issue/PR コメントから @codex で cloud task を起動できる、comment-driven 委任と高シグナル PR レビューに強い実装エンジン。</div>
+        <div class="tool-oneline">GitHub Issue 作成・更新・assign から cloud agent による repository research・plan・branch 変更・PR 作成までを GitHub-native フローで一気通貫に進められる、Issues 駆動運用の中核。</div>
 
         <div class="two-col">
           <div class="sub-section">
             <h4>得意なこと</h4>
             <div class="tag-list">
-              
-              <span class="tag">GitHub Issue/PR コメントから @codex で cloud task 起動</span>
-              
-              <span class="tag">AGENTS.md によるプロジェクト規約共有</span>
-              
-              <span class="tag">GitHub 上でのコードレビュー（P0/P1 中心の高シグナル型）</span>
-              
-              <span class="tag">自動レビュー</span>
-              
-              <span class="tag">並列 cloud task</span>
-              
-              <span class="tag">既存 codebase オンボーディング</span>
-              
-              <span class="tag">複数ファイル編集とコマンド実行</span>
-              
+              <span class="tag">Issue 作成・更新・sub-issue 化</span>
+              <span class="tag">Issue assign による cloud agent 自動着手</span>
+              <span class="tag">repo research → plan → branch 変更 → PR 作成</span>
+              <span class="tag">Copilot CLI の programmatic / autopilot mode</span>
+              <span class="tag">GitHub Actions 連携で自動化</span>
+              <span class="tag">標準的な PR code review と suggested changes</span>
+              <span class="tag">test generation の公式チュートリアル化</span>
+              <span class="tag">JetBrains / Android Studio 対応</span>
             </div>
           </div>
           <div class="sub-section">
             <h4>苦手なこと</h4>
             <div class="tag-list">
-              
-              <span class="tag weak">IDE 拡張は公式に VS Code extension が中心</span>
-              
-              <span class="tag weak">API key 利用では GitHub code review など cloud-based features が使えない</span>
-              
-              <span class="tag weak">Android Studio 主体の Flutter チームとは相性差が出る</span>
-              
-              <span class="tag weak">cloud features を最大活用するには GitHub 連携設計が必要</span>
-              
+              <span class="tag weak">code review は custom instruction の先頭 4,000 文字のみ参照</span>
+              <span class="tag weak">2026-06-01 から usage-based billing へ移行</span>
+              <span class="tag weak">既存 repo の深い読解は Claude Code がやや優位</span>
+              <span class="tag weak">長文ルールでのレビュー運用には向かない</span>
             </div>
           </div>
         </div>
 
         <div class="sub-section" style="margin-bottom:16px">
-          <h4>スタック適性（Flutter / FastAPI / PostgreSQL / nginx）</h4>
+          <h4>スタック適性</h4>
           <div class="stack-grid">
-            
             <div class="stack-item">
-              <div class="stack-name">flutter</div>
-              <div style="margin-bottom:4px">
-                
-                <span class="rating-chip r-mid">中</span>
-                
-              </div>
-              <div class="stack-reason">公式 IDE 拡張は VS Code extension が中心。Android Studio 主体だと CLI / browser 併用前提になる。</div>
+              <div class="stack-name">Flutter</div>
+              <div style="margin-bottom:4px"><span class="rating-chip r-high">高</span></div>
+              <div class="stack-reason">JetBrains / Android Studio に対応。Flutter を Android Studio で書く運用と相性◎。</div>
             </div>
-            
             <div class="stack-item">
-              <div class="stack-name">fastapi</div>
-              <div style="margin-bottom:4px">
-                
-                <span class="rating-chip r-high">高</span>
-                
-              </div>
-              <div class="stack-reason">repo を read / edit / run でき、cloud tasks でもコード変更と理解を支援する。</div>
+              <div class="stack-name">FastAPI / PostgreSQL / nginx</div>
+              <div style="margin-bottom:4px"><span class="rating-chip r-high">高</span></div>
+              <div class="stack-reason">cloud agent が test coverage 改善やバグ修正、CLI が terminal / scripts / Actions workflows をカバー。</div>
             </div>
-            
             <div class="stack-item">
-              <div class="stack-name">postgresql</div>
-              <div style="margin-bottom:4px">
-                
-                <span class="rating-chip r-high">高</span>
-                
-              </div>
-              <div class="stack-reason">migration やテストデータ、SQL 修正などの作業自動化に向く。</div>
+              <div class="stack-name">GitHub Issues 自走</div>
+              <div style="margin-bottom:4px"><span class="rating-chip r-very-high">非常に高い</span></div>
+              <div class="stack-reason">Issue 作成時に assign 可、assign 後は自動着手。repository research・plan・branch・PR まで標準化。</div>
             </div>
-            
             <div class="stack-item">
-              <div class="stack-name">nginx</div>
-              <div style="margin-bottom:4px">
-                
-                <span class="rating-chip r-high">高</span>
-                
-              </div>
-              <div class="stack-reason">設定ファイルの差分確認や検証フローに組み込みやすい。</div>
+              <div class="stack-name">PR レビュー</div>
+              <div style="margin-bottom:4px"><span class="rating-chip r-high">高</span></div>
+              <div class="stack-reason">suggested changes を返し、cloud agent に suggestion 実装を渡せる。標準 reviewer として最も入れやすい。</div>
             </div>
-            
-            <div class="stack-item">
-              <div class="stack-name">github_issues</div>
-              <div style="margin-bottom:4px">
-                
-                <span class="rating-chip r-high">高</span>
-                
-              </div>
-              <div class="stack-reason">@codex で Issue/PR コメントから cloud task を起動でき、PR review 後に @codex fix も可能。</div>
-            </div>
-            
-            <div class="stack-item">
-              <div class="stack-name">github_actions</div>
-              <div style="margin-bottom:4px">
-                
-                <span class="rating-chip r-high">高</span>
-                
-              </div>
-              <div class="stack-reason">Codex GitHub Action でレビューや品質ゲートを CI に組み込める。</div>
-            </div>
-            
           </div>
         </div>
 
         <div class="sub-section">
-          <h4>料金メモ <small style="font-weight:normal;color:#aaa">（確認日: 2026-05-02）</small></h4>
-          <div class="pricing-summary">Free / Go / Plus / Pro / Business / Enterprise &amp; Edu / API Key の階層。Pro は $100/月から、Business は pay as you go。API key 利用では GitHub code review など cloud features が使えない点に注意。</div>
+          <h4>料金メモ <small style="font-weight:normal;color:#aaa">（確認日: 2026-05-07）</small></h4>
+          <div class="pricing-summary">Free / Student / Pro / Pro+ / Business / Enterprise の階層。GitHub Docs は 2026-06-01 から usage-based billing へ移行と明記。</div>
           <div class="plan-list">
-            
-            <div class="plan-chip"><strong>ChatGPT Free</strong>　$0/月</div>
-            
-            <div class="plan-chip"><strong>ChatGPT Go</strong>　廉価帯（公式参照）</div>
-            
-            <div class="plan-chip"><strong>ChatGPT Plus</strong>　$20/月</div>
-            
-            <div class="plan-chip"><strong>ChatGPT Pro</strong>　$100/月から</div>
-            
-            <div class="plan-chip"><strong>ChatGPT Business</strong>　pay as you go</div>
-            
-            <div class="plan-chip"><strong>Codex API Key</strong>　usage-based 課金（cloud features は不可）</div>
-            
+            <div class="plan-chip"><strong>Pro</strong>　$10/月</div>
+            <div class="plan-chip"><strong>Pro+</strong>　$39/月</div>
+            <div class="plan-chip"><strong>Business</strong>　$19/seat/月</div>
+            <div class="plan-chip"><strong>Enterprise</strong>　$39/seat/月</div>
           </div>
-          
           <ul class="cost-notes">
-            
-            <li>ChatGPTプラン内利用とAPI利用は分けて考える。</li>
-            
-            <li>Business / Enterprise では追加クレジット型料金の確認が必要。</li>
-            
-            <li>CIで頻繁に使う場合は利用回数とトークン量を監視する。</li>
-            
+            <li>2026-06-01 以降は billing docs を併読のこと。</li>
+            <li>個人から小規模組織まで階段状に導入しやすい。</li>
+            <li>code review の custom instruction は 4,000 文字制限あり。</li>
           </ul>
-          
           <div class="url-list">
-            
-            <a class="url-btn" href="https://developers.openai.com/codex" target="_blank" rel="noopener">product</a>
-            
-            <a class="url-btn" href="https://developers.openai.com/codex/pricing" target="_blank" rel="noopener">pricing</a>
-            
-            <a class="url-btn" href="https://developers.openai.com/codex/integrations/github" target="_blank" rel="noopener">github_integration</a>
-            
-            <a class="url-btn" href="https://developers.openai.com/codex/cloud" target="_blank" rel="noopener">cloud</a>
-            
-            <a class="url-btn" href="https://developers.openai.com/codex/guides/agents-md" target="_blank" rel="noopener">agents_md</a>
-            
+            <a class="url-btn" href="https://github.com/features/copilot/plans" target="_blank" rel="noopener">plans</a>
+            <a class="url-btn" href="https://docs.github.com/en/copilot" target="_blank" rel="noopener">docs</a>
+            <a class="url-btn" href="https://docs.github.com/en/copilot/concepts/agents/coding-agent" target="_blank" rel="noopener">cloud agent</a>
           </div>
         </div>
       </div>
-      
+
       <div class="card">
         <div class="tool-header">
           <h3>Claude Code</h3>
-          <span class="tool-position">重い実装・既存リポジトリ理解・テスト作成担当</span>
+          <span class="tool-position">重い実装エンジン</span>
         </div>
-        <div class="tool-oneline">コードベース全体の理解、複数ファイル編集、Android Studio サポート、テスト作成に強い深掘り実装エンジン。</div>
+        <div class="tool-oneline">codebase を読み・編集し・コマンドを実行し PR を作る、深い repo 理解を伴う実装エンジン。Android Studio 公式サポートで Flutter 実装との相性が最も良く、テスト作成・回帰確認の補助としても最強。</div>
 
         <div class="two-col">
           <div class="sub-section">
             <h4>得意なこと</h4>
             <div class="tag-list">
-              
-              <span class="tag">コードベース全体の読解</span>
-              
-              <span class="tag">Plan Mode による仕様整理</span>
-              
+              <span class="tag">codebase 全体の深い読解</span>
               <span class="tag">複数ファイル編集とコマンド実行</span>
-              
-              <span class="tag">GitHub Issue / PR 上での @claude メンション対応</span>
-              
+              <span class="tag">@claude メンションで Issue/PR 対応</span>
+              <span class="tag">unfamiliar code exploration</span>
+              <span class="tag">debugging / refactoring / writing tests</span>
               <span class="tag">JetBrains / Android Studio 公式サポート</span>
-              
-              <span class="tag">CLAUDE.md / .claude/rules による規約共有</span>
-              
-              <span class="tag">subagents / Skills による作業標準化</span>
-              
-              <span class="tag">writing tests を日常 workflow として掲げる</span>
-              
+              <span class="tag">CLAUDE.md / REVIEW.md による規約定着</span>
+              <span class="tag">multi-agent code review（Team / Enterprise）</span>
             </div>
           </div>
           <div class="sub-section">
             <h4>苦手なこと</h4>
             <div class="tag-list">
-              
-              <span class="tag weak">GitHub Actions 利用時は GitHub-hosted runner minutes と API コストが別途発生</span>
-              
-              <span class="tag weak">CLAUDE.md は context, not enforced configuration（hard rule ではない）</span>
-              
-              <span class="tag weak">Code Review は提供条件・追加課金の確認が必要</span>
-              
-              <span class="tag weak">強力な分、利用ルールを決めないとコストや作業範囲が広がりやすい</span>
-              
+              <span class="tag weak">GitHub Actions 利用時は runner minutes と API コスト別途</span>
+              <span class="tag weak">managed Code Review は Team / Enterprise 向け research preview</span>
+              <span class="tag weak">Issue artifact の生成・更新は Copilot に一歩譲る</span>
+              <span class="tag weak">利用ルールを決めないとコストが広がりやすい</span>
             </div>
           </div>
         </div>
 
         <div class="sub-section" style="margin-bottom:16px">
-          <h4>スタック適性（Flutter / FastAPI / PostgreSQL / nginx）</h4>
+          <h4>スタック適性</h4>
           <div class="stack-grid">
-            
             <div class="stack-item">
-              <div class="stack-name">flutter</div>
-              <div style="margin-bottom:4px">
-                
-                <span class="rating-chip r-high">高</span>
-                
-              </div>
-              <div class="stack-reason">JetBrains / Android Studio を公式サポート。Flutter チームとの相性が良い。</div>
+              <div class="stack-name">Flutter</div>
+              <div style="margin-bottom:4px"><span class="rating-chip r-high">高</span></div>
+              <div class="stack-reason">JetBrains plugin が Android Studio を含む JetBrains IDEs をサポート。Flutter 実装に最も綺麗に乗る。</div>
             </div>
-            
             <div class="stack-item">
-              <div class="stack-name">fastapi</div>
-              <div style="margin-bottom:4px">
-                
-                <span class="rating-chip r-high">高</span>
-                
-              </div>
-              <div class="stack-reason">gather context → take action → verify results の agentic loop で API 実装、依存関係把握、pytest 実行に向く。</div>
+              <div class="stack-name">FastAPI / PostgreSQL / nginx</div>
+              <div style="margin-bottom:4px"><span class="rating-chip r-high">高</span></div>
+              <div class="stack-reason">read/edit/run 型でビルド・コマンド実行・複数ファイル編集に対応。「変更→起動→確認」の反復に強い。</div>
             </div>
-            
             <div class="stack-item">
-              <div class="stack-name">postgresql</div>
-              <div style="margin-bottom:4px">
-                
-                <span class="rating-chip r-high">高</span>
-                
-              </div>
-              <div class="stack-reason">DB migration 要否の判断や影響範囲整理と相性がよい。</div>
+              <div class="stack-name">既存 repo 理解</div>
+              <div style="margin-bottom:4px"><span class="rating-chip r-very-high">非常に高い</span></div>
+              <div class="stack-reason">unfamiliar code exploration を公式 common workflow に持つ。今回比較で最上位。</div>
             </div>
-            
             <div class="stack-item">
-              <div class="stack-name">nginx</div>
-              <div style="margin-bottom:4px">
-                
-                <span class="rating-chip r-high">高</span>
-                
-              </div>
-              <div class="stack-reason">設定変更の影響範囲確認や運用観点のレビューに使いやすい。</div>
+              <div class="stack-name">テスト作成</div>
+              <div style="margin-bottom:4px"><span class="rating-chip r-very-high">非常に高い</span></div>
+              <div class="stack-reason">writing tests を common workflows に明示。不足テスト追加・回帰確認の補助として最強。</div>
             </div>
-            
-            <div class="stack-item">
-              <div class="stack-name">github_issues</div>
-              <div style="margin-bottom:4px">
-                
-                <span class="rating-chip r-high">高</span>
-                
-              </div>
-              <div class="stack-reason">@claude メンションでコード分析、機能実装、PR 作成が可能。Issue 自体の作成は Copilot の方が自然。</div>
-            </div>
-            
-            <div class="stack-item">
-              <div class="stack-name">github_actions</div>
-              <div style="margin-bottom:4px">
-                
-                <span class="rating-chip r-high">高</span>
-                
-              </div>
-              <div class="stack-reason">GitHub Actions 上で Issue / PR に反応する運用が可能。ただし minutes と API コストの両方が効く。</div>
-            </div>
-            
           </div>
         </div>
 
         <div class="sub-section">
-          <h4>料金メモ <small style="font-weight:normal;color:#aaa">（確認日: 2026-05-02）</small></h4>
-          <div class="pricing-summary">個人は Free / Pro / Max、組織は Team / Enterprise。Pro $20/月、Max 5x $100/月、Max 20x $200/月、Team 標準席 $20、Premium seat $100、Enterprise $20/seat + usage at API rates。</div>
+          <h4>料金メモ <small style="font-weight:normal;color:#aaa">（確認日: 2026-05-07）</small></h4>
+          <div class="pricing-summary">Individual は Pro $20/月、Max $100/月〜。Team は standard seat $20、premium seat $100、Enterprise は $20/seat + usage at API rates。</div>
           <div class="plan-list">
-            
-            <div class="plan-chip"><strong>Claude Free</strong>　$0/月</div>
-            
-            <div class="plan-chip"><strong>Claude Pro</strong>　$20/月</div>
-            
-            <div class="plan-chip"><strong>Claude Max 5x</strong>　$100/月</div>
-            
-            <div class="plan-chip"><strong>Claude Max 20x</strong>　$200/月</div>
-            
-            <div class="plan-chip"><strong>Claude Team 標準席</strong>　$20/席/月</div>
-            
-            <div class="plan-chip"><strong>Claude Team Premium seat</strong>　$100/席/月</div>
-            
-            <div class="plan-chip"><strong>Claude Enterprise</strong>　$20/seat + usage at API rates</div>
-            
+            <div class="plan-chip"><strong>Pro</strong>　$20/月</div>
+            <div class="plan-chip"><strong>Max</strong>　$100/月〜</div>
+            <div class="plan-chip"><strong>Team Standard</strong>　$20/seat/月</div>
+            <div class="plan-chip"><strong>Team Premium</strong>　$100/seat/月</div>
+            <div class="plan-chip"><strong>Enterprise</strong>　$20/seat + usage</div>
           </div>
-          
           <ul class="cost-notes">
-            
-            <li>個人開発では Pro から始めやすい。</li>
-            
-            <li>小規模チームは Team 標準席と Premium seat を混在させやすい。</li>
-            
-            <li>GitHub Actions 利用時は Actions minutes と API コストの両方を考慮する。</li>
-            
-            <li>大量 Code Review を回す場合は事前にコストガードレールを設けたい。</li>
-            
+            <li>個人の入口は明快。組織展開は Team / Enterprise を見る必要あり。</li>
+            <li>GitHub Actions での `@claude` 利用は runner minutes と API コストを併用予算化。</li>
+            <li>terminal / VS Code / desktop / web / JetBrains で利用可能。</li>
           </ul>
-          
           <div class="url-list">
-            
-            <a class="url-btn" href="https://code.claude.com/docs/en/overview" target="_blank" rel="noopener">product</a>
-            
-            <a class="url-btn" href="https://claude.com/pricing" target="_blank" rel="noopener">pricing</a>
-            
-            <a class="url-btn" href="https://code.claude.com/docs/en/github-actions" target="_blank" rel="noopener">github_actions</a>
-            
-            <a class="url-btn" href="https://code.claude.com/docs/en/memory" target="_blank" rel="noopener">memory</a>
-            
-            <a class="url-btn" href="https://code.claude.com/docs/en/code-review" target="_blank" rel="noopener">code_review</a>
-            
-            <a class="url-btn" href="https://code.claude.com/docs/en/jetbrains" target="_blank" rel="noopener">jetbrains</a>
-            
+            <a class="url-btn" href="https://docs.claude.com/en/docs/claude-code/overview" target="_blank" rel="noopener">overview</a>
+            <a class="url-btn" href="https://www.claude.com/pricing" target="_blank" rel="noopener">pricing</a>
+            <a class="url-btn" href="https://docs.claude.com/en/docs/claude-code/github-actions" target="_blank" rel="noopener">github actions</a>
+            <a class="url-btn" href="https://docs.claude.com/en/docs/claude-code/code-review" target="_blank" rel="noopener">code review</a>
           </div>
         </div>
       </div>
-      
+
       <div class="card">
         <div class="tool-header">
-          <h3>GitHub Copilot / cloud agent</h3>
-          <span class="tool-position">GitHub Issues 駆動運用の標準基盤</span>
+          <h3>OpenAI Codex</h3>
+          <span class="tool-position">comment-driven 委任 / 高シグナル PR レビュー</span>
         </div>
-        <div class="tool-oneline">GitHub Issues の作成・割当・自走実装・PR 作成・コードレビュー・CLI 自動化を GitHub 内で完結できる、Issue 駆動運用の標準基盤。</div>
+        <div class="tool-oneline">`@codex` を GitHub の Issues / PRs に付けて cloud task を起動でき、AGENTS.md による repo ルール定着、P0/P1 集中の高シグナル PR レビューが強み。GitHub コメント駆動で仕事を投げる運用と、レビューを重大論点に絞る運用に最も向く。</div>
 
         <div class="two-col">
           <div class="sub-section">
             <h4>得意なこと</h4>
             <div class="tag-list">
-              
-              <span class="tag">GitHub Issue 作成 / 更新 / sub-issue 生成</span>
-              
-              <span class="tag">Issue 割当による cloud agent の自走（repo 調査・計画・ブランチ・PR 作成）</span>
-              
-              <span class="tag">GitHub Copilot code review（any language）</span>
-              
-              <span class="tag">Copilot CLI + GitHub Actions による automation workflow</span>
-              
-              <span class="tag">repository custom instructions</span>
-              
-              <span class="tag">JetBrains / Android Studio / VS Code 互換</span>
-              
-              <span class="tag">GitHub.com / IDE / CLI / Mobile / Actions まで surface が揃う</span>
-              
+              <span class="tag">@codex で Issues / PRs から cloud task 起動</span>
+              <span class="tag">AGENTS.md による repo / ディレクトリ単位の規約定着</span>
+              <span class="tag">P0 / P1 集中の高シグナル PR レビュー</span>
+              <span class="tag">automatic reviews</span>
+              <span class="tag">background parallel tasks</span>
+              <span class="tag">unfamiliar code understanding</span>
+              <span class="tag">Codex GitHub Action による CI 連携</span>
+              <span class="tag">VS Code 系 / JetBrains IDEs 拡張</span>
             </div>
           </div>
           <div class="sub-section">
             <h4>苦手なこと</h4>
             <div class="tag-list">
-              
-              <span class="tag weak">Issue を割り当てた後に追加された Issue コメントは反映されない（PR コメント側で追記する運用が必要）</span>
-              
-              <span class="tag weak">code review は custom instruction files の先頭 4,000 文字までしか読まない</span>
-              
-              <span class="tag weak">GitHub docs は 2026-06-01 から request-based → usage-based billing へ移行と明記</span>
-              
-              <span class="tag weak">1 タスクで複数リポジトリを横断しにくい</span>
-              
-              <span class="tag weak">Code review は人間の代替ではなく補助</span>
-              
+              <span class="tag weak">API Key モードでは GitHub code review など cloud features 不可</span>
+              <span class="tag weak">Issue 構造化は Copilot ほど強くない</span>
+              <span class="tag weak">公式資料で Android Studio 明示が確認できず</span>
+              <span class="tag weak">単純 API 利用では cloud integration の価値が出にくい</span>
             </div>
           </div>
         </div>
 
         <div class="sub-section" style="margin-bottom:16px">
-          <h4>スタック適性（Flutter / FastAPI / PostgreSQL / nginx）</h4>
+          <h4>スタック適性</h4>
           <div class="stack-grid">
-            
             <div class="stack-item">
-              <div class="stack-name">flutter</div>
-              <div style="margin-bottom:4px">
-                
-                <span class="rating-chip r-high">高</span>
-                
-              </div>
-              <div class="stack-reason">JetBrains / Android Studio / VS Code に対応。Flutter editor support は強い。</div>
+              <div class="stack-name">Flutter</div>
+              <div style="margin-bottom:4px"><span class="rating-chip r-mid">中</span></div>
+              <div class="stack-reason">VS Code / Cursor / Windsurf / JetBrains に対応。Android Studio 明示は確認できず、Flutter チームでは pilot 検証が必要。</div>
             </div>
-            
             <div class="stack-item">
-              <div class="stack-name">fastapi</div>
-              <div style="margin-bottom:4px">
-                
-                <span class="rating-chip r-high">高</span>
-                
-              </div>
-              <div class="stack-reason">GitHub Actions-powered environment で tests と linters も実行可能。</div>
+              <div class="stack-name">FastAPI / PostgreSQL / nginx</div>
+              <div style="margin-bottom:4px"><span class="rating-chip r-high">高</span></div>
+              <div class="stack-reason">read/edit/run 前提で、GitHub Action で CI/CD jobs、quality checks、migrations などを回せる。</div>
             </div>
-            
             <div class="stack-item">
-              <div class="stack-name">postgresql</div>
-              <div style="margin-bottom:4px">
-                
-                <span class="rating-chip r-high">高</span>
-                
-              </div>
-              <div class="stack-reason">DB 関連修正や migration を Issue 単位に分けると扱いやすい。</div>
+              <div class="stack-name">PR レビュー</div>
+              <div style="margin-bottom:4px"><span class="rating-chip r-high">高</span></div>
+              <div class="stack-reason">PR diff を見て serious issues に絞った review、GitHub では P0/P1 のみを flag。重大度の高い指摘を先に拾える。</div>
             </div>
-            
             <div class="stack-item">
-              <div class="stack-name">nginx</div>
-              <div style="margin-bottom:4px">
-                
-                <span class="rating-chip r-high">高</span>
-                
-              </div>
-              <div class="stack-reason">単一 repo 内の設定修正や CI 検証と相性がよい。</div>
+              <div class="stack-name">テスト作成</div>
+              <div style="margin-bottom:4px"><span class="rating-chip r-high">高</span></div>
+              <div class="stack-reason">regressions / missing tests / documentation issues の検出を明示。レビューで不足テストを見つけて追加させる流れに強い。</div>
             </div>
-            
-            <div class="stack-item">
-              <div class="stack-name">github_issues</div>
-              <div style="margin-bottom:4px">
-                
-                <span class="rating-chip r-very-high">非常に高い</span>
-                
-              </div>
-              <div class="stack-reason">Issue 作成 / 更新 / sub-issue / 割当による自走 / PR 作成が公式導線として揃っている。</div>
-            </div>
-            
-            <div class="stack-item">
-              <div class="stack-name">github_actions</div>
-              <div style="margin-bottom:4px">
-                
-                <span class="rating-chip r-high">高</span>
-                
-              </div>
-              <div class="stack-reason">cloud agent は GitHub Actions-powered environment で動作し、CLI も Actions に組み込める。</div>
-            </div>
-            
           </div>
         </div>
 
         <div class="sub-section">
-          <h4>料金メモ <small style="font-weight:normal;color:#aaa">（確認日: 2026-05-02）</small></h4>
-          <div class="pricing-summary">Free / Pro $10/月、Pro+ $39/月、Business $19/user/月、Enterprise $39/user/月。cloud agent と code review は premium usage と結びつく。2026-06-01 から request-based → usage-based billing へ移行予定。</div>
+          <h4>料金メモ <small style="font-weight:normal;color:#aaa">（確認日: 2026-05-07）</small></h4>
+          <div class="pricing-summary">ChatGPT Plus / Pro / Business / Edu / Enterprise に同梱。Codex pricing では Pro $100/月〜、Business は pay-as-you-go、API Key は usage-based。</div>
           <div class="plan-list">
-            
-            <div class="plan-chip"><strong>GitHub Copilot Free</strong>　$0/月</div>
-            
-            <div class="plan-chip"><strong>GitHub Copilot Pro</strong>　$10/月</div>
-            
-            <div class="plan-chip"><strong>GitHub Copilot Pro+</strong>　$39/月</div>
-            
-            <div class="plan-chip"><strong>GitHub Copilot Business</strong>　$19/user/月</div>
-            
-            <div class="plan-chip"><strong>GitHub Copilot Enterprise</strong>　$39/user/月</div>
-            
+            <div class="plan-chip"><strong>ChatGPT Plus 同梱</strong>　$20/月</div>
+            <div class="plan-chip"><strong>Pro</strong>　$100/月〜</div>
+            <div class="plan-chip"><strong>Business</strong>　pay-as-you-go</div>
+            <div class="plan-chip"><strong>API Key</strong>　usage-based（cloud features 不可）</div>
           </div>
-          
           <ul class="cost-notes">
-            
-            <li>GitHub 中心の小規模開発では費用予測しやすい。</li>
-            
-            <li>code review は premium request を消費する点に注意。</li>
-            
-            <li>2026-06-01 以降の運用費再見積を前提にする。</li>
-            
+            <li>ChatGPT 既利用者は入りやすいが、cloud integration 前提で評価すべき。</li>
+            <li>API Key 単独では GitHub code review / Slack 等の cloud features が使えない。</li>
+            <li>app / cloud / IDE / GitHub Action が揃っており GitHub delegation・review を重視するチームほど価値が出る。</li>
           </ul>
-          
           <div class="url-list">
-            
-            <a class="url-btn" href="https://docs.github.com/en/copilot" target="_blank" rel="noopener">product</a>
-            
-            <a class="url-btn" href="https://github.com/features/copilot/plans" target="_blank" rel="noopener">pricing</a>
-            
-            <a class="url-btn" href="https://docs.github.com/en/copilot/concepts/agents/cloud-agent/about-cloud-agent" target="_blank" rel="noopener">cloud_agent</a>
-            
-            <a class="url-btn" href="https://docs.github.com/en/copilot/concepts/agents/code-review" target="_blank" rel="noopener">code_review</a>
-            
-            <a class="url-btn" href="https://docs.github.com/en/copilot/how-tos/copilot-cli/automate-copilot-cli/automate-with-actions" target="_blank" rel="noopener">cli_automation</a>
-            
+            <a class="url-btn" href="https://developers.openai.com/codex" target="_blank" rel="noopener">overview</a>
+            <a class="url-btn" href="https://developers.openai.com/codex/pricing" target="_blank" rel="noopener">pricing</a>
+            <a class="url-btn" href="https://developers.openai.com/codex/cloud" target="_blank" rel="noopener">cloud</a>
+            <a class="url-btn" href="https://developers.openai.com/codex/integrations/github" target="_blank" rel="noopener">github</a>
+            <a class="url-btn" href="https://developers.openai.com/codex/guides/agents-md" target="_blank" rel="noopener">AGENTS.md</a>
           </div>
         </div>
       </div>
-      
+
       <div class="card">
         <div class="tool-header">
-          <h3>Google Antigravity</h3>
-          <span class="tool-position">agent-first IDE の PoC・実験枠</span>
+          <h3>Cursor</h3>
+          <span class="tool-position">IDE 主導 / cloud agents / Bugbot</span>
         </div>
-        <div class="tool-oneline">Agent Manager / Editor / Browser / Terminal / Source Control / Rules / Workflows / MCP を備えた、ローカルインストール型の agent-first 開発プラットフォーム。</div>
+        <div class="tool-oneline">GitHub / Slack / Linear / JetBrains から agent を起動でき、clarifying questions → plan → background execution、subagents の並列探索、`/test` `/pr` `/code-review` skills を備える「agent-first IDE」。Bugbot による専用 PR レビューも別製品で提供。</div>
 
         <div class="two-col">
           <div class="sub-section">
             <h4>得意なこと</h4>
             <div class="tag-list">
-              
-              <span class="tag">Agent Manager（&#34;Mission Control&#34;）による複数エージェント管理</span>
-              
-              <span class="tag">Editor / Browser / Terminal / Source Control の統合</span>
-              
-              <span class="tag">Rules / Workflows（.agents/rules）による振る舞い制御</span>
-              
-              <span class="tag">MCP によるローカルツール / DB / 外部サービス接続</span>
-              
-              <span class="tag">Individual plan $0/月の無料枠</span>
-              
-              <span class="tag">ローカルインストール（Mac / Windows / 一部 Linux）</span>
-              
+              <span class="tag">GitHub / Slack / Linear / JetBrains から agent 起動</span>
+              <span class="tag">clarifying questions → plan → background execution</span>
+              <span class="tag">subagents による並列 codebase 探索</span>
+              <span class="tag">skills（/code-review, /pr, /test）</span>
+              <span class="tag">automations / cloud sandbox / self-verification</span>
+              <span class="tag">test coverage automation</span>
+              <span class="tag">Bugbot による Autofix 付き PR レビュー</span>
+              <span class="tag">Cursor IDE 主導の agent-first UX</span>
             </div>
           </div>
           <div class="sub-section">
             <h4>苦手なこと</h4>
             <div class="tag-list">
-              
-              <span class="tag weak">個人 Gmail 向け preview として案内されており、preview 色が強い</span>
-              
-              <span class="tag weak">公式資料上、GitHub Issues を assignee にした PR 自走フローが明示的でない</span>
-              
-              <span class="tag weak">PR レビューは IDE 内 Review Changes 寄りで、外部レビュアーとしての役割は弱い</span>
-              
-              <span class="tag weak">上位機能は Google AI Pro / Ultra と連動し、コスト管理が分かりにくい</span>
-              
+              <span class="tag weak">GitHub Issue assign → PR の標準線が公式 docs で Copilot ほど明示されていない</span>
+              <span class="tag weak">PR review 本格運用には Bugbot 追加コストが前提化しやすい</span>
+              <span class="tag weak">Android Studio 明示は取得ソースで未確認</span>
+              <span class="tag weak">チーム全員が Cursor 主体でないと価値が出にくい</span>
             </div>
           </div>
         </div>
 
         <div class="sub-section" style="margin-bottom:16px">
-          <h4>スタック適性（Flutter / FastAPI / PostgreSQL / nginx）</h4>
+          <h4>スタック適性</h4>
           <div class="stack-grid">
-            
             <div class="stack-item">
-              <div class="stack-name">flutter</div>
-              <div style="margin-bottom:4px">
-                
-                <span class="rating-chip r-mid">中</span>
-                
-              </div>
-              <div class="stack-reason">Google エコシステム親和性はあるが、Flutter 専用の公式実装導線は明示不足。</div>
+              <div class="stack-name">Flutter</div>
+              <div style="margin-bottom:4px"><span class="rating-chip r-high">高</span></div>
+              <div class="stack-reason">JetBrains IDEs からの agent 起動を product page で提示。Cursor IDE か JetBrains に寄せるなら強い。</div>
             </div>
-            
             <div class="stack-item">
-              <div class="stack-name">fastapi</div>
-              <div style="margin-bottom:4px">
-                
-                <span class="rating-chip r-mid">中</span>
-                
-              </div>
-              <div class="stack-reason">Browser / Terminal / MCP で理論上対応しやすいが、GitHub Issues 運用要件では優先度が低い。</div>
+              <div class="stack-name">FastAPI / PostgreSQL / nginx</div>
+              <div style="margin-bottom:4px"><span class="rating-chip r-high">高</span></div>
+              <div class="stack-reason">agents / cloud agents / MCP / automations / skills で background 実行と self-verification を行う。</div>
             </div>
-            
             <div class="stack-item">
-              <div class="stack-name">postgresql</div>
-              <div style="margin-bottom:4px">
-                
-                <span class="rating-chip r-mid">中</span>
-                
-              </div>
-              <div class="stack-reason">MCP 経由でデータベース接続可能だが、業務システムでの実績は限定的。</div>
+              <div class="stack-name">既存 repo 理解</div>
+              <div style="margin-bottom:4px"><span class="rating-chip r-high">高</span></div>
+              <div class="stack-reason">「codebase を deeply learns」「subagents run in parallel to explore your codebase」と公式が明示。</div>
             </div>
-            
             <div class="stack-item">
-              <div class="stack-name">nginx</div>
-              <div style="margin-bottom:4px">
-                
-                <span class="rating-chip r-mid">中</span>
-                
-              </div>
-              <div class="stack-reason">Terminal で設定変更は可能だが、専用の検証ワークフローは明示されない。</div>
+              <div class="stack-name">PR レビュー（Bugbot）</div>
+              <div style="margin-bottom:4px"><span class="rating-chip r-high">高</span></div>
+              <div class="stack-reason">Bugbot が real bugs を検出する別製品 AI code review。Autofix で cloud agents が自動修正提案も可能。</div>
             </div>
-            
-            <div class="stack-item">
-              <div class="stack-name">github_issues</div>
-              <div style="margin-bottom:4px">
-                
-                <span class="rating-chip r-low">低</span>
-                
-              </div>
-              <div class="stack-reason">GitHub Issues-native delegation は今回確認した公式資料では他ツールほど明示されていない。</div>
-            </div>
-            
-            <div class="stack-item">
-              <div class="stack-name">github_actions</div>
-              <div style="margin-bottom:4px">
-                
-                <span class="rating-chip r-mid">中</span>
-                
-              </div>
-              <div class="stack-reason">Source Control 統合はあるが、GitHub Actions 連携の標準フローは明示不足。</div>
-            </div>
-            
           </div>
         </div>
 
         <div class="sub-section">
-          <h4>料金メモ <small style="font-weight:normal;color:#aaa">（確認日: 2026-05-02）</small></h4>
-          <div class="pricing-summary">Individual plan $0/月から。上位機能は Google AI Pro（$19.99/月）/ Ultra（$249.99/月）と連動。</div>
+          <h4>料金メモ <small style="font-weight:normal;color:#aaa">（確認日: 2026-05-07）</small></h4>
+          <div class="pricing-summary">Hobby Free / Pro $20 / Pro+ $60 / Ultra $200 / Teams $40/user。PR レビュー本格運用には Bugbot Pro / Teams（$40/user/月〜）の別枠が前提化しやすい。</div>
           <div class="plan-list">
-            
-            <div class="plan-chip"><strong>Antigravity Individual</strong>　$0/月</div>
-            
-            <div class="plan-chip"><strong>Google AI Pro</strong>　$19.99/月</div>
-            
-            <div class="plan-chip"><strong>Google AI Ultra</strong>　$249.99/月</div>
-            
+            <div class="plan-chip"><strong>Hobby</strong>　Free</div>
+            <div class="plan-chip"><strong>Pro</strong>　$20/月</div>
+            <div class="plan-chip"><strong>Pro+</strong>　$60/月</div>
+            <div class="plan-chip"><strong>Ultra</strong>　$200/月</div>
+            <div class="plan-chip"><strong>Teams</strong>　$40/user/月</div>
+            <div class="plan-chip"><strong>Bugbot</strong>　$40/user/月〜</div>
           </div>
-          
           <ul class="cost-notes">
-            
-            <li>個人 PoC には始めやすい。</li>
-            
-            <li>実務の標準基盤としてはコストと preview 状態の両方を要確認。</li>
-            
-            <li>上位プランの higher quotas / higher limits は Google AI Pro / Ultra に紐づく。</li>
-            
+            <li>個人で Pro から cloud agents が使え、Teams は centralized billing / analytics / privacy mode を備える。</li>
+            <li>PR review を本格化するなら Bugbot 追加費用を計上。</li>
+            <li>「チーム全員が Cursor 主体か」が導入成否を大きく左右。</li>
           </ul>
-          
           <div class="url-list">
-            
-            <a class="url-btn" href="https://antigravity.google/" target="_blank" rel="noopener">product</a>
-            
-            <a class="url-btn" href="https://antigravity.google/pricing" target="_blank" rel="noopener">pricing</a>
-            
-            <a class="url-btn" href="https://antigravity.google/docs" target="_blank" rel="noopener">docs</a>
-            
-            <a class="url-btn" href="https://antigravity.google/docs/rules-workflows" target="_blank" rel="noopener">rules_workflows</a>
-            
-            <a class="url-btn" href="https://antigravity.google/docs/mcp" target="_blank" rel="noopener">mcp</a>
-            
-            <a class="url-btn" href="https://antigravity.google/download" target="_blank" rel="noopener">download</a>
-            
+            <a class="url-btn" href="https://cursor.com/" target="_blank" rel="noopener">product</a>
+            <a class="url-btn" href="https://cursor.com/pricing" target="_blank" rel="noopener">pricing</a>
+            <a class="url-btn" href="https://cursor.com/blog/automations" target="_blank" rel="noopener">automations</a>
+            <a class="url-btn" href="https://cursor.com/bugbot" target="_blank" rel="noopener">bugbot</a>
           </div>
         </div>
       </div>
-      
     </section>
 
-    
+    <section>
+      <h2>推奨運用フロー</h2>
+      <div class="card">
+        <div class="summary-oneline">Issue を GitHub の正本にして、実装エンジンを状況に応じて差し替える。</div>
+        <ol style="padding-left: 24px; margin-top: 12px;">
+          <li style="margin-bottom: 6px;"><strong>GitHub Issue に仕様・受入条件を書く</strong></li>
+          <li style="margin-bottom: 6px;"><strong>Copilot で Issue を整形・分割</strong>（仕様整理 / sub-issue 化）</li>
+          <li style="margin-bottom: 6px;">タスク種別で実装エンジンを選択
+            <ul style="margin-top: 4px; padding-left: 20px;">
+              <li>標準タスク → <strong>Copilot cloud agent</strong> に assign</li>
+              <li>重い修正・深い調査 → <strong>Claude Code</strong> に依頼</li>
+              <li>GitHub コメント駆動の委任 → <strong>Codex</strong> に `@codex`</li>
+              <li>IDE 主導 / 並列探索 → <strong>Cursor</strong> cloud agent / automations</li>
+            </ul>
+          </li>
+          <li style="margin-bottom: 6px;"><strong>Draft PR</strong> が起こる</li>
+          <li style="margin-bottom: 6px;"><strong>PR review</strong>: Copilot / Codex / Bugbot / Claude Review</li>
+          <li style="margin-bottom: 6px;"><strong>不足テスト補完</strong>: Claude Code / Copilot / Cursor</li>
+          <li><strong>merge</strong></li>
+        </ol>
+      </div>
+    </section>
+
     <section>
       <h2>おすすめ構成</h2>
       <div class="config-grid">
 
-        
-        
         <div class="config-card">
           <h3>個人開発者向け</h3>
-          <div class="config-summary">第一候補は GitHub Copilot Pro。Android Studio 中心の Flutter 開発なら Claude Pro、GitHub comment-driven delegation と PR review を重視するなら Codex Plus / Pro を足す。Antigravity は探索・PoC 用の実験枠。</div>
+          <div class="config-summary">価格が最も入りやすく、GitHub Issues を軸に運用を組みやすい <strong>GitHub Copilot Pro</strong> が第一候補。Flutter 実装・既存 repo 理解・テスト補完を強めたいなら Claude Pro を追加、IDE 主体なら Cursor Pro、GitHub delegation / review 重視なら Codex を追加。</div>
           <div class="config-row">
             <div class="role">第一候補</div>
-            <div class="tool-name">
-              GitHub Copilot / cloud agent
-            </div>
-            <div class="reason">GitHub Issues 起点の Issue → PR 自走に最も自然。Pro $10/月で導入しやすい。</div>
+            <div class="tool-name">GitHub Copilot Pro（$10/月）</div>
+            <div class="reason">Issue 起点の Issue → PR 自走に最も自然。Android Studio 対応で Flutter にも合う。</div>
           </div>
           <div class="config-row">
-            <div class="role">現実的な代替</div>
-            <div class="tool-name">
-              Claude Code
-            </div>
-            <div class="reason">Android Studio で Flutter を実装するなら相性最良。Pro $20/月で深い repo 理解とテスト作成に強い。</div>
+            <div class="role">追加候補①</div>
+            <div class="tool-name">Claude Pro（$20/月）</div>
+            <div class="reason">Android Studio で Flutter を実装するなら相性最良。深い repo 理解・テスト作成・回帰確認の補助として強力。</div>
           </div>
           <div class="config-row">
-            <div class="role">追加候補</div>
-            <div class="tool-name">
-              OpenAI Codex
-            </div>
-            <div class="reason">ChatGPT 既利用者で、GitHub comment-driven delegation と高シグナル PR レビューを強化したい場合に有力。</div>
+            <div class="role">追加候補②</div>
+            <div class="tool-name">Cursor Pro（$20/月）</div>
+            <div class="reason">あなた自身が Cursor を主エディタにするなら有力。subagents・automations・skills を IDE で使い倒せる。</div>
+          </div>
+          <div class="config-row">
+            <div class="role">追加候補③</div>
+            <div class="tool-name">OpenAI Codex（ChatGPT 同梱 / Pro $100〜）</div>
+            <div class="reason">GitHub 上で `@codex` delegation や P0/P1 集中レビューを重視する場合に有力。ChatGPT 既利用者は入りやすい。</div>
           </div>
         </div>
 
-        
-        
         <div class="config-card">
           <h3>小規模事業者向け</h3>
-          <div class="config-summary">GitHub Copilot Business をベースに、仕様責任者や Tech Lead が Claude Code で深掘り、CI 品質ゲートと PR レビューに Codex を組み込む構成が実務的。Antigravity は PoC 枠として位置づける。</div>
+          <div class="config-summary">GitHub Copilot Business をベースに、仕様責任者や Tech Lead が Claude Code で深掘り、CI 品質ゲートと PR レビューに Codex を組み込む構成が実務的。Cursor は IDE 主体メンバーや Bugbot 評価枠として位置づける。</div>
           <div class="config-row">
-            <div class="role">ベースツール</div>
-            <div class="tool-name">
-              GitHub Copilot / cloud agent
-            </div>
+            <div class="role">ベース</div>
+            <div class="tool-name">GitHub Copilot Business（$19/seat/月）</div>
             <div class="reason">Issue → PR の自走実装を GitHub 内で回しやすい。2026-06-01 以降の usage-based billing に注意して見積もる。</div>
           </div>
           <div class="config-row">
-            <div class="role">設計・レビュー</div>
-            <div class="tool-name">
-              Claude Code
-            </div>
-            <div class="reason">仕様整理、影響範囲調査、テスト作成、深い repo 理解に強い。</div>
+            <div class="role">設計・深掘り実装</div>
+            <div class="tool-name">Claude Code Team（$20/seat〜）</div>
+            <div class="reason">仕様整理、影響範囲調査、テスト作成、深い repo 理解。Android Studio + Flutter チームには特に有効。</div>
           </div>
           <div class="config-row">
             <div class="role">品質ゲート</div>
-            <div class="tool-name">
-              OpenAI Codex
-            </div>
+            <div class="tool-name">OpenAI Codex（Business pay-as-you-go）</div>
             <div class="reason">GitHub 上での P0/P1 中心の高シグナル PR レビュー、AGENTS.md による規約定着、横断リファクタに向く。</div>
+          </div>
+          <div class="config-row">
+            <div class="role">追加評価枠</div>
+            <div class="tool-name">Cursor Teams + Bugbot（$40/user/月 + $40/user/月〜）</div>
+            <div class="reason">PR レビューの自動化が本格的な課題になってから Bugbot 追加評価。Cursor IDE 主体メンバーが多い場合に有力。</div>
           </div>
         </div>
 
+      </div>
+    </section>
+
+    <section>
+      <h2>留意点</h2>
+      <div class="card">
+        <div class="note">
+          <strong>GitHub Copilot は「モデル」ではなく「GitHub-native な運用面」で評価すべき。</strong>
+          GitHub Docs は複数モデル対応を前提にしており、Copilot の強みは Issue・PR・GitHub.com・CLI・Actions をまたぐ運用導線にあります。一方 Claude Code / Codex / Cursor は、それぞれ repo 理解や IDE / cloud agent の個性で差が出ます。
+        </div>
+        <div style="margin-top: 12px;" class="note">
+          <strong>料金・提供条件は変わりやすい。</strong>
+          特に GitHub Copilot は 2026-06-01 から usage-based billing へ移行と GitHub Docs が明記しています。導入判断時には料金表だけでなく billing docs も併読し、資料更新時は公式 URL と確認日を必ず更新してください。
+        </div>
       </div>
     </section>
 
@@ -1209,7 +849,8 @@
 
 <footer>
   <div class="container">
-    生成日: 2026-05-02 ／ GitHub Issuesに仕様を書き、そのIssueを起点に生成AIが設計・実装・テスト・PR作成・レビューを支援する業務システム開発運用のための比較データ。
+    生成日: 2026-05-07 ／ GitHub Issues に仕様を書き、そのIssueを起点に生成AIが設計・実装・テスト・PR作成・レビューを支援する業務システム開発運用のための比較データ。<br>
+    対象スタック: Flutter + nginx + FastAPI + PostgreSQL + GitHub Issues
   </div>
 </footer>
 
