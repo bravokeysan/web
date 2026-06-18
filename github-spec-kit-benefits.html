@@ -1,0 +1,951 @@
+<!doctype html>
+<html lang="ja">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="GitHub Spec Kitを導入すると何ができ、開発がどう便利になるかを整理した資料">
+  <title>GitHub Spec Kitを導入する利点</title>
+  <style>
+    :root {
+      color-scheme: light dark;
+      --bg: #f5f7fb;
+      --surface: #ffffff;
+      --surface-2: #f0f4fa;
+      --text: #172033;
+      --muted: #5b6577;
+      --border: #d8dfeb;
+      --accent: #315efb;
+      --accent-soft: #eaf0ff;
+      --code: #101827;
+      --code-text: #ecf2ff;
+      --shadow: 0 12px 35px rgba(23, 32, 51, 0.08);
+      --max: 1180px;
+    }
+
+    @media (prefers-color-scheme: dark) {
+      :root {
+        --bg: #0f1420;
+        --surface: #171e2c;
+        --surface-2: #20293a;
+        --text: #edf2ff;
+        --muted: #aeb8ca;
+        --border: #354057;
+        --accent: #8eabff;
+        --accent-soft: #233158;
+        --code: #090d15;
+        --code-text: #eaf0ff;
+        --shadow: none;
+      }
+    }
+
+    * { box-sizing: border-box; }
+    html { scroll-behavior: smooth; }
+    body {
+      margin: 0;
+      background: var(--bg);
+      color: var(--text);
+      font-family:
+        -apple-system, BlinkMacSystemFont, "Segoe UI",
+        "Hiragino Kaku Gothic ProN", "Yu Gothic", "Meiryo", sans-serif;
+      line-height: 1.8;
+    }
+
+    a { color: var(--accent); }
+    a:hover { text-decoration-thickness: 2px; }
+
+    .page {
+      display: grid;
+      grid-template-columns: 280px minmax(0, 1fr);
+      gap: 28px;
+      width: min(var(--max), calc(100% - 32px));
+      margin: 28px auto 64px;
+    }
+
+    .sidebar {
+      position: sticky;
+      top: 20px;
+      align-self: start;
+      max-height: calc(100vh - 40px);
+      overflow: auto;
+      padding: 22px;
+      border: 1px solid var(--border);
+      border-radius: 16px;
+      background: var(--surface);
+      box-shadow: var(--shadow);
+    }
+
+    .sidebar h2 {
+      margin: 0 0 10px;
+      font-size: 1rem;
+    }
+
+    .sidebar .meta {
+      color: var(--muted);
+      font-size: .86rem;
+      margin-bottom: 16px;
+    }
+
+    #toc {
+      list-style: none;
+      margin: 0;
+      padding: 0;
+    }
+
+    #toc li { margin: 5px 0; }
+    #toc li.level-3 { padding-left: 14px; font-size: .9rem; }
+    #toc a {
+      display: block;
+      padding: 5px 8px;
+      border-radius: 8px;
+      color: var(--muted);
+      text-decoration: none;
+    }
+    #toc a:hover {
+      color: var(--text);
+      background: var(--surface-2);
+    }
+
+    main {
+      min-width: 0;
+      padding: clamp(24px, 5vw, 58px);
+      border: 1px solid var(--border);
+      border-radius: 20px;
+      background: var(--surface);
+      box-shadow: var(--shadow);
+    }
+
+    h1, h2, h3 {
+      line-height: 1.35;
+      scroll-margin-top: 24px;
+    }
+    h1 {
+      margin-top: 0;
+      font-size: clamp(2rem, 5vw, 3.1rem);
+      letter-spacing: -.03em;
+    }
+    h2 {
+      margin-top: 2.7em;
+      padding-bottom: .35em;
+      border-bottom: 1px solid var(--border);
+      font-size: clamp(1.45rem, 3vw, 2rem);
+    }
+    h3 {
+      margin-top: 2em;
+      font-size: 1.25rem;
+    }
+
+    blockquote {
+      margin: 1.5rem 0;
+      padding: 1rem 1.2rem;
+      border-left: 4px solid var(--accent);
+      background: var(--accent-soft);
+      color: var(--text);
+      border-radius: 0 10px 10px 0;
+    }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      margin: 1.4rem 0 2rem;
+      font-size: .94rem;
+    }
+    th, td {
+      padding: .75rem .8rem;
+      border: 1px solid var(--border);
+      vertical-align: top;
+      text-align: left;
+    }
+    th {
+      background: var(--surface-2);
+      font-weight: 700;
+    }
+
+    pre {
+      overflow-x: auto;
+      padding: 1rem 1.15rem;
+      border-radius: 12px;
+      background: var(--code);
+      color: var(--code-text);
+      line-height: 1.55;
+    }
+    code {
+      font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+      font-size: .92em;
+    }
+    :not(pre) > code {
+      padding: .15em .38em;
+      border: 1px solid var(--border);
+      border-radius: 5px;
+      background: var(--surface-2);
+    }
+
+    hr {
+      margin: 3rem 0;
+      border: 0;
+      border-top: 1px solid var(--border);
+    }
+
+    li { margin: .28rem 0; }
+
+    .top-link {
+      display: inline-block;
+      margin-top: 2rem;
+      font-size: .9rem;
+      color: var(--muted);
+    }
+
+    .source-note {
+      margin-top: 3rem;
+      padding: 1rem 1.2rem;
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      background: var(--surface-2);
+      color: var(--muted);
+      font-size: .9rem;
+    }
+
+    @media (max-width: 900px) {
+      .page { display: block; }
+      .sidebar {
+        position: static;
+        max-height: none;
+        margin-bottom: 18px;
+      }
+      main { padding: 24px 20px 36px; }
+      table {
+        display: block;
+        overflow-x: auto;
+        white-space: normal;
+      }
+    }
+
+    @media print {
+      :root {
+        --bg: #fff;
+        --surface: #fff;
+        --text: #000;
+        --muted: #333;
+        --border: #bbb;
+        --surface-2: #f3f3f3;
+      }
+      body { background: #fff; }
+      .page {
+        display: block;
+        width: 100%;
+        margin: 0;
+      }
+      .sidebar { display: none; }
+      main {
+        border: 0;
+        box-shadow: none;
+        padding: 0;
+      }
+      a { color: #000; text-decoration: none; }
+      pre { white-space: pre-wrap; }
+      h2, h3 { break-after: avoid; }
+      table, pre, blockquote { break-inside: avoid; }
+    }
+  </style>
+</head>
+<body>
+  <div class="page">
+    <aside class="sidebar" aria-label="目次">
+      <h2>目次</h2>
+      <div class="meta">調査日: 2026年6月18日<br>対象: Spec Kit v0.11.1</div>
+      <ol id="toc"></ol>
+    </aside>
+
+    <main id="content">
+      <h1 id="github-spec-kitを導入する利点">GitHub Spec Kitを導入する利点</h1>
+<blockquote>
+<p>調査日: 2026年6月18日<br />
+対象: GitHub Spec Kit v0.11.1時点<br />
+目的: Spec Kitを導入すると何ができるようになり、開発がどう便利になるのかを整理する</p>
+</blockquote>
+<h2 id="1-結論">1. 結論</h2>
+<p>GitHub Spec Kitを導入する最大の利点は、AIへの指示をその場限りのプロンプトで終わらせず、<strong>仕様・計画・タスク・実装を連続した開発プロセスとして管理できること</strong>です。</p>
+<p>特に、次の状態を作りやすくなります。</p>
+<ul>
+<li>実装前に「何を作るか」「なぜ作るか」を明確にする</li>
+<li>曖昧な要件を、計画や実装に入る前に洗い出す</li>
+<li>仕様から技術計画、タスク、実装までを一貫させる</li>
+<li>AIが参照すべき情報をMarkdownファイルとして残す</li>
+<li>仕様・計画・コードの不整合を確認する</li>
+<li>Codex、Claude Codeなど複数のAIコーディングエージェントを同じ開発方式で利用する</li>
+<li>開発ルールや品質基準を、プロジェクト全体へ継続的に適用する</li>
+</ul>
+<p>ただし、Spec Kitを導入しただけで仕様が自動的に正しくなるわけではありません。<br />
+<strong>仕様を更新する運用、生成物をレビューする工程、テストによる検証</strong>は引き続き必要です。</p>
+<hr />
+<h2 id="2-github-spec-kitとは">2. GitHub Spec Kitとは</h2>
+<p>GitHub Spec Kitは、仕様駆動開発（Spec-Driven Development: SDD）を実践するためのオープンソースのツールキットです。</p>
+<p>通常のAIコーディングでは、会話欄へ直接「この機能を作って」と依頼し、そのまま実装へ進みがちです。Spec Kitでは、実装前に次の成果物を段階的に作成します。</p>
+<ol>
+<li>プロジェクト原則</li>
+<li>機能仕様</li>
+<li>技術計画</li>
+<li>実装タスク</li>
+<li>実装結果</li>
+</ol>
+<p>各段階の成果物はMarkdownとして保存され、次の工程でAIへ渡す構造化されたコンテキストになります。</p>
+<p>基本フローは次のとおりです。</p>
+<pre><code class="language-text">constitution
+    ↓
+specify
+    ↓
+clarify
+    ↓
+checklist
+    ↓
+plan
+    ↓
+tasks
+    ↓
+analyze
+    ↓
+implement
+</code></pre>
+<p>小規模な試作では、次の簡易フローも利用できます。</p>
+<pre><code class="language-text">specify → plan → tasks → implement
+</code></pre>
+<hr />
+<h2 id="3-導入すると何ができるようになるか">3. 導入すると何ができるようになるか</h2>
+<table>
+<thead>
+<tr>
+  <th>機能・コマンド</th>
+  <th>できるようになること</th>
+  <th>便利になる点</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+  <td><code>constitution</code></td>
+  <td>プロジェクトの原則、品質基準、開発ルールを定義する</td>
+  <td>AIへ毎回同じ方針を説明する必要が減る</td>
+</tr>
+<tr>
+  <td><code>specify</code></td>
+  <td>要件、利用者、ユーザーストーリー、期待結果を仕様化する</td>
+  <td>実装方法より先に「何を実現するか」を整理できる</td>
+</tr>
+<tr>
+  <td><code>clarify</code></td>
+  <td>仕様の曖昧さ、未決定事項、矛盾を抽出する</td>
+  <td>実装途中の手戻りを減らせる</td>
+</tr>
+<tr>
+  <td><code>checklist</code></td>
+  <td>要件の完全性、明確性、一貫性を点検する</td>
+  <td>仕様レビューの観点を標準化できる</td>
+</tr>
+<tr>
+  <td><code>plan</code></td>
+  <td>技術構成、設計方針、実装方法を計画する</td>
+  <td>要件と技術選定を分離して検討できる</td>
+</tr>
+<tr>
+  <td><code>tasks</code></td>
+  <td>計画を実行可能な作業単位へ分解する</td>
+  <td>AIが巨大な変更を一度に行うことを防ぎやすい</td>
+</tr>
+<tr>
+  <td><code>analyze</code></td>
+  <td>仕様、計画、タスク間の整合性を検査する</td>
+  <td>実装前に抜けや矛盾を発見しやすい</td>
+</tr>
+<tr>
+  <td><code>implement</code></td>
+  <td>タスクに沿って実装を進める</td>
+  <td>根拠のない場当たり的なコード生成を抑えやすい</td>
+</tr>
+<tr>
+  <td><code>taskstoissues</code></td>
+  <td>タスクをGitHub Issuesへ変換する</td>
+  <td>計画と進捗管理をつなげやすい</td>
+</tr>
+<tr>
+  <td><code>converge</code></td>
+  <td>コードと仕様・計画・タスクを比較し、残作業を追加する</td>
+  <td>実装後の不足を再びタスク化しやすい</td>
+</tr>
+<tr>
+  <td>Integrations</td>
+  <td>Codex、Claude Code、Copilotなどへ同じ方式を適用する</td>
+  <td>AIツールを変更しても開発プロセスを維持しやすい</td>
+</tr>
+<tr>
+  <td>Extensions</td>
+  <td>外部連携、品質ゲート、追加工程を導入する</td>
+  <td>必要な機能だけを後から拡張できる</td>
+</tr>
+<tr>
+  <td>Presets</td>
+  <td>テンプレートや用語、工程を組織向けに変更する</td>
+  <td>自社ルールや開発標準へ合わせられる</td>
+</tr>
+<tr>
+  <td>Workflows</td>
+  <td>複数工程を条件分岐や承認を含む手順として自動化する</td>
+  <td>毎回同じ手順を人が指示する必要を減らせる</td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h2 id="4-具体的にどう便利になるか">4. 具体的にどう便利になるか</h2>
+<h3 id="4-1-aiへの指示が属人的になりにくい">4.1 AIへの指示が属人的になりにくい</h3>
+<p>Spec Kitを使わない場合、仕様や注意点が会話履歴、個人の記憶、複数のプロンプトへ分散しやすくなります。</p>
+<p>Spec Kitでは、プロジェクト原則、機能仕様、技術計画、タスクがファイルとして残るため、AIが参照すべき情報を共有しやすくなります。</p>
+<p><strong>導入前</strong></p>
+<pre><code class="language-text">担当者の頭の中
+会話履歴
+一時的なプロンプト
+メモ
+既存コード
+</code></pre>
+<p><strong>導入後</strong></p>
+<pre><code class="language-text">プロジェクト原則
+機能仕様
+技術計画
+実装タスク
+コード
+テスト
+</code></pre>
+<p>情報の置き場所が明確になり、担当者やAIツールが変わっても作業を再開しやすくなります。</p>
+<h3 id="4-2-要件-と-実装方法-を分けて考えられる">4.2 「要件」と「実装方法」を分けて考えられる</h3>
+<p><code>specify</code>では、利用者に何を提供するか、どのような結果が必要かを整理します。<br />
+技術スタックや内部設計は、後続の<code>plan</code>で扱います。</p>
+<p>この分離により、技術的に作りやすいものへ要件が引っ張られることを防ぎやすくなります。</p>
+<h3 id="4-3-曖昧なまま実装へ進むことを防ぎやすい">4.3 曖昧なまま実装へ進むことを防ぎやすい</h3>
+<p>AIは、曖昧な部分が残っていても、それらしい前提を補って実装することがあります。</p>
+<p><code>clarify</code>と<code>checklist</code>を入れることで、次のような問題を実装前に確認できます。</p>
+<ul>
+<li>対象ユーザーが明確か</li>
+<li>正常系だけでなく異常系が定義されているか</li>
+<li>権限やセキュリティ条件が決まっているか</li>
+<li>性能やデータ量の前提があるか</li>
+<li>完了条件を判定できるか</li>
+<li>既存機能との関係が説明されているか</li>
+</ul>
+<h3 id="4-4-大きな作業を管理可能な単位へ分解できる">4.4 大きな作業を管理可能な単位へ分解できる</h3>
+<p><code>tasks</code>は、技術計画を実装可能な単位へ分解します。</p>
+<p>これにより、AIが一度に広範囲を変更することを避け、次の管理がしやすくなります。</p>
+<ul>
+<li>実装順序</li>
+<li>並行実行できる作業</li>
+<li>依存関係</li>
+<li>テスト対象</li>
+<li>完了済み・未完了の区別</li>
+<li>GitHub Issueとの対応</li>
+</ul>
+<h3 id="4-5-実装前に整合性を確認できる">4.5 実装前に整合性を確認できる</h3>
+<p><code>analyze</code>は、仕様、計画、タスクの間に不整合がないかを確認します。</p>
+<p>例えば、次のような状態を発見しやすくなります。</p>
+<ul>
+<li>仕様にある要件がタスクへ反映されていない</li>
+<li>技術計画にあるセキュリティ対策が実装タスクにない</li>
+<li>タスクが仕様にない機能を追加しようとしている</li>
+<li>完了条件を確認するテストが不足している</li>
+</ul>
+<h3 id="4-6-aiツールを変更しても開発方式を維持できる">4.6 AIツールを変更しても開発方式を維持できる</h3>
+<p>Spec KitはCodex CLI、Claude Code、GitHub Copilotなど30以上のAIコーディングエージェントに対応しています。</p>
+<p>Codex向けには主に<code>.agents/skills</code>と<code>AGENTS.md</code>、Claude Code向けには<code>.claude/skills</code>と<code>CLAUDE.md</code>が使用されます。両者は複数導入に対応する構成として公式ドキュメントに記載されています。</p>
+<p>そのため、次のような使い分けが可能です。</p>
+<ul>
+<li>Codexで調査、実装、テストを行う</li>
+<li>Claude Codeで設計レビューや別観点の監査を行う</li>
+<li>同じ仕様とタスクを基準に、異なるAIへ作業を引き継ぐ</li>
+</ul>
+<p>重要なのは、AIモデルを固定することではなく、<strong>仕様と開発プロセスを固定すること</strong>です。</p>
+<h3 id="4-7-開発ルールを毎回説明しなくてよくなる">4.7 開発ルールを毎回説明しなくてよくなる</h3>
+<p><code>constitution</code>には、プロジェクト全体で守るべき原則を定義できます。</p>
+<p>例:</p>
+<ul>
+<li>仕様を唯一の信頼できる情報源として扱う</li>
+<li>データ変更には根拠と監査可能性を持たせる</li>
+<li>過剰な抽象化を避ける</li>
+<li>テストなしで完了としない</li>
+<li>セキュリティ、可用性、保守性を設計段階で確認する</li>
+<li>AI生成コードを無条件で採用しない</li>
+</ul>
+<p>プロジェクトごとの重要方針をAIが継続的に参照できるため、会話ごとの指示漏れを減らせます。</p>
+<hr />
+<h2 id="5-導入前後の違い">5. 導入前後の違い</h2>
+<table>
+<thead>
+<tr>
+  <th>観点</th>
+  <th>導入前</th>
+  <th>導入後</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+  <td>要件</td>
+  <td>会話やメモに分散しやすい</td>
+  <td>機能仕様として保存される</td>
+</tr>
+<tr>
+  <td>AIへの指示</td>
+  <td>毎回プロンプトを作る</td>
+  <td>定型コマンドと成果物を利用する</td>
+</tr>
+<tr>
+  <td>曖昧さ</td>
+  <td>実装中に発覚しやすい</td>
+  <td><code>clarify</code>で事前に確認する</td>
+</tr>
+<tr>
+  <td>品質確認</td>
+  <td>担当者の経験に依存する</td>
+  <td>チェックリストとして標準化する</td>
+</tr>
+<tr>
+  <td>技術計画</td>
+  <td>要件と混ざりやすい</td>
+  <td><code>plan</code>として分離する</td>
+</tr>
+<tr>
+  <td>タスク管理</td>
+  <td>AIが独自に進めやすい</td>
+  <td><code>tasks</code>を基準に実行する</td>
+</tr>
+<tr>
+  <td>整合性</td>
+  <td>人が複数資料を見比べる</td>
+  <td><code>analyze</code>で横断確認する</td>
+</tr>
+<tr>
+  <td>引き継ぎ</td>
+  <td>会話履歴への依存が大きい</td>
+  <td>Git管理されたMarkdownを参照できる</td>
+</tr>
+<tr>
+  <td>AIの切り替え</td>
+  <td>ツールごとに指示を作り直す</td>
+  <td>共通の仕様駆動プロセスを使える</td>
+</tr>
+<tr>
+  <td>実装後の不足</td>
+  <td>手作業で洗い出す</td>
+  <td><code>converge</code>で再評価しやすい</td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h2 id="6-作成される成果物の役割">6. 作成される成果物の役割</h2>
+<p>代表的な成果物は次のとおりです。実際のファイル構成は、Spec Kitのバージョン、Integration、Preset、Extensionによって変わる場合があります。</p>
+<h3 id="プロジェクト全体">プロジェクト全体</h3>
+<pre><code class="language-text">.specify/
+├── memory/
+│   └── constitution.md
+├── templates/
+└── scripts/
+</code></pre>
+<h3 id="機能単位">機能単位</h3>
+<pre><code class="language-text">specs/
+└── 001-feature-name/
+    ├── spec.md
+    ├── plan.md
+    ├── tasks.md
+    └── その他の補助資料
+</code></pre>
+<table>
+<thead>
+<tr>
+  <th>ファイル</th>
+  <th>主な役割</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+  <td><code>constitution.md</code></td>
+  <td>プロジェクト全体の原則、判断基準</td>
+</tr>
+<tr>
+  <td><code>spec.md</code></td>
+  <td>何を実現するか、利用者、要件、完了条件</td>
+</tr>
+<tr>
+  <td><code>plan.md</code></td>
+  <td>技術構成、設計方針、実装戦略</td>
+</tr>
+<tr>
+  <td><code>tasks.md</code></td>
+  <td>実装順序、作業単位、テスト項目</td>
+</tr>
+<tr>
+  <td>コード・テスト</td>
+  <td>仕様と計画を実現した結果</td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h2 id="7-既存プロジェクトでも使えるか">7. 既存プロジェクトでも使えるか</h2>
+<p>Spec Kitは新規開発だけでなく、既存プロジェクトの機能追加や改修にも利用できます。</p>
+<p>公式ドキュメントでは、既存仕様を維持する考え方として、主に次の3方式が示されています。</p>
+<table>
+<thead>
+<tr>
+  <th>方式</th>
+  <th>考え方</th>
+  <th>向いている状況</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+  <td>Flow-Forward Spec</td>
+  <td>変更ごとに新しい仕様を作り、過去仕様を履歴として残す</td>
+  <td>変更履歴や監査性を重視する</td>
+</tr>
+<tr>
+  <td>Living Spec</td>
+  <td>現在有効な<code>spec.md</code>を契約として更新し続ける</td>
+  <td>常に最新版の仕様を一か所で確認したい</td>
+</tr>
+<tr>
+  <td>Flow-Back Spec</td>
+  <td>実装中の発見を仕様や計画へ戻し、全体を再整合させる</td>
+  <td>実装から得た知見を柔軟に反映したい</td>
+</tr>
+</tbody>
+</table>
+<p>仕様をSSOTとして扱いたいプロジェクトでは、基本は<strong>Living Spec</strong>が理解しやすい方式です。ただし、変更の証跡を厳密に残す必要がある機能では、Flow-Forward Specの方が適する場合があります。</p>
+<hr />
+<h2 id="8-craft-erpへ導入する場合の利点">8. craft-erpへ導入する場合の利点</h2>
+<p>craft-erpでは、すでに次の資産があります。</p>
+<ul>
+<li>プロジェクト定義書</li>
+<li>DB設計書</li>
+<li>API仕様書</li>
+<li>セキュリティ方針</li>
+<li>開発ガバナンス</li>
+<li><code>AGENTS.md</code></li>
+<li><code>docs/_inbox/notes.md</code></li>
+<li>GitHub Issuesを使った開発管理</li>
+</ul>
+<p>そのため、Spec Kitはゼロから開発方法を作るためではなく、<strong>既存の方針と仕様を、AIが実装へつなぐ標準工程として補強する用途</strong>に向いています。</p>
+<h3 id="推奨する役割分担">推奨する役割分担</h3>
+<table>
+<thead>
+<tr>
+  <th>現在の文書・仕組み</th>
+  <th>Spec Kit導入後の位置づけ</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+  <td>プロジェクト定義書</td>
+  <td>プロジェクトの目的、範囲、全体方針</td>
+</tr>
+<tr>
+  <td>DB設計書・API仕様書</td>
+  <td>全体設計・共通契約</td>
+</tr>
+<tr>
+  <td>セキュリティ方針</td>
+  <td><code>constitution</code>および各機能の品質条件へ反映</td>
+</tr>
+<tr>
+  <td><code>AGENTS.md</code></td>
+  <td>Codexが守る作業ルール、リポジトリ操作方針</td>
+</tr>
+<tr>
+  <td><code>docs/_inbox/notes.md</code></td>
+  <td>未整理の気付きや検討事項の一時保管</td>
+</tr>
+<tr>
+  <td><code>spec.md</code></td>
+  <td>個別機能の最新要件と受け入れ条件</td>
+</tr>
+<tr>
+  <td><code>plan.md</code></td>
+  <td>個別機能の技術設計と実装方針</td>
+</tr>
+<tr>
+  <td><code>tasks.md</code></td>
+  <td>個別機能の実装・テスト作業</td>
+</tr>
+<tr>
+  <td>GitHub Issues</td>
+  <td>進捗、担当、レビュー、完了管理</td>
+</tr>
+</tbody>
+</table>
+<p>既存文書をすべてSpec Kitへ置き換える必要はありません。<br />
+むしろ、全体文書と機能単位の仕様を分け、重複を避けることが重要です。</p>
+<h3 id="相性がよい点">相性がよい点</h3>
+<ol>
+<li>仕様をMarkdownとGitで管理する方針に合う</li>
+<li>SSOTを重視する思想と合う</li>
+<li>CodexとClaude Codeの併用を標準化できる</li>
+<li>Issue駆動の実装へつなげやすい</li>
+<li>仕様、設計、実装、テストの追跡性を高められる</li>
+<li>AIが勝手に前提を補うリスクを抑えやすい</li>
+<li>将来のチーム開発や監査へ発展させやすい</li>
+</ol>
+<hr />
+<h2 id="9-導入時の注意点">9. 導入時の注意点</h2>
+<h3 id="9-1-文書が増える">9.1 文書が増える</h3>
+<p>小さな修正にフル工程を適用すると、コード変更より文書作成の方が重くなることがあります。</p>
+<p>対応策:</p>
+<ul>
+<li>軽微な変更は簡易フローを使う</li>
+<li>影響が大きい機能だけ品質ゲートをすべて通す</li>
+<li>各文書の役割を明確にし、同じ説明を重複させない</li>
+</ul>
+<h3 id="9-2-aiが作った仕様もレビューが必要">9.2 AIが作った仕様もレビューが必要</h3>
+<p>AIは、曖昧な要求を自然な文章へ整えることはできますが、業務上正しい要件を保証できません。</p>
+<p>特に確認すべき項目:</p>
+<ul>
+<li>業務運用に合っているか</li>
+<li>例外処理が現実的か</li>
+<li>法務・セキュリティ条件が不足していないか</li>
+<li>データの更新根拠を残せるか</li>
+<li>将来の変更に耐えられるか</li>
+</ul>
+<h3 id="9-3-仕様とコードが自動的に同期し続けるわけではない">9.3 仕様とコードが自動的に同期し続けるわけではない</h3>
+<p>コードだけを変更すると、仕様との乖離が発生します。</p>
+<p>変更時は、次の順序を基本にします。</p>
+<pre><code class="language-text">仕様を更新
+  ↓
+計画を更新
+  ↓
+タスクを更新
+  ↓
+analyzeで整合性確認
+  ↓
+実装・テスト
+</code></pre>
+<p>実装中の発見から変更する場合は、コード側の変更理由を仕様や計画へ戻す必要があります。</p>
+<h3 id="9-4-バージョン更新が速い">9.4 バージョン更新が速い</h3>
+<p>Spec Kitは機能追加と変更が活発です。導入時は最新版へ無条件追従するのではなく、使用バージョンを固定し、更新内容を確認してからアップグレードする方が安全です。</p>
+<p>2026年6月18日時点の最新安定版はv0.11.1です。</p>
+<h3 id="9-5-community-extensionは公式本体と同じ扱いにしない">9.5 Community Extensionは公式本体と同じ扱いにしない</h3>
+<p>ExtensionやPresetにはコミュニティ管理のものがあります。</p>
+<p>導入前に次を確認します。</p>
+<ul>
+<li>配布元</li>
+<li>ソースコード</li>
+<li>更新状況</li>
+<li>実行するスクリプト</li>
+<li>外部通信</li>
+<li>ファイル書き換え範囲</li>
+<li>ライセンス</li>
+</ul>
+<hr />
+<h2 id="10-推奨する導入方法">10. 推奨する導入方法</h2>
+<p>最初から全機能へ適用するより、1つの独立した機能で試行する方が適切です。</p>
+<h3 id="第1段階-小規模な機能で試す">第1段階: 小規模な機能で試す</h3>
+<p>候補例:</p>
+<ul>
+<li>署名付きURLによるアップロード・ダウンロード</li>
+<li>棚卸差異の登録</li>
+<li>商品CSV取込</li>
+<li>権限別の画面制御</li>
+<li>操作ログの記録</li>
+</ul>
+<p>実施する工程:</p>
+<pre><code class="language-text">constitution
+→ specify
+→ clarify
+→ plan
+→ tasks
+→ analyze
+→ implement
+</code></pre>
+<h3 id="第2段階-現行文書との重複を確認する">第2段階: 現行文書との重複を確認する</h3>
+<p>確認事項:</p>
+<ul>
+<li><code>constitution</code>とプロジェクト定義書が重複していないか</li>
+<li><code>spec.md</code>とAPI仕様書の役割が混ざっていないか</li>
+<li><code>plan.md</code>が恒久的な設計書になっていないか</li>
+<li><code>tasks.md</code>とGitHub Issueが二重管理になっていないか</li>
+</ul>
+<h3 id="第3段階-運用ルールを決める">第3段階: 運用ルールを決める</h3>
+<p>最低限、次を決めます。</p>
+<ul>
+<li>どの規模の変更からSpec Kitを使うか</li>
+<li>Living SpecとFlow-Forward Specのどちらを基本にするか</li>
+<li>誰が仕様を承認するか</li>
+<li>どの段階でGitHub Issueへ変換するか</li>
+<li>実装完了時に何をレビューするか</li>
+<li>Spec Kitのアップグレード担当と頻度</li>
+</ul>
+<h3 id="推奨方針">推奨方針</h3>
+<p>craft-erpでは、次の運用が適しています。</p>
+<ul>
+<li>基本はLiving Spec</li>
+<li>大きな仕様変更や監査対象はFlow-Forward Spec</li>
+<li>軽微な修正にはフル工程を強制しない</li>
+<li><code>docs/_inbox/notes.md</code>は未整理情報の入口として残す</li>
+<li>採用が決まった内容だけを正式な仕様へ移す</li>
+<li>Codexを主実装、Claude Codeをレビュー役として使い分ける</li>
+<li>最終判断は仕様・テスト・人のレビューで行う</li>
+</ul>
+<hr />
+<h2 id="11-最新情報の収集はcodexとclaudeのどちらが得意か">11. 最新情報の収集はCodexとClaudeのどちらが得意か</h2>
+<h3 id="結論">結論</h3>
+<p><strong>Codexの方が常に最新情報の収集に優れている、という認識は正確ではありません。</strong></p>
+<p>CodexとClaudeのどちらもWeb検索に対応しています。差が出るのは、モデル名よりも次の条件です。</p>
+<ul>
+<li>ライブ検索が有効か</li>
+<li>一次情報へ限定しているか</li>
+<li>検索結果の公開日と更新日を確認しているか</li>
+<li>最新リリースをAPIや公式Releaseで再確認しているか</li>
+<li>調査結果と推測を分けているか</li>
+<li>調査後にファイル作成や検証まで行う必要があるか</li>
+</ul>
+<h3 id="codexの特徴">Codexの特徴</h3>
+<p>Codex CLIにはWeb検索機能があります。</p>
+<p>ただし、通常設定では検索キャッシュを利用する場合があります。最新情報が必要な作業では、次のいずれかを使い、ライブ検索を明示する必要があります。</p>
+<pre><code class="language-bash">codex --search
+</code></pre>
+<p>または設定で次を指定します。</p>
+<pre><code class="language-toml">web_search = &quot;live&quot;
+</code></pre>
+<p>Codexは、検索に続けて次の作業を同じリポジトリ内で行いやすい点が強みです。</p>
+<ul>
+<li>公式情報を調査する</li>
+<li>既存文書を読む</li>
+<li>Markdownを作成・更新する</li>
+<li>HTMLへ変換する</li>
+<li>CSSを調整する</li>
+<li>ローカルで表示確認する</li>
+<li>Git差分を確認する</li>
+<li>テストやLintを実行する</li>
+</ul>
+<p>したがって、<strong>調査結果をそのままリポジトリの成果物へ反映する作業</strong>では、Codexは効率的です。</p>
+<h3 id="claudeの特徴">Claudeの特徴</h3>
+<p>ClaudeもリアルタイムのWeb検索に対応しています。ClaudeのResearch機能は、複数の情報源を使った多段調査と引用付きレポートの作成を目的としています。</p>
+<p>Claude Codeにも<code>WebSearch</code>と<code>WebFetch</code>があり、コードベースの読み取り、ファイル編集、コマンド実行と組み合わせられます。</p>
+<p>そのため、Claudeが最新情報の収集に弱いわけではありません。</p>
+<h3 id="用途別の判断">用途別の判断</h3>
+<table>
+<thead>
+<tr>
+  <th>用途</th>
+  <th>向いている選択</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+  <td>複数の資料を横断した調査レポート</td>
+  <td>Claude ResearchまたはWeb検索対応のChatGPT</td>
+</tr>
+<tr>
+  <td>公式ドキュメントを調べてリポジトリへ反映</td>
+  <td>Codexが便利</td>
+</tr>
+<tr>
+  <td>既存コードと仕様を同時に調査</td>
+  <td>CodexまたはClaude Code</td>
+</tr>
+<tr>
+  <td>Markdown作成後にHTML生成・検証</td>
+  <td>CodexまたはClaude Code</td>
+</tr>
+<tr>
+  <td>別モデルによるレビュー</td>
+  <td>主担当とは異なるAIを使用</td>
+</tr>
+<tr>
+  <td>最新版の確認</td>
+  <td>GitHub Releasesや公式APIを直接確認</td>
+</tr>
+</tbody>
+</table>
+<h3 id="今回の作業に対する推奨">今回の作業に対する推奨</h3>
+<p>今回の「Spec Kitの最新情報を調査し、Markdownを作成し、index.htmlへ変換する」という作業では、<strong>Codexを主担当にするのは合理的</strong>です。</p>
+<p>ただし、その理由は「Codexの検索能力がClaudeより必ず高いから」ではありません。</p>
+<p>理由は、次の工程を一続きに実行しやすいからです。</p>
+<pre><code class="language-text">公式情報のライブ検索
+    ↓
+Markdown作成
+    ↓
+index.html生成
+    ↓
+ブラウザ表示確認
+    ↓
+修正
+    ↓
+Git差分確認
+</code></pre>
+<p>より確実にするなら、次の分担が適しています。</p>
+<ol>
+<li>Codexで一次情報を調査し、MarkdownとHTMLを作る</li>
+<li>Claude Codeで、説明の抜け、誇張、重複、論理矛盾をレビューする</li>
+<li>最後に人が、craft-erpの運用と合っているかを判断する</li>
+</ol>
+<hr />
+<h2 id="12-codexへ依頼する際の指示例">12. Codexへ依頼する際の指示例</h2>
+<pre><code class="language-text">GitHub Spec Kitの導入利点を調査し、Markdown文書とindex.htmlを作成してください。
+
+要件:
+- 2026年6月時点の最新情報をライブ検索する
+- GitHub Spec Kit、OpenAI、Anthropicの公式情報を優先する
+- GitHub Spec Kitの最新安定版をGitHub ReleasesまたはGitHub APIで確認する
+- 「何ができるか」と「どう便利になるか」を分けて説明する
+- 導入前後の比較表を作る
+- constitution、specify、clarify、checklist、plan、tasks、analyze、implementを説明する
+- taskstoissues、converge、Integrations、Extensions、Presets、Workflowsも扱う
+- 新規開発と既存プロジェクトの両方を扱う
+- 利点だけでなく、文書増加、仕様ドリフト、レビュー必要性、バージョン更新リスクも記載する
+- craft-erpへ導入する場合の具体的な使い分けを提案する
+- 事実と提案を明確に区別する
+- 出典URLと調査日を文末に記載する
+- Markdownを正本とし、index.htmlはMarkdownから生成する
+- HTMLはレスポンシブ対応、目次付き、印刷可能な単一ファイルにする
+</code></pre>
+<hr />
+<h2 id="13-まとめ">13. まとめ</h2>
+<p>GitHub Spec Kitは、AIにコードを書かせるためだけのツールではありません。</p>
+<p>導入の本質は、次の3点です。</p>
+<ol>
+<li><strong>AIへ渡す前提を、仕様として明示する</strong></li>
+<li><strong>仕様、計画、タスク、実装をつなげる</strong></li>
+<li><strong>AIや担当者が変わっても、同じ判断基準を維持する</strong></li>
+</ol>
+<p>craft-erpのように、プロジェクト定義書、設計書、GitHub Issues、AIコーディングエージェントをすでに活用しているプロジェクトでは、Spec Kitは既存資産を置き換えるものではなく、<strong>機能単位の仕様から実装までを標準化する層</strong>として導入するのが適切です。</p>
+<p>まずは1機能で試し、既存文書との重複、作業量、仕様精度、手戻り削減効果を確認したうえで、適用範囲を広げるのが安全です。</p>
+<hr />
+<h2 id="参考資料">参考資料</h2>
+<ul>
+<li><a href="https://github.github.com/spec-kit/">GitHub Spec Kit公式ドキュメント</a></li>
+<li><a href="https://github.github.com/spec-kit/quickstart.html">GitHub Spec Kit Quick Start</a></li>
+<li><a href="https://github.com/github/spec-kit">GitHub Spec Kit公式リポジトリ</a></li>
+<li><a href="https://github.github.io/spec-kit/reference/integrations.html">Supported AI Coding Agent Integrations</a></li>
+<li><a href="https://github.github.io/spec-kit/reference/overview.html">CLI Reference</a></li>
+<li><a href="https://github.com/github/spec-kit/blob/main/docs/guides/evolving-specs.md">Evolving Specs in Existing Projects</a></li>
+<li><a href="https://github.com/github/spec-kit/releases">GitHub Spec Kit Releases</a></li>
+<li><a href="https://developers.openai.com/codex/cli/features">Codex CLI Features: Web search</a></li>
+<li><a href="https://platform.claude.com/docs/en/agents-and-tools/tool-use/web-search-tool">Claude Web Search Tool</a></li>
+<li><a href="https://support.claude.com/en/articles/11088861-use-research-on-claude">Claude Research</a></li>
+<li><a href="https://docs.anthropic.com/en/docs/claude-code/sdk">Claude Code Agent SDK tools</a></li>
+</ul>
+
+      <div class="source-note">
+        本資料は2026年6月18日時点の公式ドキュメントと公式リリース情報を基に作成しています。
+        Spec Kitは更新が活発なため、導入時には最新のReleaseとMigration情報を再確認してください。
+      </div>
+      <a class="top-link" href="#content">ページ上部へ戻る</a>
+    </main>
+  </div>
+
+  <script>
+    (() => {
+      const toc = document.getElementById("toc");
+      const headings = document.querySelectorAll("main h2, main h3");
+      headings.forEach((heading) => {
+        const li = document.createElement("li");
+        li.className = "level-" + heading.tagName.substring(1);
+        const a = document.createElement("a");
+        a.href = "#" + heading.id;
+        a.textContent = heading.textContent;
+        li.appendChild(a);
+        toc.appendChild(li);
+      });
+    })();
+  </script>
+</body>
+</html>
